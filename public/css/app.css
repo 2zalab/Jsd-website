@@ -28,8 +28,13 @@ nav {
 }
 
 .logo {
-    font-size: 1.7rem;
+    font-size: 2rem;
     font-weight: bold;
+    color: #0066cc;
+}
+
+.logo a, .logo a:hover, .footer-logo a {
+    text-decoration: none;
     color: #0066cc;
 }
 
@@ -438,9 +443,14 @@ footer {
     padding: 0 20px;
 }
 
-.footer-left, .footer-links, .footer-newsletter {
+.footer-left{
     flex: 1;
-    margin-right: 20px;
+    margin-right: 30px;
+}
+
+.footer-links, .footer-newsletter {
+    flex: 1;
+    margin-right: 10px;
 }
 
 .footer-logo {
@@ -458,9 +468,10 @@ footer {
     color: #0066cc;
 }
 
-.footer-links h4 {
-    font-size: 18px;
+.footer-links h4 , .footer-newsletter h4{
+    font-size: 16px;
     margin-bottom: 15px;
+    color: #0066cc;
 }
 
 .footer-links ul {
@@ -563,6 +574,11 @@ footer {
     padding: 10px;
 }
 
+.footer-bottom a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
     nav {
@@ -571,6 +587,10 @@ footer {
 
     nav ul {
         margin-top: 1rem;
+    }
+
+    nav ul li a {
+       font-size: 14px;
     }
 
     .hero-content {

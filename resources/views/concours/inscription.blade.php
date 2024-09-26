@@ -8,6 +8,39 @@
      <!-- La boîte de dialogue sera insérée ici dynamiquement -->
      <div id="messageCardContainer"></div>
 
+     @if (session('success'))
+        <div class="message-container2 message-success">
+            <div class="message-content2">
+            <div class="message-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+                <p class="message-text">{{ session('success') }}</p>
+            </div>
+            <button class="message-close-button" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+             </button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="message-container2 message-error">
+            <div class="message-content2">
+            <div class="message-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+                <ul class="message-list">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <button class="message-close-button" aria-label="Fermer">
+            <i class="fas fa-times"></i>
+        </button>
+        </div>
+    @endif
+
+
     <form id="inscriptionForm" class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST" action="{{ route('concours.submit') }}">
         @csrf
         <div class="mb-4">
@@ -76,37 +109,31 @@
         </div>
     </form>
 </div>
-@endsection
 
 <script>
 function showMessageCard(type, message) {
     const container = document.getElementById('messageCardContainer');
+    const iconSVG = type === 'success'
+        ? '<svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>'
+        : '<svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
+
     const cardHTML = `
-        <div id="messageCard" class="fixed inset-0 flex items-center justify-center z-50">
-            <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-medium text-gray-900">${type === 'success' ? 'Succès' : 'Erreur'}</h3>
-                        <button onclick="closeMessageCard()" class="text-gray-400 hover:text-gray-500">
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="flex items-center mb-4">
-                        <div class="flex-shrink-0 w-8 h-8 mr-3">
-                            ${type === 'success'
-                                ? '<svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>'
-                                : '<svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>'
-                            }
-                        </div>
-                        <p class="text-sm text-gray-500">${message}</p>
-                    </div>
-                    <div class="mt-6">
-                        <button onclick="closeMessageCard()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
-                            Fermer
-                        </button>
-                    </div>
+        <div id="messageCard" class="dialog-overlay">
+            <div class="dialog-content">
+                <div class="dialog-header">
+                    <h3 class="dialog-title">${type === 'success' ? 'Succès' : 'Erreur'}</h3>
+                    <button onclick="closeMessageCard()" class="dialog-close-button">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="dialog-body">
+                    <div class="dialog-icon">${iconSVG}</div>
+                    <p class="dialog-message">${message}</p>
+                </div>
+                <div class="dialog-footer">
+                    <button onclick="closeMessageCard()" class="dialog-button">Fermer</button>
                 </div>
             </div>
         </div>
@@ -127,13 +154,17 @@ document.addEventListener('DOMContentLoaded', function() {
     @if (session('error'))
         showMessageCard('error', "{{ session('error') }}");
     @endif
+});
 
-    const form = document.getElementById('inscriptionForm');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Ici, vous pouvez ajouter la logique pour soumettre le formulaire via AJAX si nécessaire
-        // Pour cet exemple, nous allons simplement soumettre le formulaire normalement
-        form.submit();
+document.addEventListener('DOMContentLoaded', function() {
+    const closeButtons = document.querySelectorAll('.message-close-button');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.message-container2').style.display = 'none';
+        });
     });
 });
+
 </script>
+@endsection
+

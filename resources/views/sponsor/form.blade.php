@@ -3,7 +3,50 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8 text-center">Devenir Sponsor</h1>
-    <form id="sponsorForm" class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+     <!-- La boîte de dialogue sera insérée ici dynamiquement -->
+     <div id="messageCardContainer"></div>
+
+    <!-- Messages d'alerte -->
+    @if (session('success'))
+        <div class="message-container2 message-success">
+            <div class="message-content2">
+            <div class="message-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+                <p class="message-text">{{ session('success') }}</p>
+            </div>
+            <button class="message-close-button" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+             </button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="message-container2 message-error">
+            <div class="message-content2">
+            <div class="message-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+                <ul class="message-list">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <button class="message-close-button" aria-label="Fermer">
+            <i class="fas fa-times"></i>
+        </button>
+        </div>
+    @endif
+
+   @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <form id="sponsorForm" class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="post" action="{{ route('sponsor.submit') }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="nom">
@@ -48,97 +91,61 @@
         </div>
     </form>
 </div>
+<script>
+function showMessageCard(type, message) {
+    const container = document.getElementById('messageCardContainer');
+    const iconSVG = type === 'success'
+        ? '<svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>'
+        : '<svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
 
-<!-- Boîte de dialogue de confirmation -->
-<div id="confirmationModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    const cardHTML = `
+        <div id="messageCard" class="dialog-overlay">
+            <div class="dialog-content">
+                <div class="dialog-header">
+                    <h3 class="dialog-title">${type === 'success' ? 'Succès' : 'Erreur'}</h3>
+                    <button onclick="closeMessageCard()" class="dialog-close-button">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Demande soumise avec succès
-                        </h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500">
-                                Votre demande de parrainage a été soumise avec succès. Vous recevrez bientôt un email de confirmation.
-                            </p>
-                        </div>
-                    </div>
+                    </button>
+                </div>
+                <div class="dialog-body">
+                    <div class="dialog-icon">${iconSVG}</div>
+                    <p class="dialog-message">${message}</p>
+                </div>
+                <div class="dialog-footer">
+                    <button onclick="closeMessageCard()" class="dialog-button">Fermer</button>
                 </div>
             </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
-                    Fermer
-                </button>
-            </div>
         </div>
-    </div>
-</div>
-@endsection
+    `;
+    container.innerHTML = cardHTML;
+}
 
-@section('scripts')
-<script>
+function closeMessageCard() {
+    const container = document.getElementById('messageCardContainer');
+    container.innerHTML = '';
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('sponsorForm');
-    const submitButton = document.getElementById('submit');
-    const modal = document.getElementById('confirmationModal');
+    @if (session('success'))
+        showMessageCard('success', "{{ session('success') }}");
+    @endif
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        submitButton.disabled = true;
-        submitButton.innerText = 'Envoi en cours...';
+    @if (session('error'))
+        showMessageCard('error', "{{ session('error') }}");
+    @endif
+});
 
-        let formData = new FormData(this);
-
-        fetch('{{ route('sponsor.submit') }}', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                modal.classList.remove('hidden');
-            } else if (data.errors) {
-                // Afficher les erreurs de validation
-                Object.keys(data.errors).forEach(key => {
-                    const input = document.getElementById(key);
-                    if (input) {
-                        input.classList.add('border-red-500');
-                        const errorMsg = document.createElement('p');
-                        errorMsg.classList.add('text-red-500', 'text-xs', 'italic', 'mt-1');
-                        errorMsg.innerText = data.errors[key][0];
-                        input.parentNode.insertBefore(errorMsg, input.nextSibling);
-                    }
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Une erreur est survenue. Veuillez réessayer.');
-        })
-        .finally(() => {
-            submitButton.disabled = false;
-            submitButton.innerText = 'Soumettre';
+document.addEventListener('DOMContentLoaded', function() {
+    const closeButtons = document.querySelectorAll('.message-close-button');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.message-container2').style.display = 'none';
         });
     });
-
-    function closeModal() {
-        modal.classList.add('hidden');
-    }
-
-    // Ajouter l'événement au bouton de fermeture du modal
-    document.querySelector('#confirmationModal button').addEventListener('click', closeModal);
 });
+
 </script>
 @endsection
+

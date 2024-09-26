@@ -1,0 +1,60 @@
+/* Styles pour l'animation de la boîte de dialogue */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); }
+    to { transform: translateY(0); }
+}
+
+.message-card-overlay {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.message-card {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Styles pour le bouton de fermeture */
+.close-button {
+    transition: all 0.2s ease-in-out;
+}
+
+.close-button:hover {
+    transform: scale(1.1);
+}
+
+/* Styles pour l'icône */
+.message-icon {
+    font-size: 2rem;
+}
+
+.message-icon.success {
+    color: #10B981; /* vert */
+}
+
+.message-icon.error {
+    color: #EF4444; /* rouge */
+}
+
+/* Styles pour le bouton "Fermer" */
+.close-button-bottom {
+    transition: all 0.2s ease-in-out;
+}
+
+.close-button-bottom:hover {
+    background-color: #D1D5DB;
+}
+
+/* Styles pour la liste des erreurs */
+.error-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.error-list li {
+    margin-bottom: 0.25rem;
+}

@@ -25,7 +25,8 @@ class SponsorController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return back()->withErrors($validator)->withInput();
+           // return response()->json(['errors' => $validator->errors()], 422);
         }
 
         $logoPath = $request->file('logo')->store('logos', 'public');
@@ -39,6 +40,7 @@ class SponsorController extends Controller
             'motivation' => $request->motivation,
         ]);
 
-        return response()->json(['message' => 'Votre demande de parrainage a été soumise avec succès. Vous recevrez bientôt un email de confirmation.']);
+        return redirect()->back()->with('success', 'Votre demande de parrainage a été soumise avec succès. Vous recevrez bientôt un email de confirmation !');
+       //return response()->json(['message' => 'Votre demande de parrainage a été soumise avec succès. Vous recevrez bientôt un email de confirmation.']);
     }
 }
