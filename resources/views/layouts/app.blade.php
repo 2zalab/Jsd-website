@@ -76,7 +76,7 @@
                 <p>Journées Sahel Digital 2024 (JSD'24) Plongez dans un programme riche en innovation, avec des conférences, des ateliers, des concours et des opportunités uniques d'apprentissage</p>
                 <br />
                 <div class="footer-contact">
-                    <p><i class="fas fa-envelope"></i> info@journeesaheldigital.com</p>
+                    <p><i class="fas fa-envelope"></i> info@saheldigital.net</p>
                     <p><i class="fas fa-phone"></i> +237 697 460 267</p>
                 </div>
             </div>

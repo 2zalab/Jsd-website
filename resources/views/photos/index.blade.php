@@ -119,10 +119,10 @@
         </div>
     </div>
 
-    <div class="mt-12 text-center">
+    <!--div class="mt-12 text-center">
         <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
             Voir plus de photos
         </a>
-    </div>
+    </div-->
 </div>
 @endsection

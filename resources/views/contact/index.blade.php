@@ -83,7 +83,7 @@
                         </div>
                         <div class="flex items-center text-blue-500">
                             <i class="fas fa-envelope mr-2"></i>
-                            <span>info@journeesaheldigital.com</span>
+                            <span>info@saheldigital.net</span>
                         </div>
                         <div class="flex items-center text-blue-500">
                             <i class="fas fa-map-marker-alt mr-2"></i>

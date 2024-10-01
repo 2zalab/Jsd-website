@@ -12,7 +12,7 @@
             <h2>Le compte à rebours a commencé !</h2>
             <p>Rejoignez-nous pour célébrer l'innovation et l'entrepreneuriat à l'ère de l'intelligence artificielle</p>
             <div class="countdown-timer">
-                <div class="countdown-item">
+                <div class="countdown-item day">
                     <span id="days">00</span>
                     <p>JOURS</p>
                 </div>
@@ -20,11 +20,11 @@
                     <span id="hours">00</span>
                     <p>HEURES</p>
                 </div>
-                <div class="countdown-item">
+                <div class="countdown-item hour">
                     <span id="minutes">00</span>
                     <p>MINUTES</p>
                 </div>
-                <div class="countdown-item">
+                <div class="countdown-item second">
                     <span id="seconds">00</span>
                     <p>SECONDES</p>
                 </div>
@@ -33,7 +33,7 @@
             <p class="registration-deadline">Inscrivez-vous dès maintenant et soumettez vos projets avant le <span class="highlight">15 novembre 2024</span> !</p>
             <div class="cta-buttons">
                 <a href="{{ route('concours.index') }}" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> S'inscrire
+                    <i class="fas fa-user-plus"></i> S'inscrire aux concours
                 </a>
                 <button id="open-contest-dates-modal" class="btn btn-secondary2">
                     <i class="fas fa-calendar-alt"></i> Date des concours
@@ -179,10 +179,11 @@
             <img src="{{ asset('images/partner4.png') }}" alt="Partenaire 4">
             <img src="{{ asset('images/partner8.png') }}" alt="Partenaire 8">
             <img src="{{ asset('images/partner9.jpeg') }}" alt="Partenaire 9">
-            <img src="{{ asset('images/partner5.jpg') }}" alt="Partenaire 5">
-            <img src="{{ asset('images/partner6.jpg') }}" alt="Partenaire 6">
+            <img src="{{ asset('images/partner5.png') }}" alt="Partenaire 5">
+            <img src="{{ asset('images/partner6.png') }}" alt="Partenaire 6">
             <img src="{{ asset('images/partner7.png') }}" alt="Partenaire 7">
-
+            <img src="{{ asset('images/partner10.png') }}" alt="2zaLab">
+            <img src="{{ asset('images/mit-logo.png') }}" alt="MIT">
         </div>
     </section>
 

@@ -95,7 +95,7 @@
                     </div>
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="motivation">
-                            Pourquoi devenir sponsor ? (4 lignes max)
+                            Quelles sont vos attentes en tant que sponsor ? (4 lignes max)
                         </label>
                         <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="motivation" name="motivation" rows="4" required></textarea>
                     </div>

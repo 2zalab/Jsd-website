@@ -48,6 +48,7 @@ nav ul li {
 nav ul li a {
     text-decoration: none;
     color: #0066cc;
+    font-weight: bold;
 }
 
 /*count down section*/
@@ -100,6 +101,49 @@ nav ul li a {
     flex-direction: column;
     justify-content: center;
     border: #0066cc solid 2px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+.day {
+    text-align: center;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: #df2905 solid 2px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.hour {
+    text-align: center;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: #09802d solid 2px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.second {
+    text-align: center;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: #ffa800 solid 2px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
@@ -461,8 +505,8 @@ nav ul li a {
 }
 
 .partner-logos img {
-    height: 90px;
-    margin: 1rem;
+    height: 70px;
+    margin: 0.7rem;
 
 }
 
