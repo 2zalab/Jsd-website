@@ -28,9 +28,7 @@ nav {
 }
 
 .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #0066cc;
+    width: 150px;
 }
 
 .logo a, .logo a:hover, .footer-logo a {
@@ -67,11 +65,11 @@ nav ul li a {
 
 .countdown-image {
     flex: 1;
-    padding-right: 30px;
+    padding-right: 0px;
 }
 
 .countdown-image img {
-    max-width: 75%;
+    max-width: 70%;
     border-radius: 0px;
 }
 
@@ -83,6 +81,7 @@ nav ul li a {
     color: #0066cc;
     font-size: 24px;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .countdown-timer {
@@ -149,6 +148,64 @@ nav ul li a {
     color: #fff;
 }
 
+.intro {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+
+/*donate bouton style*/
+.sdk {
+    display: block;
+    position: absolute;
+    background-position: center;
+    text-align: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.donation-input-container {
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 300px;
+    border: 1px solid #e2e2e2;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.amount-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amount-input {
+    border: none;
+    background-color: transparent;
+    width: 100px;
+    text-align: left;
+    margin-left: 10px;
+    margin-right: 20px;
+    outline: none;
+    font-weight: normal;
+}
+
+.currency-container {
+    background-color: #0057ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+}
+
+.currency-text {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
 
 /* Hero section styles */
 .hero {
@@ -199,10 +256,10 @@ nav ul li a {
 }
 
 .hero h2 {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: normal;
     margin-bottom: 20px;
-    margin-top: 4rem;
+    margin-top: 5rem;
 }
 
 .subtitle {
@@ -217,7 +274,7 @@ nav ul li a {
 }
 
 .btn {
-    padding: 12px 24px;
+    padding: 8px 20px;
     border-radius: 5px;
     font-size: 18px;
     font-weight: bold;
@@ -259,15 +316,19 @@ nav ul li a {
 }
 
 .welcome-message img {
-    width: 300px;
+    width: 270px;
     height: auto;
-    border-radius: 0%;
+    border-radius: 8%;
     margin-right: 2rem;
 }
 
+.message-content p{
+    text-align: justify;
+}
 .message-content h3 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin-bottom: 0.5rem;
+    font-weight: bold;
 }
 
 .message-content h4 {
@@ -284,8 +345,9 @@ nav ul li a {
 }
 
 .activities h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
+    font-weight: bold;
 }
 
 .activity-grid {
@@ -312,6 +374,7 @@ nav ul li a {
 .activity-card h3 {
     font-size: 1rem;
     margin: 1rem;
+    font-weight: bold;
 }
 
 .activity-card p {
@@ -335,8 +398,9 @@ nav ul li a {
 }
 
 .about h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 1rem;
+    font-weight: bold;
 }
 
 .about p {
@@ -372,7 +436,7 @@ nav ul li a {
     max-width:40%;
     height: auto;
     border-radius: 0px;
-    margin-bottom: -88px;
+    margin-bottom: -55px;
 }
 
 /* Partners section styles */
@@ -385,6 +449,7 @@ nav ul li a {
 .partners h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
+    font-weight: bold;
 }
 
 .partner-logos {
@@ -412,6 +477,7 @@ nav ul li a {
 .cta h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
+    font-weight: bold;
 }
 
 .cta p{
@@ -472,6 +538,7 @@ footer {
     font-size: 16px;
     margin-bottom: 15px;
     color: #0066cc;
+    font-weight: bold;
 }
 
 .footer-links ul {
@@ -559,19 +626,20 @@ footer {
 
 .footer-bottom {
     max-width: 1200px;
-    margin: 20px auto 0;
-    padding: 20px 20px 0;
+    margin: 10px auto 0;
+    padding: 0px 0px 0;
     border-top: 1px solid #ddd;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
 }
 
 .footer-bottom i {
     background-color:#0066cc;
     color: white;
-    border-radius: 50%;
-    padding: 10px;
+    border-radius: 20%;
+    padding: 8px;
 }
 
 .footer-bottom a {
@@ -625,8 +693,17 @@ footer {
     }
 
     .countdown-image {
-        padding-right: 0;
-        margin-bottom: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%; /* Prend tout l'espace disponible */
+        margin: 0 auto; /* Centrer horizontalement */
+    }
+
+    .countdown-image img {
+        max-width: 80%; /* Assure que l'image ne dépasse pas le conteneur */
+        height: auto; /* Maintenir les proportions */
     }
 
     .welcome-message {

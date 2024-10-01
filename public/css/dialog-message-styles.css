@@ -147,6 +147,40 @@
     opacity: 1;
 }
 
+#alertContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 1024px;
+    z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
+}
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.alert-success2 {
+    background-color: #c6f6d5;
+    color: black;
+}
+.alert-error2 {
+    background-color: #fed7d7;
+    color: black;
+}
+#btn-close {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+
 
 @media (min-width: 640px) {
     .message-container2 {

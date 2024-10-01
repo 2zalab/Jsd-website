@@ -1,11 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8 text-center">Devenir Sponsor</h1>
+<div class="container mx-auto px-2 py-4">
 
-     <!-- La boîte de dialogue sera insérée ici dynamiquement -->
-     <div id="messageCardContainer"></div>
+    <div id="messageCardContainer"></div>
 
     <!-- Messages d'alerte -->
     @if (session('success'))
@@ -46,51 +44,72 @@
         </div>
     @endif
 
-    <form id="sponsorForm" class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="post" action="{{ route('sponsor.submit') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="nom">
-                Nom de la structure
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nom" type="text" name="nom" required>
+    <h1 class="text-3xl font-bold mb-8 text-center text-blue-600">Devenir Sponsor</h1>
+    <p class="intro">Participez activement à la réussite de notre événement en devenant sponsor et bénéficiez d'une visibilité exceptionnelle tout en soutenant l'innovation et le développement technologique."</p>
+
+
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row">
+            <!-- Image à gauche (en haut sur mobile) -->
+            <div class="md:w-1/3">
+                <img src="{{ asset('images/sponsor-image-desktop.png') }}" alt="Devenir Sponsor" class="w-full h-full object-cover hidden md:block">
+                <img src="{{ asset('images/sponsor-image-mobile.png') }}" alt="Devenir Sponsor" class="w-full h-64 object-cover md:hidden">
+            </div>
+            <!--div class="md:w-1/3">
+                <img src="{{ asset('images/sponsor.png') }}" alt="Devenir Sponsor" class="w-full h-full object-cover">
+            </div-->
+
+            <!-- Formulaire à droite -->
+            <div class="md:w-2/3 p-8">
+                <form id="sponsorForm" method="post" action="{{ route('sponsor.submit') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="nom">
+                            Nom de la structure
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nom" type="text" name="nom" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="logo">
+                            Logo
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="logo" type="file" name="logo" accept="image/*" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="adresse">
+                            Adresse complète
+                        </label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adresse" name="adresse" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="telephone">
+                            Téléphone
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telephone" type="tel" name="telephone" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            Email
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="motivation">
+                            Pourquoi devenir sponsor ? (4 lignes max)
+                        </label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="motivation" name="motivation" rows="4" required></textarea>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" type="submit" id="submit">
+                            Soumettre
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="logo">
-                Logo
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="logo" type="file" name="logo" accept="image/*" required>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="adresse">
-                Adresse complète
-            </label>
-            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adresse" name="adresse" rows="3" required></textarea>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="telephone">
-                Téléphone
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="telephone" type="tel" name="telephone" required>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                Email
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" required>
-        </div>
-        <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="motivation">
-                Pourquoi devenir sponsor ? (4 lignes max)
-            </label>
-            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="motivation" name="motivation" rows="4" required></textarea>
-        </div>
-        <div class="flex items-center justify-center">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" id="submit">
-                Soumettre
-            </button>
-        </div>
-    </form>
+    </div>
 </div>
+
 <script>
 function showMessageCard(type, message) {
     const container = document.getElementById('messageCardContainer');
@@ -122,12 +141,24 @@ function showMessageCard(type, message) {
     container.innerHTML = cardHTML;
 }
 
+// Remplacer l'entrée d'historique actuelle
+    if (history.replaceState) {
+        history.replaceState(null, '', window.location.href);
+    }
+
 function closeMessageCard() {
     const container = document.getElementById('messageCardContainer');
     container.innerHTML = '';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    if (sessionStorage.getItem('messageShown')) {
+        // Si le message a déjà été affiché, ne pas le réafficher
+        sessionStorage.removeItem('messageShown');
+        return;
+    }
+
     @if (session('success'))
         showMessageCard('success', "{{ session('success') }}");
     @endif
@@ -145,7 +176,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
 </script>
 @endsection
-

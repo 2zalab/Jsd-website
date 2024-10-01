@@ -1,39 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-left">
-                <h1>Les Journées<br>Sahel digital 2024</h1>
-                <p class="subtitle">Innovation à l'ère de l'intelligence Artificielle</p>
-                <hr/>
-            </div>
-            <div class="hero-right">
-                <h2>Deuxième édition</h2>
-                <div class="cta-buttons">
-                    <a href="{{ route('sponsor.form') }}" class="btn btn-primary">
-                        <i class="fas fa-handshake"></i> Devenir Sponsor
-                    </a>
-                    <a href="#" class="btn btn-secondary">
-                        <i class="fas fa-donate"></i> Faire un don
-                    </a>
-                </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!--section class="hero">
-        <div class="hero-content">
-            <h1>Les Journées<br>Sahel digital 2024</h1>
-            <h2>Deuxième édition</h2>
-            <p class="subtitle">Innovation à l'ère de l'intelligence Artificielle</p>
-            <div class="cta-buttons">
-                <a href="#" class="btn btn-primary">Devenir Sponsor</a>
-                <a href="#" class="btn btn-secondary">Faire un don</a>
-            </div>
-        </div>
-    </section-->
 
     <section class="countdown-section">
     <div class="countdown-content">
@@ -64,19 +32,68 @@
             <p class="event-description">Préparez-vous à découvrir les projets les plus créatifs, à participer à des concours passionnants et à assister à des débats inspirants sur les technologies de demain. Ne manquez pas cet événement incontournable du <span class="highlight">26 au 28 novembre 2024</span> !</p>
             <p class="registration-deadline">Inscrivez-vous dès maintenant et soumettez vos projets avant le <span class="highlight">15 novembre 2024</span> !</p>
             <div class="cta-buttons">
-                <a href="{{ route('concours.inscription') }}" class="btn btn-primary">
+                <a href="{{ route('concours.index') }}" class="btn btn-primary">
                     <i class="fas fa-user-plus"></i> S'inscrire
                 </a>
-                <a href="#" class="btn btn-secondary2">
+                <button id="open-contest-dates-modal" class="btn btn-secondary2">
                     <i class="fas fa-calendar-alt"></i> Date des concours
-                </a>
+                </button>
+                <!--a href="#" class="btn btn-secondary2">
+                    <i class="fas fa-calendar-alt"></i> Date des concours
+                </a-->
             </div>
         </div>
     </div>
 </section>
 
+<!-- resources/views/partials/contest-dates-modal.blade.php -->
+<div id="contest-dates-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display: none;">
+    <div class="relative top-20 mx-auto p-5 border w-3/4 max-w-2xl shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <h3 class="text-2xl leading-6 font-bold text-gray-900 text-center mb-4">Dates des Concours</h3>
+            <div class="mb-4 text-center">
+                <p class="text-gray-500">
+                    Découvrez les dates de nos différents concours et inscrivez-vous dès maintenant !
+                </p>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-laptop-code text-3xl text-blue-500"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-xl font-semibold text-blue-700">26 novembre</h4>
+                        <p class="text-gray-600 mb-2">Concours des Meilleurs Projets Digital et Hackathon</p>
+                        <a href="{{ route('concours.index') }}" class="inline-block px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>S'inscrire
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-code text-3xl text-green-500"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-xl font-semibold text-green-700">27 novembre</h4>
+                        <p class="text-gray-600 mb-2">Concours des Meilleurs Programmeurs</p>
+                        <a href="{{ route('concours.index') }}" class="inline-block px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-md hover:bg-green-600 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>S'inscrire
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6">
+                <button id="close-modal" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 transition duration-300">
+                    <i class="fas fa-times mr-2"></i>Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
     <section class="welcome-message">
-        <img src="{{ asset('images/pr-kaladzavi-guidedi.png') }}" alt="Pr Kaladzavi Guidedi">
+        <img src="{{ asset('images/pr-kaladzavi.jpg') }}" alt="Pr Kaladzavi Guidedi">
         <div class="message-content">
             <h3>Mot du Président du Comité d’Organisation</h3>
             <!--h4>Chef de département d'INFOTEL, ENSPM - UMa</h4-->
@@ -87,6 +104,8 @@
             <p>Je vous invite donc à saisir cette opportunité unique et à vous engager pleinement dans cette aventure numérique. L'avenir de notre région est entre nos mains. Soyons les artisans du changement.</p>
         </div>
     </section>
+
+    <hr />
 
     <section class="activities">
         <h2>Activités</h2>
@@ -118,8 +137,8 @@
                 <p>Découvrez les startups les plus prometteuses du Sahel, qui exposeront leurs solutions technologiques innovantes.</p>
             </div>
         </div>
-        <a href="{{ route('activities') }}" class="btn btn-primary">
-            Toutes les activités <i class="fas fa-arrow-right"></i>
+        <a href="{{ route('concours.index') }}" class="btn btn-primary">
+            Participez à une activité <i class="fas fa-arrow-right"></i>
         </a>
 
     </section>
@@ -206,4 +225,26 @@ const x = setInterval(function() {
         document.getElementById("countdown").innerHTML = "EXPIRED";
     }
 }, 1000);
+
+// public/js/contest-dates-modal.js
+document.addEventListener('DOMContentLoaded', (event) => {
+    const modal = document.getElementById('contest-dates-modal');
+    const openModalBtn = document.getElementById('open-contest-dates-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+
+    openModalBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
 </script>
