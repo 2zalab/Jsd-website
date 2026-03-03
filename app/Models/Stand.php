@@ -10,6 +10,7 @@ class Stand extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'nom_entreprise',
         'secteur_activite',
         'adresse',
@@ -17,5 +18,11 @@ class Stand extends Model
         'telephone_contact',
         'taille_stand',
         'besoins_specifiques',
+        'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

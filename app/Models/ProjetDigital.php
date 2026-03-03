@@ -10,6 +10,7 @@ class ProjetDigital extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'nom_equipe',
         'chef_equipe',
         'email_chef_equipe',
@@ -22,14 +23,12 @@ class ProjetDigital extends Model
         'certificat_scolarite',
         'lien_youtube',
         'business_plan',
-        'type_concours', // CMPDL ou CMPDS
+        'type_concours',
+        'status',
     ];
 
-
-    /*
-    public function concours()
+    public function user()
     {
-        return $this->belongsTo(Concours::class);
+        return $this->belongsTo(User::class);
     }
-    */
 }
