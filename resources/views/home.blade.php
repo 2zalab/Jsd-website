@@ -119,7 +119,7 @@
                 </div>
             </div>
             <div class="activity-card">
-                <img src="{{ asset('images/digital-project-contest.png') }}" alt="Concours de Programmation" loading="lazy">
+                <img src="{{ asset('images/programming-contest.png') }}" alt="Concours de Programmation" loading="lazy">
                 <div class="activity-card-body">
                     <h3>Concours de Programmation</h3>
                     <p>Montrez vos compétences et remportez des prix pour vos solutions ingénieuses lors du concours du Meilleur Programmeur.</p>
@@ -133,7 +133,7 @@
                 </div>
             </div>
             <div class="activity-card">
-                <img src="{{ asset('images/startup-expo.png') }}" alt="Conférences et Débats" loading="lazy">
+                <img src="{{ asset('images/conference.png') }}" alt="Conférences et Débats" loading="lazy">
                 <div class="activity-card-body">
                     <h3>Conférences &amp; Débats</h3>
                     <p>Assistez à des conférences animées par des experts du numérique, avec un focus sur l'IA et l'innovation.</p>
