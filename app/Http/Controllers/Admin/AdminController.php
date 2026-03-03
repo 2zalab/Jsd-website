@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use App\Models\Concours;
 use App\Models\Stand;
 use App\Models\Hackathon;
 use App\Models\Programmeur;
 use App\Models\ProjetDigital;
 use App\Models\Sponsor;
 use App\Models\Newsletter;
+use App\Models\User;
+use App\Models\UserNotification;
+use Illuminate\Support\Facades\Hash;
 use TCPDF;
 
 
@@ -295,12 +297,364 @@ public function generatePDF()
 
     public function getNewsletters()
     {
-
         $letters = Newsletter::all();
         return view('admin.newsletter', compact(var_name: 'letters'));
     }
 
+    // ═══════════════════════════════════════════════════════════
+    //  GESTION UNIFIÉE DES INSCRIPTIONS
+    // ═══════════════════════════════════════════════════════════
 
+    public function inscriptions(Request $request)
+    {
+        $type   = $request->get('type', 'all');
+        $status = $request->get('status', 'all');
+
+        $programmeurs  = collect();
+        $projets       = collect();
+        $hackathons    = collect();
+        $stands        = collect();
+
+        if ($type === 'all' || $type === 'programmeur') {
+            $q = Programmeur::with('user');
+            if ($status !== 'all') $q->where('status', $status);
+            $programmeurs = $q->latest()->get()->map(fn($r) => (object)[
+                'id' => $r->id, 'type' => 'programmeur', 'label' => 'Programmeur',
+                'nom' => $r->nom, 'email' => $r->email,
+                'detail' => $r->type_concours, 'status' => $r->status,
+                'user' => $r->user, 'created_at' => $r->created_at,
+            ]);
+        }
+
+        if ($type === 'all' || $type === 'projet') {
+            $q = ProjetDigital::with('user');
+            if ($status !== 'all') $q->where('status', $status);
+            $projets = $q->latest()->get()->map(fn($r) => (object)[
+                'id' => $r->id, 'type' => 'projet', 'label' => 'Projet Digital',
+                'nom' => $r->nom_equipe, 'email' => $r->email_chef_equipe,
+                'detail' => $r->nom_projet . ' (' . $r->type_concours . ')',
+                'status' => $r->status, 'user' => $r->user, 'created_at' => $r->created_at,
+            ]);
+        }
+
+        if ($type === 'all' || $type === 'hackathon') {
+            $q = Hackathon::with('user');
+            if ($status !== 'all') $q->where('status', $status);
+            $hackathons = $q->latest()->get()->map(fn($r) => (object)[
+                'id' => $r->id, 'type' => 'hackathon', 'label' => 'Hackathon',
+                'nom' => $r->nom_equipe, 'email' => $r->email_chef_equipe,
+                'detail' => $r->niveau_etudes, 'status' => $r->status,
+                'user' => $r->user, 'created_at' => $r->created_at,
+            ]);
+        }
+
+        if ($type === 'all' || $type === 'stand') {
+            $q = Stand::with('user');
+            if ($status !== 'all') $q->where('status', $status);
+            $stands = $q->latest()->get()->map(fn($r) => (object)[
+                'id' => $r->id, 'type' => 'stand', 'label' => 'Stand',
+                'nom' => $r->nom_entreprise, 'email' => $r->email_contact,
+                'detail' => $r->secteur_activite, 'status' => $r->status,
+                'user' => $r->user, 'created_at' => $r->created_at,
+            ]);
+        }
+
+        $inscriptions = $programmeurs->concat($projets)->concat($hackathons)->concat($stands)
+                            ->sortByDesc('created_at')->values();
+
+        return view('admin.inscriptions', compact('inscriptions', 'type', 'status'));
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $request->validate([
+            'type'   => 'required|in:programmeur,projet,hackathon,stand',
+            'id'     => 'required|integer',
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        $model = match($request->type) {
+            'programmeur' => Programmeur::findOrFail($request->id),
+            'projet'      => ProjetDigital::findOrFail($request->id),
+            'hackathon'   => Hackathon::findOrFail($request->id),
+            'stand'       => Stand::findOrFail($request->id),
+        };
+
+        $oldStatus = $model->status;
+        $model->update(['status' => $request->status]);
+
+        // Notifier l'utilisateur si le statut change et s'il est lié à un compte
+        if ($model->user_id && $oldStatus !== $request->status) {
+            $typeLabels = [
+                'programmeur' => 'Concours Meilleur Programmeur',
+                'projet'      => 'Concours Meilleur Projet Digital',
+                'hackathon'   => 'Hackathon',
+                'stand'       => 'Réservation de Stand',
+            ];
+            $label = $typeLabels[$request->type] ?? 'Inscription';
+
+            [$title, $message, $type, $icon] = match($request->status) {
+                'approved' => [
+                    "Inscription approuvée — {$label}",
+                    "Félicitations ! Votre inscription au {$label} a été approuvée. Nous vous contacterons pour les prochaines étapes.",
+                    'success', 'fas fa-check-circle',
+                ],
+                'rejected' => [
+                    "Inscription non retenue — {$label}",
+                    "Après examen de votre dossier, votre inscription au {$label} n'a pas pu être retenue. Contactez-nous pour plus d'informations.",
+                    'error', 'fas fa-times-circle',
+                ],
+                default => [
+                    "Statut mis à jour — {$label}",
+                    "Le statut de votre inscription au {$label} a été mis à jour.",
+                    'info', 'fas fa-info-circle',
+                ],
+            };
+
+            UserNotification::create([
+                'user_id' => $model->user_id,
+                'title'   => $title,
+                'message' => $message,
+                'type'    => $type,
+                'icon'    => $icon,
+            ]);
+        }
+
+        return response()->json(['success' => true, 'status' => $request->status]);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  CRUD PROGRAMMEURS
+    // ═══════════════════════════════════════════════════════════
+
+    public function createProgrammeurForm()
+    {
+        $users = User::where('role', 'user')->orderBy('name')->get();
+        return view('admin.programmeurs.create', compact('users'));
+    }
+
+    public function storeProgrammeurAdmin(Request $request)
+    {
+        $data = $request->validate([
+            'nom'          => 'required|string|max:255',
+            'email'        => 'required|email',
+            'telephone'    => 'required|string',
+            'niveau_etude' => 'required|string',
+            'classe'       => 'required|string',
+            'etablissement'=> 'required|string',
+            'type_concours'=> 'required|in:CMPL,CMPS',
+            'langages'     => 'required|array|min:1',
+            'user_id'      => 'nullable|exists:users,id',
+            'status'       => 'required|in:pending,approved,rejected',
+        ]);
+
+        Programmeur::create($data);
+
+        return response()->json(['success' => true, 'message' => 'Programmeur ajouté avec succès.']);
+    }
+
+    public function destroyProgrammeur($id)
+    {
+        Programmeur::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  CRUD PROJETS DIGITAUX
+    // ═══════════════════════════════════════════════════════════
+
+    public function createProjetForm()
+    {
+        $users = User::where('role', 'user')->orderBy('name')->get();
+        return view('admin.projets.create', compact('users'));
+    }
+
+    public function storeProjetAdmin(Request $request)
+    {
+        $data = $request->validate([
+            'nom_equipe'          => 'required|string|max:255',
+            'chef_equipe'         => 'required|string|max:255',
+            'email_chef_equipe'   => 'required|email',
+            'etablissement'       => 'required|string',
+            'niveau_etude'        => 'required|string',
+            'classe'              => 'required|string',
+            'nom_projet'          => 'required|string|max:255',
+            'description_projet'  => 'required|string',
+            'lien_youtube'        => 'nullable|url',
+            'type_concours'       => 'required|in:CMPDL,CMPDS',
+            'user_id'             => 'nullable|exists:users,id',
+            'status'              => 'required|in:pending,approved,rejected',
+        ]);
+
+        ProjetDigital::create($data);
+
+        return response()->json(['success' => true, 'message' => 'Projet Digital ajouté avec succès.']);
+    }
+
+    public function destroyProjet($id)
+    {
+        ProjetDigital::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  CRUD HACKATHONS
+    // ═══════════════════════════════════════════════════════════
+
+    public function createHackathonAdminForm()
+    {
+        $users = User::where('role', 'user')->orderBy('name')->get();
+        return view('admin.hackathons.create', compact('users'));
+    }
+
+    public function storeHackathonAdmin(Request $request)
+    {
+        $data = $request->validate([
+            'nom_equipe'            => 'required|string|max:255',
+            'nombre_participants'   => 'required|integer|min:1|max:10',
+            'nom_chef_equipe'       => 'required|string|max:255',
+            'telephone_chef_equipe' => 'required|string',
+            'email_chef_equipe'     => 'required|email',
+            'etablissement'         => 'required|string',
+            'niveau_etudes'         => 'required|in:secondaire,superieur',
+            'classe'                => 'required|string',
+            'membres'               => 'required|array|min:1',
+            'membres.*'             => 'required|string|max:255',
+            'user_id'               => 'nullable|exists:users,id',
+            'status'                => 'required|in:pending,approved,rejected',
+        ]);
+
+        Hackathon::create($data);
+
+        return response()->json(['success' => true, 'message' => 'Hackathon ajouté avec succès.']);
+    }
+
+    public function destroyHackathonAdmin($id)
+    {
+        Hackathon::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  CRUD STANDS
+    // ═══════════════════════════════════════════════════════════
+
+    public function createStandAdminForm()
+    {
+        $users = User::where('role', 'user')->orderBy('name')->get();
+        return view('admin.stands.create', compact('users'));
+    }
+
+    public function storeStandAdmin(Request $request)
+    {
+        $data = $request->validate([
+            'nom_entreprise'      => 'required|string|max:255',
+            'secteur_activite'    => 'required|string|max:255',
+            'adresse'             => 'required|string',
+            'email_contact'       => 'required|email',
+            'telephone_contact'   => 'required|string',
+            'taille_stand'        => 'required|string',
+            'besoins_specifiques' => 'nullable|string',
+            'user_id'             => 'nullable|exists:users,id',
+            'status'              => 'required|in:pending,approved,rejected',
+        ]);
+
+        Stand::create($data);
+
+        return response()->json(['success' => true, 'message' => 'Stand ajouté avec succès.']);
+    }
+
+    public function destroyStandAdmin($id)
+    {
+        Stand::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  GESTION DES UTILISATEURS
+    // ═══════════════════════════════════════════════════════════
+
+    public function users(Request $request)
+    {
+        $search = $request->get('search');
+        $users = User::when($search, fn($q) => $q->where('name', 'like', "%{$search}%")
+                                                   ->orWhere('email', 'like', "%{$search}%"))
+                     ->latest()->paginate(20);
+
+        return view('admin.users', compact('users', 'search'));
+    }
+
+    public function updateUserRole(Request $request, $id)
+    {
+        $request->validate(['role' => 'required|in:user,admin']);
+        User::findOrFail($id)->update(['role' => $request->role]);
+        return response()->json(['success' => true]);
+    }
+
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id);
+        // Empêcher la suppression de son propre compte
+        if ($user->id === auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Vous ne pouvez pas supprimer votre propre compte.'], 403);
+        }
+        $user->delete();
+        return response()->json(['success' => true]);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  ENVOI DE NOTIFICATIONS
+    // ═══════════════════════════════════════════════════════════
+
+    public function notificationsAdmin()
+    {
+        $users = User::where('role', 'user')->orderBy('name')->get();
+        $recent = UserNotification::with('user')->latest()->take(20)->get();
+        return view('admin.notifications_send', compact('users', 'recent'));
+    }
+
+    public function sendNotification(Request $request)
+    {
+        $request->validate([
+            'target'  => 'required|in:all,user',
+            'user_id' => 'required_if:target,user|nullable|exists:users,id',
+            'title'   => 'required|string|max:255',
+            'message' => 'required|string',
+            'type'    => 'required|in:info,success,warning,error',
+        ]);
+
+        $icon = match($request->type) {
+            'success' => 'fas fa-check-circle',
+            'warning' => 'fas fa-exclamation-triangle',
+            'error'   => 'fas fa-times-circle',
+            default   => 'fas fa-info-circle',
+        };
+
+        if ($request->target === 'all') {
+            $users = User::where('role', 'user')->pluck('id');
+            foreach ($users as $uid) {
+                UserNotification::create([
+                    'user_id' => $uid,
+                    'title'   => $request->title,
+                    'message' => $request->message,
+                    'type'    => $request->type,
+                    'icon'    => $icon,
+                ]);
+            }
+            $count = $users->count();
+            return response()->json(['success' => true, 'message' => "Notification envoyée à {$count} utilisateur(s)."]);
+        }
+
+        UserNotification::create([
+            'user_id' => $request->user_id,
+            'title'   => $request->title,
+            'message' => $request->message,
+            'type'    => $request->type,
+            'icon'    => $icon,
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Notification envoyée avec succès.']);
+    }
 
 
 

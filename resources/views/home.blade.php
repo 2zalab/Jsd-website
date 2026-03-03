@@ -33,10 +33,10 @@
 
             <p class="event-description">
                 Préparez-vous à découvrir des projets créatifs, à participer à des concours passionnants et à assister à des débats sur les technologies de demain.
-                Ne manquez pas cet événement du <span class="highlight">26 au 28 novembre 2024</span>&nbsp;!
+                Ne manquez pas cet événement du <span class="highlight">26 au 28 novembre 2026</span>&nbsp;!
             </p>
             <p class="registration-deadline">
-                Inscrivez-vous et soumettez vos projets avant le <span class="highlight">15 novembre 2024</span>&nbsp;!
+                Inscrivez-vous et soumettez vos projets avant le <span class="highlight">15 novembre 2026</span>&nbsp;!
             </p>
 
             <div class="cta-buttons">
@@ -97,7 +97,7 @@
         <div class="message-content">
             <h3>Mot du Président du Comité d'Organisation</h3>
             <p>Chers participants, chers partenaires,</p>
-            <p>C'est avec une immense fierté que je vous souhaite une massive participation à la deuxième édition des Journées Sahel Digital (JSD'24). Sous le thème <strong>«&nbsp;Innovation à l'ère de l'intelligence artificielle&nbsp;»</strong>, cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
+            <p>C'est avec une immense fierté que je vous souhaite une massive participation à la troisième édition des Journées Sahel Digital (JSD'26). Sous le thème <strong>«&nbsp;Intelligence artificielle et développement de l'économie numérique : enjeux et perspectives pour le Sahel&nbsp;»</strong>, cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
             <p>En tant que promoteurs de cette initiative, nous croyons fermement que l'avenir du continent africain passe par l'innovation technologique et numérique. L'intelligence artificielle offre des opportunités inédites pour relever les défis socio-économiques auxquels nous sommes confrontés.</p>
             <p>Que vous soyez programmeur·euse, entrepreneur·euse, étudiant·e ou simplement passionné·e du numérique, les Journées Sahel Digital sont faites pour vous. Ensemble, cultivons l'esprit d'innovation pour un Sahel prospère, connecté et résilient.</p>
         </div>
@@ -108,7 +108,7 @@
 <section class="activities">
     <div class="activities-inner">
         <h2 class="section-title centered">Activités</h2>
-        <p>Découvrez les activités phares des Journées Sahel Digital 2024&nbsp;: hackathons, concours de programmation, expositions de startups et conférences inspirantes.</p>
+        <p>Découvrez les activités phares des Journées Sahel Digital 2026&nbsp;: hackathons, concours de programmation, expositions de startups et conférences inspirantes.</p>
 
         <div class="activity-grid">
             <div class="activity-card">
@@ -183,7 +183,7 @@
             </div>
         </div>
         <div class="about-image">
-            <img src="{{ asset('images/about-image.png') }}" alt="À propos de JSD'24" loading="lazy">
+            <img src="{{ asset('images/about-image.png') }}" alt="À propos de JSD'26" loading="lazy">
         </div>
     </div>
 </section>
@@ -225,7 +225,7 @@
 <script>
 (function () {
     // --- Countdown ---
-    const countDownDate = new Date("Nov 26, 2024 08:00:00").getTime();
+    const countDownDate = new Date("Nov 26, 2026 08:00:00").getTime();
     const el = {
         days:    document.getElementById('days'),
         hours:   document.getElementById('hours'),

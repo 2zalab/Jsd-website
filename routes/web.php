@@ -69,6 +69,39 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Newsletter
     Route::get('/newsletter', [AdminController::class, 'getNewsletters'])->name('admin.newsletter');
+
+    // ── Gestion unifiée des inscriptions ──────────────────────────────────────
+    Route::get('/admin/inscriptions', [AdminController::class, 'inscriptions'])->name('admin.inscriptions');
+    Route::patch('/admin/inscriptions/status', [AdminController::class, 'updateStatus'])->name('admin.inscriptions.status');
+
+    // ── Programmeurs ──────────────────────────────────────────────────────────
+    Route::get('/admin/programmeurs/creer',   [AdminController::class, 'createProgrammeurForm'])->name('admin.programmeurs.create');
+    Route::post('/admin/programmeurs',        [AdminController::class, 'storeProgrammeurAdmin'])->name('admin.programmeurs.store');
+    Route::delete('/admin/programmeurs/{id}', [AdminController::class, 'destroyProgrammeur'])->name('admin.programmeurs.destroy');
+
+    // ── Projets Digitaux ──────────────────────────────────────────────────────
+    Route::get('/admin/projets/creer',   [AdminController::class, 'createProjetForm'])->name('admin.projets.create');
+    Route::post('/admin/projets',        [AdminController::class, 'storeProjetAdmin'])->name('admin.projets.store');
+    Route::delete('/admin/projets/{id}', [AdminController::class, 'destroyProjet'])->name('admin.projets.destroy');
+
+    // ── Hackathons ────────────────────────────────────────────────────────────
+    Route::get('/admin/hackathons/creer',   [AdminController::class, 'createHackathonAdminForm'])->name('admin.hackathons.create');
+    Route::post('/admin/hackathons',        [AdminController::class, 'storeHackathonAdmin'])->name('admin.hackathons.store');
+    Route::delete('/admin/hackathons/{id}', [AdminController::class, 'destroyHackathonAdmin'])->name('admin.hackathons.destroy');
+
+    // ── Stands ────────────────────────────────────────────────────────────────
+    Route::get('/admin/stands/creer',   [AdminController::class, 'createStandAdminForm'])->name('admin.stands.create');
+    Route::post('/admin/stands',        [AdminController::class, 'storeStandAdmin'])->name('admin.stands.store');
+    Route::delete('/admin/stands/{id}', [AdminController::class, 'destroyStandAdmin'])->name('admin.stands.destroy');
+
+    // ── Utilisateurs ──────────────────────────────────────────────────────────
+    Route::get('/admin/utilisateurs',              [AdminController::class, 'users'])->name('admin.users');
+    Route::patch('/admin/utilisateurs/{id}/role',  [AdminController::class, 'updateUserRole'])->name('admin.users.role');
+    Route::delete('/admin/utilisateurs/{id}',      [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+
+    // ── Notifications ─────────────────────────────────────────────────────────
+    Route::get('/admin/notifications',  [AdminController::class, 'notificationsAdmin'])->name('admin.notifications');
+    Route::post('/admin/notifications', [AdminController::class, 'sendNotification'])->name('admin.notifications.send');
 });
 
 // ─── Routes publiques ─────────────────────────────────────────────────────────
@@ -84,7 +117,8 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 Route::get('/devenir-sponsor', [SponsorController::class, 'showForm'])->name('sponsor.form');
 Route::post('/devenir-sponsor',[SponsorController::class, 'submitForm'])->name('sponsor.submit');
 
-Route::get('/photos', [PhotoController::class, 'index'])->name('photos.index');
+Route::get('/photos',     [PhotoController::class, 'index'])->name('photos.index');
+Route::get('/ressources', [PhotoController::class, 'index'])->name('ressources.index');
 Route::get('/donate', [DonationController::class, 'index'])->name('donate.index');
 
 // ─── Concours ─────────────────────────────────────────────────────────────────
