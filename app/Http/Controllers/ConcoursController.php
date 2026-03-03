@@ -13,13 +13,9 @@ class ConcoursController extends Controller
 {
     public function __construct()
     {
-        // Toutes les soumissions nécessitent un compte
-        $this->middleware('auth')->only([
-            'storeProgrammeur',
-            'storeProjetDigital',
-            'storeHackathon',
-            'storeStand',
-        ]);
+        // Tout sauf la page d'accueil concours nécessite un compte
+        // → Si non connecté, redirigé vers /login avec URL d'intention
+        $this->middleware('auth')->except(['index']);
     }
 
     public function index()

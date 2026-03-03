@@ -84,7 +84,8 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 Route::get('/devenir-sponsor', [SponsorController::class, 'showForm'])->name('sponsor.form');
 Route::post('/devenir-sponsor',[SponsorController::class, 'submitForm'])->name('sponsor.submit');
 
-Route::get('/photos', [PhotoController::class, 'index'])->name('photos.index');
+Route::get('/photos',     [PhotoController::class, 'index'])->name('photos.index');
+Route::get('/ressources', [PhotoController::class, 'index'])->name('ressources.index');
 Route::get('/donate', [DonationController::class, 'index'])->name('donate.index');
 
 // ─── Concours ─────────────────────────────────────────────────────────────────
