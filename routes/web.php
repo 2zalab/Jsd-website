@@ -8,6 +8,9 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +22,65 @@ use App\Http\Controllers\DonationController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+Route::middleware('guest')->group(function () {
+    Route::get('login', [UserController::class, 'showLoginForm'])
+                ->name('login');
+
+    Route::post('login', [UserController::class, 'login']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('register', [UserController::class, 'showRegisterForm'])
+    ->name('register');
+
+    Route::post('register', [UserController::class, 'register']);
+
+
+    Route::post('logout', [UserController::class, 'logout'])
+                ->name('logout');
+
+    Route::get('/admin', [AdminController::class, 'index'])
+                ->name('admin.index');
+                //->middleware('admin');
+
+                // Hackathons
+                Route::get('/hackathons/lycee', [AdminController::class, 'showHackathonsLycee'])->name('hackathons.lycee');
+                Route::get('/hackathons/superieur', [AdminController::class, 'showHackathonsSuperieur'])->name('hackathons.superieur');
+                Route::get('/generate-pdf-lycee', [AdminController::class, 'generatePdfHackatonLycee']);
+
+                Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+                // Messages
+
+            Route::get('/messages', [AdminController::class, 'getMessages'])->name('admin.messages');
+            Route::delete('/messages/{message}', [AdminController::class, 'destroy'])->name('messages.destroy');
+
+
+            // Concours meilleurs programmeurs
+            Route::get('/concours/cmpl', [AdminController::class, 'getCmpl'])->name('concours.cmpl');
+            Route::get('/concours/cmps', [AdminController::class, 'getCmps'])->name('concours.cmps');
+
+            // Concours meilleurs projets digitaux
+            Route::get('/concours/cmpdl', [AdminController::class, 'getCmpdl'])->name('concours.cmpdl');
+            Route::get('/concours/cmpds', [AdminController::class, 'getCmpds'])->name('concours.cmpds');
+
+            // Réservation stand
+            Route::get('/stands', [AdminController::class, 'getStands'])->name('admin.stands');
+            Route::get('/stands/pdf', [AdminController::class, 'generatePDF'])->name('stands.pdf');
+
+            // Sponsoring
+            Route::get('/sponsors', [AdminController::class, 'getSponsors'])->name('admin.sponsors');
+            Route::delete('/sponsors/{sponsor}', [AdminController::class, 'destroySponsor'])->name('sponsors.destroy');
+
+             // newsletter
+             Route::get('/newsletter', [AdminController::class, 'getNewsletters'])->name('admin.newsletter');
+    });
+
+// Fallback route
+Route::fallback(function () {
+    return redirect()->route('login');
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
@@ -52,10 +114,11 @@ Route::post('/concours/hackathon', [ConcoursController::class, 'storeHackathon']
 Route::get('/concours/stand', [ConcoursController::class, 'createStand'])->name('concours.stand');
 Route::post('/concours/stand', [ConcoursController::class, 'storeStand'])->name('concours.stand.submit');
 
-Route::get('/inscription-concours', [ConcoursController::class, 'showForm'])->name('concours.inscription');
+Route::get('/inscription-concours', [ConcoursController::class, 'index'])->name('concours.index');
 Route::post('/inscription-concours', [ConcoursController::class, 'submitForm'])->name('concours.submit');
 
 Route::get('/photos', [PhotoController::class, 'index'])->name('photos.index');
 
 
 Route::get('/donate', [DonationController::class, 'index'])->name('donate.index');
+

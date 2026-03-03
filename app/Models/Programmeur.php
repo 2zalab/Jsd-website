@@ -24,10 +24,4 @@ class Programmeur extends Model
         'langages' => 'array',
     ];
 
-    /*
-    public function concours()
-    {
-        return $this->belongsTo(Concours::class);
-    }
-    */
 }

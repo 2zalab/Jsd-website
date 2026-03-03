@@ -166,10 +166,12 @@
 .alert-success2 {
     background-color: #c6f6d5;
     color: black;
+    border: 1px solid #9ae6b4;
 }
 .alert-error2 {
     background-color: #fed7d7;
     color: black;
+    border: 1px solid #822727;
 }
 #btn-close {
     background: none;

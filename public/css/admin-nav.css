@@ -1,0 +1,24 @@
+/* Style pour le sous-menu masqué par défaut */
+.hidden-submenu {
+    display: none;
+  }
+
+  .group:hover .hidden-submenu {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .group-hover {
+    display: flex;
+    flex-direction: column;
+    background-color: #2d3748; /* Ajout d'un fond pour le sous-menu */
+  }
+
+  /* Animation du sous-menu */
+  .hidden-submenu a {
+    transition: color 0.2s ease-in-out;
+  }
+
+  .hidden-submenu a:hover {
+    color: #6366F1; /* Couleur au survol */
+  }

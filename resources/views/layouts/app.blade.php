@@ -17,22 +17,90 @@
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">
-                <a href="{{ route('home') }}" id="logo">
-                <img src="{{ asset('images/logo_jsd.png') }}" alt="logo">
-                </a>
+        <nav class="relative">
+        <div class="container mx-auto">
+            <div class="flex justify-between px-0 py-0">
+                <!-- Logo à gauche -->
+                <div class="logo flex-shrink-0">
+                    <a href="{{ route('home') }}" id="logo">
+                        <img src="{{ asset('images/logo_jsd.png') }}" alt="logo">
+                    </a>
+                </div>
+                
+                <!-- Menu de navigation (masqué sur mobile) -->
+                <ul class="hidden md:flex md:items-center md:space-x-8" id="mobile-menu">
+                    <li><a href="{{ route('home') }}" class="nav-link">Accueil</a></li>
+                    <li><a href="{{ route('activities') }}" class="nav-link">Activités</a></li>
+                    <li><a href="{{ route('photos.index') }}" class="nav-link">Photos</a></li>
+                    <li><a href="{{ route('about') }}" class="nav-link">A Propos</a></li>
+                    <li><a href="{{ route('contact.index') }}" class="nav-link">Contact</a></li>
+                    <li><a href="{{ route('concours.index') }}" class="nav-link">S'incrire</a></li>
+                </ul>
+                
+                <!-- Bouton menu burger à droite -->
+                <button id="menu-toggle" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
             </div>
-            <ul>
-                <li><a href="{{ route('home') }}">Accueil</a></li>
-                <li><a href="{{ route('activities') }}">Activités</a></li>
-                <li><a href="{{ route('photos.index') }}">Photos</a></li>
-                <li><a href="{{ route('about') }}">A Propos</a></li>
-                <li><a href="{{ route('contact.index') }}">Contact</a></li>
-                <li><a href="{{ route('concours.index') }}">S'incrire</a></li>
-                <!--li>FR</li-->
-            </ul>
-        </nav>
+        </div>
+    </nav>
+
+    <style>
+        .nav-link {
+            @apply  text-gray-700 hover:text-gray-900 transition-colors duration-200;
+        }
+
+        #scroll-to-top {
+            transition: opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            #mobile-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background-color: #fff;
+                padding-left: 0.5rem;
+                padding-right:6rem; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                z-index: 20;
+                transition: all 0.3s ease-in-out;
+                align-items: left;
+            }
+            #mobile-menu.show {
+                display: block;
+            }
+            #mobile-menu li {
+                display: block;
+                margin: 0.6rem 0;
+                text-align: left;
+            }
+            .nav-link {
+                display: block;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
     </header>
     <section class="hero">
         <div class="hero-content">
@@ -59,6 +127,10 @@
     <main>
         @yield('content')
     </main>
+
+    <button id="scroll-to-top" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-size: 18px; border: none; outline: none; background-color: #007bff; color: white; cursor: pointer; padding: 15px; border-radius: 4px;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <footer>
         <div class="footer-content">
@@ -140,6 +212,7 @@
         </div>
     </footer>
 
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('newsletter');
@@ -176,15 +249,61 @@
                     </div>
                 `;
                 alertContainer.classList.remove('hidden');
-            }
 
-            // Définition correcte de la fonction closeAlert
-            const closeButton = alertContainer.querySelector('.message-close-button');
-            closeButton.addEventListener('click', function() {
-                alertContainer.classList.add('hidden');
+                // Définition correcte de la fonction closeAlert
+                const closeButton = alertContainer.querySelector('.message-close-button');
+                closeButton.addEventListener('click', function() {
+                    alertContainer.classList.add('hidden');
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('show');
+            });
+
+            // Fermer le menu si on clique en dehors
+            document.addEventListener('click', function(event) {
+                const isClickInside = menuToggle.contains(event.target) || mobileMenu.contains(event.target);
+                
+                if (!isClickInside && mobileMenu.classList.contains('show')) {
+                    mobileMenu.classList.remove('show');
+                }
+            });
+
+            // Fermer le menu après avoir cliqué sur un lien
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        mobileMenu.classList.remove('show');
+                    }
+                });
             });
         });
-        </script>
+
+        // Scroll to top button
+        let mybutton = document.getElementById("scroll-to-top");
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+        }
+
+        mybutton.onclick = function() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+     </script>
 
     <script src="{{ asset('js/countdown.js') }}"></script>
     @yield('scripts')

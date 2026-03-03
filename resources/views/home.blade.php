@@ -2,7 +2,6 @@
 
 @section('content')
 
-
     <section class="countdown-section">
     <div class="countdown-content">
         <div class="countdown-image">
@@ -93,15 +92,18 @@
 
 <hr />
     <section class="welcome-message">
-        <img src="{{ asset('images/pr-kaladzavi.jpg') }}" alt="Pr Kaladzavi Guidedi">
+         <div class="Presi-organisation">
+             <img src="{{ asset('images/pr-kaladzavi.jpg') }}" alt="Pr Kaladzavi Guidedi">
+             <p> <b>Pr. Kaladzavi Guidedi</b>, <i>Chef de département d'INFOTEL, ENSPM - UMa</i> </p>
+        </div>
         <div class="message-content">
             <h3>Mot du Président du Comité d’Organisation</h3>
             <!--h4>Chef de département d'INFOTEL, ENSPM - UMa</h4-->
             <p>Chers participants, chers partenaires,</p>
-            <p>C'est avec une immense fierté et un enthousiasme débordant que je vous souhaite la bienvenue à la deuxième édition des Journées Sahel Digital (JSD'24). Sous le thème "Innovation à l'ère de l'intelligence artificielle", cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneurs du Sahel.</p>
-            <p>En tant que promoteurs de cette initiative, nous croyons fermement que l'avenir du continent africain passe par l'innovation technologique et numérique. L'intelligence artificielle, moteur de cette révolution, offre des opportunités inédites pour relever les défis socio-économiques auxquels nous sommes confrontés. Ce cadre unique vous permettra d'échanger des idées, de présenter des solutions et de concourir avec les meilleurs talents de la région.</p>
-            <p>Que vous soyez programmeur, entrepreneur, étudiant ou simplement passionné par le numérique, les Journées Sahel Digital sont faites pour vous. Ensemble, cultivons l'esprit d'innovation pour un Sahel prospère, connecté et résilient.</p>
-            <p>Je vous invite donc à saisir cette opportunité unique et à vous engager pleinement dans cette aventure numérique. L'avenir de notre région est entre nos mains. Soyons les artisans du changement.</p>
+            <p>C'est avec une immense fierté et un enthousiasme débordant que je vous souhaite une massive participation à la deuxième édition des Journées Sahel Digital (JSD'24). Sous le thème "Innovation à l'ère de l'intelligence artificielle", cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur.e.s du Sahel. </p></br>
+            <p>En tant que promoteurs de cette initiative, nous croyons fermement que l'avenir du continent africain passe par l'innovation technologique et numérique. L'intelligence artificielle, moteur de cette révolution, offre des opportunités inédites pour relever les défis socio-économiques auxquels nous sommes confrontés. Ce cadre unique vous permettra d'échanger des idées, de présenter des solutions innovantes et de concourir avec les meilleurs talents de la région.</p></br>
+            <p>Que vous soyez programmeur.e, entrepreneur.e, étudiant.e ou simplement passionné.e du numérique, les Journées Sahel Digital sont faites pour vous. Ensemble, cultivons l'esprit d'innovation pour un Sahel prospère, connecté et résilient. </p></br>
+            <p>Je vous invite donc à saisir cette opportunité unique et à vous engager pleinement dans cette aventure numérique. L'avenir de notre région est entre nos mains. Soyons les artisans du changement.</p></br>
         </div>
     </section>
 
@@ -112,7 +114,7 @@
         <p>Découvrez les ctivités phares des Journées Sahel Digital 2024: hackathons, concours de programmation, expositions de startups et conférences inspirantes. Un événement dédié à l'innovation et à l'entrepreneuriat numérique au cœur du Sahel !</p>
         <div class="activity-grid">
             <div class="activity-card">
-                <img src="{{ asset('images/hackathon.png') }}" alt="Hackathon">
+                <img src="{{ asset('images/hackathon.jpg') }}" alt="Hackathon">
                 <h3>Hackathon</h3>
                 <p>Participez à un hackathon de 48 heures pour relever les défis numériques du Sahel à travers l'innovation technologique</p>
             </div>
@@ -153,15 +155,15 @@
                 <p>participants, comprenant des étudiants, des entrepreneurs et des passionnés de technologie, venus de tout le Sahel."</p>
             </div>
             <div class="stat-item">
-                <span class="stat-number">20+</span>
+                <span class="stat-number">11+</span>
                 <p>Projets technologiques concrets ayant un impact positif sur la communauté locale.</p>
             </div>
             <div class="stat-item">
-                <span class="stat-number">30+</span>
+                <span class="stat-number">11+</span>
                 <p>projets innovants ont été présentés lors de la JSD'23, couvrant divers domaines, de e-commerce à l'intelligence artificielle."</p>
             </div>
             <div class="stat-item">
-                <span class="stat-number">50+</span>
+                <span class="stat-number">30+</span>
                 <p>candidats talentueux au concours des programmeurs, et ceux ayant soumis des projets créatifs pour le concours de Meilleur Projet Digital."</p>
             </div>
         </div>
@@ -194,6 +196,7 @@
             <i class="fas fa-handshake"></i> Devenir Sponsor
         </a>
     </section>
+
 @endsection
 
 <script type="text/javascript">
@@ -247,5 +250,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 });
-
 </script>

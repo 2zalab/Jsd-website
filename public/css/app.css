@@ -15,21 +15,30 @@ body {
 header {
     background-color: #f7f7f9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem 0;
+    padding: 0rem 0;
 }
 
 nav {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    margin: 0 0;
+    padding: 0 0rem
 }
 
 .logo {
     width: 150px;
 }
+
+.logo-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logo-auth img {
+    width: 250px;  /* Ajustez cette valeur pour la largeur souhaitée */
+    height: auto;  /* Garde les proportions de l'image */
+}
+
+
 
 .logo a, .logo a:hover, .footer-logo a {
     text-decoration: none;
@@ -351,24 +360,39 @@ nav ul li a {
     background-color: rgba(255, 255, 255, 0.1);
 }
 /* Welcome message styles */
+
 .welcome-message {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Aligner le contenu au début */
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
+    gap: 2rem; /* Espacement entre les éléments */
 }
 
-.welcome-message img {
-    width: 270px;
+.Presi-organisation {
+    display: flex;
+    flex-direction: column; /* Placer l'image au-dessus du texte */
+    align-items: center; /* Centrer l'image et le texte */
+    max-width: 300px; /* Limiter la largeur de la colonne à gauche */
+    text-align: center;
+}
+
+.Presi-organisation img {
+    max-width: 100%; /* Rendre l'image responsive */
     height: auto;
-    border-radius: 8%;
-    margin-right: 2rem;
+    border-radius: 8px;
+}
+
+.message-content {
+    flex: 1; /* Laisser le contenu du message prendre tout l'espace restant */
 }
 
 .message-content p{
     text-align: justify;
+    flex: 1;
 }
+
 .message-content h3 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
@@ -424,7 +448,7 @@ nav ul li a {
 .activity-card p {
     padding: 0 1rem 1rem;
     color: #666;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 /* About section styles */
@@ -449,7 +473,6 @@ nav ul li a {
 
 .about p {
     font-size: 1rem;
-    line-height: 1;
     margin-bottom: 1rem;
 }
 
@@ -698,11 +721,15 @@ footer {
     }
 
     nav ul {
-        margin-top: 1rem;
+        margin-top: 0rem;
     }
 
     nav ul li a {
-       font-size: 14px;
+       font-size: 16px;
+    }
+
+    .hero{
+        padding: 30px 0;
     }
 
     .hero-content {
@@ -719,7 +746,7 @@ footer {
     }
 
     .hero h2 {
-        font-size: 28px;
+        font-size: 24px;
     }
 
     .subtitle {
@@ -727,7 +754,7 @@ footer {
     }
 
     .cta-buttons {
-          flex-direction: row;
+        flex-direction: row;
         justify-content: flex-start;
         margin-top: 20px;
     }
@@ -755,9 +782,13 @@ footer {
         text-align: center;
     }
 
-    .welcome-message img {
-        margin-right: 0;
-        margin-bottom: 1rem;
+    .Presi-organisation {
+        align-items: center; /* Centre l'image et le texte */
+        max-width: 100%; /* Laisse l'image s'étendre sur toute la largeur disponible */
+    }
+
+    .message-content {
+        text-align: center; /* Centre le texte du message */
     }
 
     .about {
