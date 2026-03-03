@@ -10,6 +10,7 @@ class Hackathon extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'nom_equipe',
         'nombre_participants',
         'nom_chef_equipe',
@@ -18,19 +19,18 @@ class Hackathon extends Model
         'etablissement',
         'niveau_etudes',
         'classe',
-        'membres'
+        'membres',
+        'status',
     ];
 
     protected $casts = [
         'membres' => 'array',
     ];
 
-    /*
-    public function concours()
+    public function user()
     {
-        return $this->belongsTo(Concours::class);
+        return $this->belongsTo(User::class);
     }
-    */
 
     public function setMembresAttribute($value)
     {
