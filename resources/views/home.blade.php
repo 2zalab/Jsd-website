@@ -52,37 +52,37 @@
 </section>
 
 {{-- ===== MODAL DATES ===== --}}
-<div id="contest-dates-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none; z-index:200;">
-    <div class="relative top-20 mx-auto p-6 border w-11/12 max-w-lg shadow-xl rounded-2xl bg-white">
-        <h3 class="text-2xl font-bold text-gray-900 text-center mb-2">Dates des Concours</h3>
-        <p class="text-gray-500 text-center text-sm mb-6">Inscrivez-vous dès maintenant !</p>
+<div id="contest-dates-modal" class="modal">
+    <div class="modal-content" style="max-width:520px;">
+        <h3 style="font-size:1.4rem;font-weight:800;text-align:center;margin-bottom:0.25rem;color:var(--color-text)">Dates des Concours</h3>
+        <p style="text-align:center;color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:1.5rem">Inscrivez-vous dès maintenant !</p>
 
-        <div class="space-y-5">
-            <div class="flex items-start gap-4 p-4 rounded-xl bg-blue-50">
-                <i class="fas fa-laptop-code text-3xl text-blue-500 mt-1"></i>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+            <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-radius:var(--radius-xl);background:#eff6ff;">
+                <i class="fas fa-laptop-code" style="font-size:1.75rem;color:var(--color-primary-light);margin-top:2px;flex-shrink:0;"></i>
                 <div>
-                    <h4 class="text-lg font-semibold text-blue-700">26 novembre</h4>
-                    <p class="text-gray-600 text-sm mb-2">Concours des Meilleurs Projets Digital &amp; Hackathon</p>
-                    <a href="{{ route('concours.index') }}" class="inline-block px-4 py-1.5 bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600 transition">
-                        <i class="fas fa-sign-in-alt mr-1"></i>S'inscrire
+                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:var(--color-primary);margin-bottom:0.25rem;">26 novembre</h4>
+                    <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:0.75rem;">Concours des Meilleurs Projets Digital &amp; Hackathon</p>
+                    <a href="{{ route('concours.index') }}" class="btn btn-primary" style="padding:0.4rem 1rem;font-size:var(--font-size-sm);">
+                        <i class="fas fa-sign-in-alt"></i> S'inscrire
                     </a>
                 </div>
             </div>
 
-            <div class="flex items-start gap-4 p-4 rounded-xl bg-green-50">
-                <i class="fas fa-code text-3xl text-green-500 mt-1"></i>
+            <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-radius:var(--radius-xl);background:#f0fdf4;">
+                <i class="fas fa-code" style="font-size:1.75rem;color:var(--color-success);margin-top:2px;flex-shrink:0;"></i>
                 <div>
-                    <h4 class="text-lg font-semibold text-green-700">27 novembre</h4>
-                    <p class="text-gray-600 text-sm mb-2">Concours des Meilleurs Programmeurs</p>
-                    <a href="{{ route('concours.index') }}" class="inline-block px-4 py-1.5 bg-green-500 text-white text-sm font-semibold rounded-lg hover:bg-green-600 transition">
-                        <i class="fas fa-sign-in-alt mr-1"></i>S'inscrire
+                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:#065f46;margin-bottom:0.25rem;">27 novembre</h4>
+                    <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:0.75rem;">Concours des Meilleurs Programmeurs</p>
+                    <a href="{{ route('concours.index') }}" class="btn" style="padding:0.4rem 1rem;font-size:var(--font-size-sm);background:var(--color-success);color:#fff;border-color:var(--color-success);">
+                        <i class="fas fa-sign-in-alt"></i> S'inscrire
                     </a>
                 </div>
             </div>
         </div>
 
-        <button id="close-modal" class="mt-6 w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition">
-            <i class="fas fa-times mr-2"></i>Fermer
+        <button id="close-modal" style="margin-top:1.5rem;width:100%;padding:0.75rem;background:var(--color-bg-section);border:none;border-radius:var(--radius-xl);font-weight:600;color:var(--color-text-muted);cursor:pointer;transition:background var(--transition);" onmouseover="this.style.background='var(--color-border)'" onmouseout="this.style.background='var(--color-bg-section)'">
+            <i class="fas fa-times"></i> Fermer
         </button>
     </div>
 </div>

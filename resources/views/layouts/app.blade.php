@@ -14,13 +14,13 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Styles -->
+    <!-- Tailwind en premier (base reset), puis nos styles custom par-dessus -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Styles custom (prioritaires sur Tailwind) -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/concours.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/dialog-message-styles.css') }}">
-
-    <!-- Tailwind (utilitaires pour les pages secondaires) -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
     <!-- Payment -->
     <script src="https://cdn.cinetpay.com/seamless/main.js" type="text/javascript"></script>
