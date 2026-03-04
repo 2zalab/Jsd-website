@@ -75,7 +75,7 @@
                         'error'   => 'text-red-500',
                     ][$notif->type] ?? 'text-gray-500';
                 @endphp
-                <div class="rounded-xl border p-4 {{ $typeCss }}">
+                <div id="notif-card-{{ $notif->id }}" class="rounded-xl border p-4 {{ $typeCss }}">
                     <div class="flex items-start gap-3">
                         <i class="{{ $notif->icon ?? 'fas fa-bell' }} {{ $iconCss }} mt-0.5 text-base flex-shrink-0"></i>
                         <div class="flex-1 min-w-0">
@@ -87,6 +87,11 @@
                                 {{ $notif->created_at->diffForHumans() }}
                             </p>
                         </div>
+                        <button onclick="deleteNotification({{ $notif->id }}, this)"
+                            title="Supprimer"
+                            class="ml-1 flex-shrink-0 w-7 h-7 rounded-lg bg-white/70 hover:bg-red-50 text-gray-400 hover:text-red-500 border border-transparent hover:border-red-200 flex items-center justify-center transition-colors">
+                            <i class="fas fa-trash text-xs"></i>
+                        </button>
                     </div>
                 </div>
                 @empty
@@ -101,6 +106,28 @@
 </div>
 
 <script>
+function deleteNotification(id, btn) {
+    if (!confirm('Supprimer cette notification ?')) return;
+    btn.disabled = true;
+    fetch(`/admin/notifications/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            const card = document.getElementById('notif-card-' + id);
+            card.style.transition = 'opacity 0.2s';
+            card.style.opacity = '0';
+            setTimeout(() => card.remove(), 200);
+        }
+    })
+    .catch(() => { btn.disabled = false; });
+}
+
 // Afficher/masquer le select utilisateur selon la cible
 document.getElementById('target-select').addEventListener('change', function() {
     const wrap = document.getElementById('user-select-wrap');

@@ -704,6 +704,12 @@ public function generatePDF()
         return response()->json(['success' => true, 'message' => 'Notification envoyée avec succès.']);
     }
 
+    public function destroyNotification($id)
+    {
+        UserNotification::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
     // ══════════════════════════════════════════════════════════════
     //  PDF / CSV EXPORTS — Concours & Hackathons
     // ══════════════════════════════════════════════════════════════

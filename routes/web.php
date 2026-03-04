@@ -116,7 +116,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // ── Notifications ─────────────────────────────────────────────────────────
     Route::get('/admin/notifications',  [AdminController::class, 'notificationsAdmin'])->name('admin.notifications');
-    Route::post('/admin/notifications', [AdminController::class, 'sendNotification'])->name('admin.notifications.send');
+    Route::post('/admin/notifications',        [AdminController::class, 'sendNotification'])->name('admin.notifications.send');
+    Route::delete('/admin/notifications/{id}', [AdminController::class, 'destroyNotification'])->name('admin.notifications.destroy');
 
     // ── Partenaires ───────────────────────────────────────────────────────────
     Route::get('/admin/partenaires',                [PartenaireController::class, 'index'])->name('admin.partenaires.index');
