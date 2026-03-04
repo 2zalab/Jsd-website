@@ -11,6 +11,9 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PartenaireController;
+use App\Http\Controllers\Admin\ActiviteController;
+use App\Http\Controllers\Admin\RessourceController;
 
 // ─── Auth (invités uniquement) ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
@@ -102,6 +105,31 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // ── Notifications ─────────────────────────────────────────────────────────
     Route::get('/admin/notifications',  [AdminController::class, 'notificationsAdmin'])->name('admin.notifications');
     Route::post('/admin/notifications', [AdminController::class, 'sendNotification'])->name('admin.notifications.send');
+
+    // ── Partenaires ───────────────────────────────────────────────────────────
+    Route::get('/admin/partenaires',                [PartenaireController::class, 'index'])->name('admin.partenaires.index');
+    Route::get('/admin/partenaires/creer',          [PartenaireController::class, 'create'])->name('admin.partenaires.create');
+    Route::post('/admin/partenaires',               [PartenaireController::class, 'store'])->name('admin.partenaires.store');
+    Route::get('/admin/partenaires/{id}/modifier',  [PartenaireController::class, 'edit'])->name('admin.partenaires.edit');
+    Route::put('/admin/partenaires/{id}',           [PartenaireController::class, 'update'])->name('admin.partenaires.update');
+    Route::delete('/admin/partenaires/{id}',        [PartenaireController::class, 'destroy'])->name('admin.partenaires.destroy');
+    Route::patch('/admin/partenaires/{id}/toggle',  [PartenaireController::class, 'toggleActif'])->name('admin.partenaires.toggle');
+
+    // ── Activités ─────────────────────────────────────────────────────────────
+    Route::get('/admin/activites',                  [ActiviteController::class, 'index'])->name('admin.activites.index');
+    Route::get('/admin/activites/creer',            [ActiviteController::class, 'create'])->name('admin.activites.create');
+    Route::post('/admin/activites',                 [ActiviteController::class, 'store'])->name('admin.activites.store');
+    Route::get('/admin/activites/{id}/modifier',    [ActiviteController::class, 'edit'])->name('admin.activites.edit');
+    Route::put('/admin/activites/{id}',             [ActiviteController::class, 'update'])->name('admin.activites.update');
+    Route::delete('/admin/activites/{id}',          [ActiviteController::class, 'destroy'])->name('admin.activites.destroy');
+
+    // ── Ressources ────────────────────────────────────────────────────────────
+    Route::get('/admin/ressources',                 [RessourceController::class, 'index'])->name('admin.ressources.index');
+    Route::get('/admin/ressources/creer',           [RessourceController::class, 'create'])->name('admin.ressources.create');
+    Route::post('/admin/ressources',                [RessourceController::class, 'store'])->name('admin.ressources.store');
+    Route::get('/admin/ressources/{id}/modifier',   [RessourceController::class, 'edit'])->name('admin.ressources.edit');
+    Route::put('/admin/ressources/{id}',            [RessourceController::class, 'update'])->name('admin.ressources.update');
+    Route::delete('/admin/ressources/{id}',         [RessourceController::class, 'destroy'])->name('admin.ressources.destroy');
 });
 
 // ─── Routes publiques ─────────────────────────────────────────────────────────

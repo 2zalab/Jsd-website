@@ -218,141 +218,59 @@
         <h2 class="ressources-subtitle"><i class="fas fa-camera"></i> Photos de l'événement</h2>
         <hr class="ressources-divider">
 
+        @if($jsd23Photos->isNotEmpty())
         <div class="photo-grid">
+            @foreach($jsd23Photos as $photo)
             <div class="photo-card">
-                <img src="{{ asset('images/hack.jpg') }}" alt="Concours de programmeur JSD'23" loading="lazy">
+                @if($photo->fichier)
+                    <img src="{{ asset('images/' . $photo->fichier) }}" alt="{{ $photo->titre }}" loading="lazy">
+                @elseif($photo->lien)
+                    <img src="{{ $photo->lien }}" alt="{{ $photo->titre }}" loading="lazy">
+                @endif
                 <div class="photo-card-body">
-                    <h3>CMP JSD'23</h3>
-                    <p>Les équipes en pleine action lors du concours de meilleur programmeur</p>
+                    <h3>{{ $photo->titre }}</h3>
+                    @if($photo->description)<p>{{ $photo->description }}</p>@endif
                 </div>
             </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/conferences.png') }}" alt="Panel de discussion JSD'23" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Panel sur l'innovation au Sahel</h3>
-                    <p>Experts et entrepreneurs partagent leurs visions pour l'avenir</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/eleves-godola.jpg') }}" alt="Élèves du lycée de Godola au JSD'23" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Présence du lycée de Godola</h3>
-                    <p>Les élèves marquant leur présence aux Journées du Savoir Digital 2023</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/projet-presentation.jpg') }}" alt="Présentation des projets" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Présentation des projets</h3>
-                    <p>Concours des meilleurs projets digitaux lors de JSD'23</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/secretariat.jpg') }}" alt="Secrétariat technique" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Secrétariat technique</h3>
-                    <p>Impression des badges pour les participants au JSD'23</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/photo-famille.jpg') }}" alt="Photo de famille JSD'23" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Photo de famille</h3>
-                    <p>Photo de groupe à la fin des Journées du Savoir Digital 2023</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/roll-up.jpg') }}" alt="Stand des entreprises partenaires" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Stands des partenaires</h3>
-                    <p>Les entreprises partenaires présentent leurs solutions au JSD'23</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/startup-expo.png') }}" alt="Exposition startups" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Exposition dans les stands</h3>
-                    <p>Présentation des innovations dans les stands des JSD'23</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/candidats-cmpd.jpg') }}" alt="Candidats concours projets digitaux" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Candidats — Projets Digitaux</h3>
-                    <p>Les participants au concours des meilleurs projets digitaux du JSD'23</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/meet.jpg') }}" alt="Réunion de préparation technique" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Réunion de préparation</h3>
-                    <p>Les équipes organisatrices en pleine réunion technique pour JSD'23</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/touza.jpg') }}" alt="Community Manager JSD'23" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>Community Manager</h3>
-                    <p>Le CM gérant les communications digitales durant les JSD'23</p>
-                </div>
-            </div>
-            <div class="photo-card">
-                <img src="{{ asset('images/photo1.jpg') }}" alt="Équipe d'organisation JSD'23" loading="lazy">
-                <div class="photo-card-body">
-                    <h3>M. Douwé & M. Terdam</h3>
-                    <p>Acteurs clés dans la planification des Journées du Savoir Digital 2023</p>
-                </div>
-            </div>
+            @endforeach
         </div>
+        @else
+        <p style="color:var(--color-text-muted);margin-bottom:var(--space-8)">Aucune photo disponible pour le moment.</p>
+        @endif
 
         {{-- Documents JSD'23 --}}
+        @if($jsd23Docs->isNotEmpty())
         <h2 class="ressources-subtitle"><i class="fas fa-file-alt"></i> Documents officiels</h2>
         <hr class="ressources-divider">
 
         <div class="docs-grid">
-            <a href="#" class="doc-card">
-                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
+            @foreach($jsd23Docs as $doc)
+            @php
+                $cat = strtolower($doc->categorie ?? 'pdf');
+                $iconClass = match($cat) {
+                    'ppt'  => 'ppt',
+                    'zip'  => 'zip',
+                    default => 'pdf',
+                };
+                $iconFa = match($cat) {
+                    'ppt'  => 'fa-file-powerpoint',
+                    'zip'  => 'fa-file-archive',
+                    'docx' => 'fa-file-word',
+                    'xlsx' => 'fa-file-excel',
+                    default => 'fa-file-pdf',
+                };
+                $href = $doc->lien ?? ($doc->fichier ? asset('documents/' . $doc->fichier) : '#');
+            @endphp
+            <a href="{{ $href }}" class="doc-card" @if($doc->lien) target="_blank" rel="noopener" @endif>
+                <div class="doc-icon {{ $iconClass }}"><i class="fas {{ $iconFa }}"></i></div>
                 <div class="doc-meta">
-                    <h4>Programme officiel JSD'23</h4>
-                    <span>PDF · Programme complet</span>
+                    <h4>{{ $doc->titre }}</h4>
+                    @if($doc->description)<span>{{ $doc->description }}</span>@endif
                 </div>
             </a>
-            <a href="#" class="doc-card">
-                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                <div class="doc-meta">
-                    <h4>Règlement des concours</h4>
-                    <span>PDF · Conditions de participation</span>
-                </div>
-            </a>
-            <a href="#" class="doc-card">
-                <div class="doc-icon ppt"><i class="fas fa-file-powerpoint"></i></div>
-                <div class="doc-meta">
-                    <h4>Présentations des conférenciers</h4>
-                    <span>PPT · Diapositives des interventions</span>
-                </div>
-            </a>
-            <a href="#" class="doc-card">
-                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                <div class="doc-meta">
-                    <h4>Rapport de synthèse JSD'23</h4>
-                    <span>PDF · Bilan de l'édition 2023</span>
-                </div>
-            </a>
-            <a href="#" class="doc-card">
-                <div class="doc-icon zip"><i class="fas fa-file-archive"></i></div>
-                <div class="doc-meta">
-                    <h4>Pack photos haute résolution</h4>
-                    <span>ZIP · Toutes les photos de l'événement</span>
-                </div>
-            </a>
-            <a href="#" class="doc-card">
-                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                <div class="doc-meta">
-                    <h4>Palmarès des concours JSD'23</h4>
-                    <span>PDF · Résultats et lauréats</span>
-                </div>
-            </a>
+            @endforeach
         </div>
+        @endif
 
     </div>
 </div>
@@ -360,6 +278,50 @@
 {{-- ── JSD'26 Panel ── --}}
 <div id="tab-jsd26" class="tab-panel">
     <div class="ressources-section">
+
+        @if($jsd26Photos->isNotEmpty())
+        <h2 class="ressources-subtitle"><i class="fas fa-camera"></i> Photos de l'événement</h2>
+        <hr class="ressources-divider">
+        <div class="photo-grid">
+            @foreach($jsd26Photos as $photo)
+            <div class="photo-card">
+                @if($photo->fichier)
+                    <img src="{{ asset('images/' . $photo->fichier) }}" alt="{{ $photo->titre }}" loading="lazy">
+                @elseif($photo->lien)
+                    <img src="{{ $photo->lien }}" alt="{{ $photo->titre }}" loading="lazy">
+                @endif
+                <div class="photo-card-body">
+                    <h3>{{ $photo->titre }}</h3>
+                    @if($photo->description)<p>{{ $photo->description }}</p>@endif
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        @if($jsd26Docs->isNotEmpty())
+        <h2 class="ressources-subtitle"><i class="fas fa-file-alt"></i> Documents officiels</h2>
+        <hr class="ressources-divider">
+        <div class="docs-grid">
+            @foreach($jsd26Docs as $doc)
+            @php
+                $cat = strtolower($doc->categorie ?? 'pdf');
+                $iconClass = match($cat) { 'ppt' => 'ppt', 'zip' => 'zip', default => 'pdf' };
+                $iconFa = match($cat) { 'ppt' => 'fa-file-powerpoint', 'zip' => 'fa-file-archive', 'docx' => 'fa-file-word', 'xlsx' => 'fa-file-excel', default => 'fa-file-pdf' };
+                $href = $doc->lien ?? ($doc->fichier ? asset('documents/' . $doc->fichier) : '#');
+            @endphp
+            <a href="{{ $href }}" class="doc-card" @if($doc->lien) target="_blank" rel="noopener" @endif>
+                <div class="doc-icon {{ $iconClass }}"><i class="fas {{ $iconFa }}"></i></div>
+                <div class="doc-meta">
+                    <h4>{{ $doc->titre }}</h4>
+                    @if($doc->description)<span>{{ $doc->description }}</span>@endif
+                </div>
+            </a>
+            @endforeach
+        </div>
+        @endif
+
+        @if($jsd26Photos->isEmpty() && $jsd26Docs->isEmpty())
         <div class="coming-soon">
             <div class="coming-soon-icon"><i class="fas fa-clock"></i></div>
             <h3>Bientôt disponible</h3>
@@ -368,6 +330,8 @@
                 <i class="fas fa-user-plus"></i> S'inscrire à JSD'26
             </a>
         </div>
+        @endif
+
     </div>
 </div>
 
