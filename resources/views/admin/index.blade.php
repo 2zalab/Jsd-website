@@ -1,333 +1,493 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>JSD-Admin Dashboard</title>
-    <link href="{{ asset('css/admin-nav.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>JSD Admin — Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* Custom styles for scrollable sidebar and submenus */
-        .sidebar-scroll {
-            max-height: calc(100vh - 5rem); /* Adjust based on your header height */
-            overflow-y: auto;
-        }
-        .sidebar-scroll::-webkit-scrollbar {
-            width: 6px;
-        }
-        .sidebar-scroll::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-        }
-        .submenu {
-            background-color: #dde; /* Light green background */
-            padding-left: 2.5rem; /* Align submenu items with menu text */
-        }
-        .menu-icon {
-            width: 1.5rem; /* Fixed width for icons */
-            text-align: center;
-            margin-right: 0.5rem;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+        --sidebar-w: 260px;
+        --sidebar-bg: #0f172a;
+        --sidebar-border: rgba(255,255,255,.06);
+        --accent: #6366f1;
+        --accent-hover: #4f46e5;
+        --text-muted: #94a3b8;
+        --text-light: #cbd5e1;
+        --topbar-h: 60px;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: #f1f5f9; color: #1e293b; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        width: var(--sidebar-w);
+        background: var(--sidebar-bg);
+        display: flex; flex-direction: column;
+        z-index: 100;
+        overflow: hidden;
+    }
+    .sidebar-brand {
+        height: var(--topbar-h);
+        display: flex; align-items: center; gap: 10px;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--sidebar-border);
+        flex-shrink: 0;
+    }
+    .sidebar-brand .brand-icon {
+        width: 32px; height: 32px; border-radius: 8px;
+        background: linear-gradient(135deg, var(--accent), #8b5cf6);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; color: #fff;
+    }
+    .sidebar-brand span { font-size: 16px; font-weight: 700; color: #fff; }
+    .sidebar-brand small { font-size: 10px; color: var(--text-muted); display: block; }
+
+    .sidebar-scroll {
+        flex: 1; overflow-y: auto; padding: 12px 0;
+    }
+    .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+    /* section label */
+    .nav-section-label {
+        font-size: 10px; font-weight: 600; letter-spacing: .08em;
+        color: #475569; text-transform: uppercase;
+        padding: 12px 20px 4px;
+    }
+
+    /* nav item */
+    .nav-item { position: relative; }
+    .nav-link {
+        display: flex; align-items: center; gap: 11px;
+        padding: 9px 20px;
+        font-size: 13.5px; font-weight: 500;
+        color: var(--text-muted);
+        text-decoration: none; cursor: pointer;
+        border-radius: 0;
+        transition: color .15s, background .15s;
+        border: none; background: none; width: 100%;
+        text-align: left;
+    }
+    .nav-link:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .nav-link.active { color: #fff; background: rgba(99,102,241,.18); }
+    .nav-link.active .nav-icon { color: var(--accent); }
+    .nav-icon {
+        width: 18px; text-align: center;
+        font-size: 14px; color: #475569;
+        transition: color .15s; flex-shrink: 0;
+    }
+    .nav-link:hover .nav-icon { color: var(--text-light); }
+    .nav-chevron {
+        margin-left: auto; font-size: 11px; color: #475569;
+        transition: transform .2s;
+    }
+    .nav-item.open > .nav-link .nav-chevron { transform: rotate(90deg); }
+
+    /* submenu */
+    .submenu {
+        max-height: 0; overflow: hidden;
+        transition: max-height .25s ease;
+        background: rgba(0,0,0,.2);
+    }
+    .nav-item.open .submenu { max-height: 300px; }
+    .submenu-link {
+        display: flex; align-items: center; gap: 8px;
+        padding: 7px 20px 7px 50px;
+        font-size: 12.5px; font-weight: 500;
+        color: #64748b;
+        text-decoration: none; cursor: pointer;
+        border: none; background: none; width: 100%; text-align: left;
+        transition: color .15s;
+    }
+    .submenu-link::before {
+        content: ''; width: 5px; height: 5px; border-radius: 50%;
+        background: #334155; flex-shrink: 0;
+        transition: background .15s;
+    }
+    .submenu-link:hover { color: #fff; }
+    .submenu-link:hover::before { background: var(--accent); }
+
+    /* sidebar footer */
+    .sidebar-footer {
+        padding: 14px 20px;
+        border-top: 1px solid var(--sidebar-border);
+        flex-shrink: 0;
+    }
+    .sidebar-user {
+        display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar-avatar {
+        width: 34px; height: 34px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #8b5cf6);
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 14px; color: #fff; flex-shrink: 0;
+    }
+    .sidebar-user-info { flex: 1; min-width: 0; }
+    .sidebar-user-name { font-size: 12.5px; font-weight: 600; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sidebar-user-role { font-size: 10.5px; color: #64748b; }
+    .logout-btn {
+        background: none; border: none; color: #475569; cursor: pointer;
+        font-size: 14px; padding: 4px; border-radius: 6px;
+        transition: color .15s, background .15s;
+    }
+    .logout-btn:hover { color: #ef4444; background: rgba(239,68,68,.1); }
+
+    /* ── Main layout ── */
+    .main-wrapper {
+        margin-left: var(--sidebar-w);
+        display: flex; flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
+        height: var(--topbar-h);
+        background: #fff;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 28px;
+        position: sticky; top: 0; z-index: 50;
+        gap: 16px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 8px; }
+    .breadcrumb { font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb span { color: #1e293b; font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-greeting { font-size: 13px; color: #64748b; }
+    .topbar-greeting strong { color: #1e293b; }
+
+    /* ── Content ── */
+    .main-content-area {
+        flex: 1; padding: 0;
+        overflow-x: hidden;
+    }
+    #main-content { min-height: calc(100vh - var(--topbar-h)); }
+
+    /* ── Loading spinner ── */
+    #page-loader {
+        position: fixed; inset: 0; background: rgba(15,23,42,.45);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 999; opacity: 0; pointer-events: none;
+        transition: opacity .2s;
+    }
+    #page-loader.visible { opacity: 1; pointer-events: all; }
+    .loader-ring {
+        width: 44px; height: 44px; border-radius: 50%;
+        border: 3px solid rgba(255,255,255,.2);
+        border-top-color: #fff;
+        animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Print helper (for PDF export) ── */
+    @media print {
+        .sidebar, .topbar { display: none !important; }
+        .main-wrapper { margin: 0; }
+        #main-content { padding: 0; }
+    }
     </style>
 </head>
-<body class="bg-gray-100">
-    <div class="flex h-screen bg-gray-100">
-        <!-- Scrollable Sidebar Menu -->
-        <div class="hidden md:flex flex-col w-64 bg-gray-900">
-            <div class="flex items-center justify-left h-20 bg-gray-800 shadow-lg px-4">
-                <a href="{{ route('admin.dashboard') }}" class="menu-link">
-                    <h2 class="text-xl font-bold text-white">Dashboard</h2>
-                </a>
-            </div>
-            <div class="sidebar-scroll">
-                <ul class="flex flex-col py-2">
-                    <!-- Menu Items -->
-                    <li class="group">
-                        <a href="{{ route('admin.dashboard') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
-                            <span class="text-sm font-medium">Statistiques</span>
-                        </a>
-                    </li>
+<body>
 
-                    <li class="group">
-                        <a href="{{ route('admin.messages') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-envelope"></i></span>
-                            <span class="text-sm font-medium">Messages</span>
-                        </a>
-                    </li>
+<!-- ── Loader ── -->
+<div id="page-loader"><div class="loader-ring"></div></div>
 
-                    <!-- Menu with Submenu -->
-                    <li class="group">
-                        <a href="#" class="flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-code"></i></span>
-                            <span class="text-sm font-medium">Hackaton</span>
-                        </a>
-                        <!-- Submenu -->
-                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
-                            <li><a href="{{ route('hackathons.lycee') }}" class="menu-link block py-1 hover:text-blue-400">Hackathon Lycée</a></li>
-                            <li><a href="{{ route('hackathons.superieur') }}" class="menu-link block py-1 hover:text-blue-400">Hackathon senior</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Additional Menus -->
-                    <li class="group">
-                        <a href="#" class="flex items-center h-12 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-trophy"></i></span>
-                            <span class="text-sm font-medium">Concours meilleurs programmeurs</span>
-                        </a>
-                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
-                            <li><a href="{{ route('concours.cmpl') }}" class="menu-link block py-1 hover:text-blue-400">Meilleur programmeur lycée</a></li>
-                            <li><a href="{{ route('concours.cmps') }}" class="menu-link block py-1 hover:text-blue-400">Meilleur programmeur senior</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="group">
-                        <a href="#" class="flex items-center h-12 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-laptop"></i></span>
-                            <span class="text-sm font-medium">Concours meilleurs projets digitaux</span>
-                        </a>
-                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
-                            <li><a href="{{ route('concours.cmpdl') }}" class="menu-link block py-1 hover:text-blue-400">Meilleur projet Lycée </a></li>
-                            <li><a href="{{ route('concours.cmpds') }}" class="menu-link block py-1 hover:text-blue-400">Meilleur projet senior</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Single Menu Items -->
-                    <li>
-                        <a href="{{ route('admin.stands') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-store"></i></span>
-                            <span class="text-sm font-medium">Réservation stand</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.sponsors') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-money-bill-wave"></i></span>
-                            <span class="text-sm font-medium">Sponsoring</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.newsletter') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-envelope"></i></span>
-                            <span class="text-sm font-medium">Newsletter</span>
-                        </a>
-                    </li>
-
-                    <!-- Gestion des inscriptions -->
-                    <li class="group">
-                        <a href="#" class="flex items-center h-12 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span>
-                            <span class="text-sm font-medium">Inscriptions</span>
-                        </a>
-                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
-                            <li><a href="{{ route('admin.inscriptions') }}" class="menu-link block py-1 hover:text-blue-400">Vue consolidée</a></li>
-                            <li><a href="{{ route('admin.programmeurs.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Programmeur</a></li>
-                            <li><a href="{{ route('admin.projets.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Projet Digital</a></li>
-                            <li><a href="{{ route('admin.hackathons.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Hackathon</a></li>
-                            <li><a href="{{ route('admin.stands.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Stand</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Partenaires -->
-                    <li class="group">
-                        <a href="#" class="flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-handshake"></i></span>
-                            <span class="text-sm font-medium">Partenaires</span>
-                        </a>
-                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
-                            <li><a href="{{ route('admin.partenaires.index') }}" class="menu-link block py-1 hover:text-blue-400">Liste</a></li>
-                            <li><a href="{{ route('admin.partenaires.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Ajouter</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Activités -->
-                    <li class="group">
-                        <a href="#" class="flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-calendar-check"></i></span>
-                            <span class="text-sm font-medium">Activités</span>
-                        </a>
-                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
-                            <li><a href="{{ route('admin.activites.index') }}" class="menu-link block py-1 hover:text-blue-400">Liste</a></li>
-                            <li><a href="{{ route('admin.activites.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Ajouter</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Ressources -->
-                    <li class="group">
-                        <a href="#" class="flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-photo-video"></i></span>
-                            <span class="text-sm font-medium">Ressources</span>
-                        </a>
-                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
-                            <li><a href="{{ route('admin.ressources.index') }}" class="menu-link block py-1 hover:text-blue-400">Liste</a></li>
-                            <li><a href="{{ route('admin.ressources.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Ajouter</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Utilisateurs -->
-                    <li>
-                        <a href="{{ route('admin.users') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-users"></i></span>
-                            <span class="text-sm font-medium">Utilisateurs</span>
-                        </a>
-                    </li>
-
-                    <!-- Notifications -->
-                    <li>
-                        <a href="{{ route('admin.notifications') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-bell"></i></span>
-                            <span class="text-sm font-medium">Notifications</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('register') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
-                            <span class="menu-icon"><i class="fas fa-user-plus"></i></span>
-                            <span class="text-sm font-medium">Ajouter un admin</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="mt-auto pb-4">
-                <hr class="border-gray-700" />
-                <a href="https://2zalab.com" target="_blank" class="flex items-center justify-center mt-4 text-gray-400 hover:text-indigo-400 transition-all ease-in-out duration-200">
-                    <span class="text-sm">Designed by 2zalab</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top bar -->
-            <header class="flex justify-between items-center p-4 bg-white shadow-md">
-                <h2 class="text-xl font-semibold">Admin</h2>
-                <div class="flex items-center">
-                    <span class="mr-2">{{ Auth::user()->name }}</span>
-                    <img class="h-8 w-8 rounded-full object-cover" src="{{ asset('images/user.png') }}" alt="User avatar">
-                    <form action="{{ route('logout') }}" method="POST" class="ml-4">
-                        @csrf
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                            Déconnexion
-                        </button>
-                    </form>
-                </div>
-            </header>
-
-            <!-- Main content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-                <div id="main-content" class="container mx-auto px-4 py-4">
-                    <!-- Le contenu sera chargé dynamiquement ici -->
-                </div>
-            </main>
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fas fa-bolt"></i></div>
+        <div>
+            <span>JSD Admin</span>
+            <small>Journées Sahel Digital</small>
         </div>
     </div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <nav class="sidebar-scroll">
 
-         // Function to handle form submissions
-    function handleFormSubmit(e) {
+        <div class="nav-section-label">Principal</div>
+
+        <div class="nav-item">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <span>Tableau de bord</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{{ route('admin.messages') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-envelope"></i>
+                <span>Messages</span>
+            </a>
+        </div>
+
+        <div class="nav-section-label">Inscriptions & Concours</div>
+
+        <div class="nav-item">
+            <button class="nav-link nav-toggle">
+                <i class="nav-icon fas fa-clipboard-list"></i>
+                <span>Inscriptions</span>
+                <i class="nav-chevron fas fa-chevron-right"></i>
+            </button>
+            <div class="submenu">
+                <a href="{{ route('admin.inscriptions') }}" class="submenu-link menu-link">Vue consolidée</a>
+                <a href="{{ route('admin.programmeurs.create') }}" class="submenu-link menu-link">+ Programmeur</a>
+                <a href="{{ route('admin.projets.create') }}" class="submenu-link menu-link">+ Projet Digital</a>
+                <a href="{{ route('admin.hackathons.create') }}" class="submenu-link menu-link">+ Hackathon</a>
+                <a href="{{ route('admin.stands.create') }}" class="submenu-link menu-link">+ Stand</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <button class="nav-link nav-toggle">
+                <i class="nav-icon fas fa-code"></i>
+                <span>Hackathon</span>
+                <i class="nav-chevron fas fa-chevron-right"></i>
+            </button>
+            <div class="submenu">
+                <a href="{{ route('hackathons.lycee') }}" class="submenu-link menu-link">Hackathon Lycée</a>
+                <a href="{{ route('hackathons.superieur') }}" class="submenu-link menu-link">Hackathon Supérieur</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <button class="nav-link nav-toggle">
+                <i class="nav-icon fas fa-trophy"></i>
+                <span>Meilleur Programmeur</span>
+                <i class="nav-chevron fas fa-chevron-right"></i>
+            </button>
+            <div class="submenu">
+                <a href="{{ route('concours.cmpl') }}" class="submenu-link menu-link">Niveau Lycée</a>
+                <a href="{{ route('concours.cmps') }}" class="submenu-link menu-link">Niveau Supérieur</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <button class="nav-link nav-toggle">
+                <i class="nav-icon fas fa-laptop-code"></i>
+                <span>Meilleur Projet Digital</span>
+                <i class="nav-chevron fas fa-chevron-right"></i>
+            </button>
+            <div class="submenu">
+                <a href="{{ route('concours.cmpdl') }}" class="submenu-link menu-link">Niveau Lycée</a>
+                <a href="{{ route('concours.cmpds') }}" class="submenu-link menu-link">Niveau Supérieur</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <a href="{{ route('admin.stands') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-store"></i>
+                <span>Réservation Stand</span>
+            </a>
+        </div>
+
+        <div class="nav-section-label">Contenu du Site</div>
+
+        <div class="nav-item">
+            <button class="nav-link nav-toggle">
+                <i class="nav-icon fas fa-handshake"></i>
+                <span>Partenaires</span>
+                <i class="nav-chevron fas fa-chevron-right"></i>
+            </button>
+            <div class="submenu">
+                <a href="{{ route('admin.partenaires.index') }}" class="submenu-link menu-link">Tous les partenaires</a>
+                <a href="{{ route('admin.partenaires.create') }}" class="submenu-link menu-link">+ Ajouter</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <button class="nav-link nav-toggle">
+                <i class="nav-icon fas fa-calendar-check"></i>
+                <span>Activités</span>
+                <i class="nav-chevron fas fa-chevron-right"></i>
+            </button>
+            <div class="submenu">
+                <a href="{{ route('admin.activites.index') }}" class="submenu-link menu-link">Toutes les activités</a>
+                <a href="{{ route('admin.activites.create') }}" class="submenu-link menu-link">+ Ajouter</a>
+            </div>
+        </div>
+
+        <div class="nav-item">
+            <button class="nav-link nav-toggle">
+                <i class="nav-icon fas fa-photo-video"></i>
+                <span>Ressources</span>
+                <i class="nav-chevron fas fa-chevron-right"></i>
+            </button>
+            <div class="submenu">
+                <a href="{{ route('admin.ressources.index') }}" class="submenu-link menu-link">Toutes les ressources</a>
+                <a href="{{ route('admin.ressources.create') }}" class="submenu-link menu-link">+ Ajouter</a>
+            </div>
+        </div>
+
+        <div class="nav-section-label">Administration</div>
+
+        <div class="nav-item">
+            <a href="{{ route('admin.sponsors') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-money-bill-wave"></i>
+                <span>Sponsoring</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{{ route('admin.newsletter') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-paper-plane"></i>
+                <span>Newsletter</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{{ route('admin.users') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-users"></i>
+                <span>Utilisateurs</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{{ route('admin.notifications') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-bell"></i>
+                <span>Notifications</span>
+            </a>
+        </div>
+
+    </nav>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+        <div class="sidebar-user">
+            <div class="sidebar-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-name">{{ Auth::user()->name }}</div>
+                <div class="sidebar-user-role">Administrateur</div>
+            </div>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn" title="Déconnexion">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main-wrapper">
+
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="breadcrumb">
+                <i class="fas fa-home" style="font-size:12px"></i>
+                <i class="fas fa-chevron-right" style="font-size:9px;color:#cbd5e1"></i>
+                <span id="page-title">Tableau de bord</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="topbar-greeting">Bonjour, <strong>{{ Auth::user()->name }}</strong> 👋</span>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <main class="main-content-area">
+        <div id="main-content"></div>
+    </main>
+</div>
+
+<script>
+(function () {
+    const loader    = document.getElementById('page-loader');
+    const mainEl    = document.getElementById('main-content');
+    const pageTitle = document.getElementById('page-title');
+    const csrf      = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    /* ── load page via AJAX ── */
+    function loadContent(url, title) {
+        loader.classList.add('visible');
+        fetch(url, {
+            headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.text())
+        .then(html => {
+            mainEl.innerHTML = html;
+            if (title) pageTitle.textContent = title;
+            attachFormListeners();
+            updateActiveLink(url);
+        })
+        .catch(() => { mainEl.innerHTML = '<p style="padding:2rem;color:#ef4444">Erreur de chargement.</p>'; })
+        .finally(() => loader.classList.remove('visible'));
+    }
+
+    /* expose globally so partials can call loadContent() */
+    window.loadContent = loadContent;
+
+    /* ── form submit handler (for search forms inside content) ── */
+    function attachFormListeners() {
+        const form = document.getElementById('search-form');
+        if (form) {
+            form.removeEventListener('submit', handleSearch);
+            form.addEventListener('submit', handleSearch);
+        }
+        document.querySelectorAll('.delete-message-form').forEach(f => {
+            f.removeEventListener('submit', handleDeleteMsg);
+            f.addEventListener('submit', handleDeleteMsg);
+        });
+    }
+    function handleSearch(e) {
         e.preventDefault();
-        var form = e.target;
-        //var url = form.action + '?' + new URLSearchParams(new FormData(form)).toString();
-        //loadContent(url);
-        var url = form.action;
-        var method = form.method;
+        const url = e.target.action + '?' + new URLSearchParams(new FormData(e.target)).toString();
+        loadContent(url);
+    }
+    function handleDeleteMsg(e) {
+        e.preventDefault();
+        fetch(e.target.action, {
+            method: e.target.method,
+            headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' },
+            body: new FormData(e.target)
+        })
+        .then(r => r.json())
+        .then(d => { if (d.success) loadContent('{{ route("admin.messages") }}', 'Messages'); });
+    }
 
-        if (form.id === 'search-form') {
-            // Gestion de la recherche
-            url = url + '?' + new URLSearchParams(new FormData(form)).toString();
-            loadContent(url);
-        } else if (form.classList.contains('delete-message-form')) {
-            // Gestion de la suppression
-            fetch(url, {
-                method: method,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: new FormData(form)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Recharger la page des messages
-                    loadContent('{{ route("admin.messages") }}');
-                } else {
-                    console.error('Erreur lors de la suppression du message');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-            });
+    /* ── active link highlight ── */
+    function updateActiveLink(url) {
+        document.querySelectorAll('.nav-link, .submenu-link').forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.nav-link[href="${url}"], .submenu-link[href="${url}"]`);
+        if (match) {
+            match.classList.add('active');
+            const parent = match.closest('.nav-item');
+            if (parent) parent.classList.add('open');
         }
     }
 
-    // Function to attach event listeners to dynamically loaded content
-    function attachEventListeners() {
-        var searchForm = document.getElementById('search-form');
-        if (searchForm) {
-            searchForm.removeEventListener('submit', handleFormSubmit);
-            searchForm.addEventListener('submit', handleFormSubmit);
-        }
-
-        var deleteForms = document.querySelectorAll('.delete-message-form');
-        deleteForms.forEach(form => {
-            form.removeEventListener('submit', handleFormSubmit);
-            form.addEventListener('submit', handleFormSubmit);
+    /* ── nav link clicks (menu-link class = AJAX load) ── */
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const url = this.getAttribute('href');
+            const title = this.querySelector('span')?.textContent || this.textContent.trim();
+            loadContent(url, title);
         });
-    }
-
-        // Fonction pour charger le contenu dans main-content
-        function loadContent(url) {
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('main-content').innerHTML = data;
-                attachEventListeners();
-            })
-            .catch(error => {
-                console.error('Erreur lors du chargement du contenu:', error);
-            });
-        }
-
-        // Gestion des clics sur les liens du menu
-        document.querySelectorAll('.menu-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                var url = this.getAttribute('href');
-                loadContent(url);
-            });
-        });
-
-        // Gestion des sous-menus
-        document.querySelectorAll('.group > a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                var submenu = this.nextElementSibling;
-                if (submenu && submenu.classList.contains('submenu')) {
-                    submenu.classList.toggle('hidden');
-                }
-            });
-        });
-
-        // Charger le contenu initial (statistiques)
-        loadContent('{{ route("admin.dashboard") }}');
     });
 
+    /* ── toggle submenu ── */
+    document.querySelectorAll('.nav-toggle').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const item = this.closest('.nav-item');
+            const isOpen = item.classList.contains('open');
+            // close all
+            document.querySelectorAll('.nav-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        });
+    });
 
-    </script>
-
-
+    /* ── initial load ── */
+    loadContent('{{ route("admin.dashboard") }}', 'Tableau de bord');
+})();
+</script>
 </body>
 </html>

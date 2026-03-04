@@ -14,7 +14,7 @@ use App\Models\Newsletter;
 use App\Models\User;
 use App\Models\UserNotification;
 use Illuminate\Support\Facades\Hash;
-use TCPDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 
@@ -577,11 +577,36 @@ public function generatePDF()
     public function users(Request $request)
     {
         $search = $request->get('search');
+        $role   = $request->get('role', 'all');
+
         $users = User::when($search, fn($q) => $q->where('name', 'like', "%{$search}%")
                                                    ->orWhere('email', 'like', "%{$search}%"))
+                     ->when($role !== 'all', fn($q) => $q->where('role', $role))
                      ->latest()->paginate(20);
 
-        return view('admin.users', compact('users', 'search'));
+        return view('admin.users', compact('users', 'search', 'role'));
+    }
+
+    public function storeUser(Request $request)
+    {
+        $data = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'role'     => 'required|in:user,admin',
+            'phone'    => 'nullable|string|max:20',
+        ]);
+
+        $user = User::create([
+            'name'              => $data['name'],
+            'email'             => $data['email'],
+            'password'          => Hash::make($data['password']),
+            'role'              => $data['role'],
+            'phone'             => $data['phone'] ?? null,
+            'email_verified_at' => now(),
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Utilisateur créé avec succès.', 'id' => $user->id]);
     }
 
     public function updateUserRole(Request $request, $id)
@@ -594,12 +619,35 @@ public function generatePDF()
     public function destroyUser($id)
     {
         $user = User::findOrFail($id);
-        // Empêcher la suppression de son propre compte
         if ($user->id === auth()->id()) {
             return response()->json(['success' => false, 'message' => 'Vous ne pouvez pas supprimer votre propre compte.'], 403);
         }
         $user->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function exportUsersPdf()
+    {
+        $users = User::latest()->get();
+        $pdf = Pdf::loadView('admin.exports.users-pdf', compact('users'))
+                  ->setPaper('a4', 'landscape');
+        return $pdf->download('utilisateurs-jsd.pdf');
+    }
+
+    public function exportUsersCsv()
+    {
+        $users = User::latest()->get();
+        $headers = ['Content-Type' => 'text/csv; charset=UTF-8', 'Content-Disposition' => 'attachment; filename="utilisateurs-jsd.csv"'];
+        $callback = function () use ($users) {
+            $fh = fopen('php://output', 'w');
+            fprintf($fh, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM UTF-8
+            fputcsv($fh, ['ID', 'Nom', 'Email', 'Téléphone', 'Rôle', 'Inscrit le'], ';');
+            foreach ($users as $u) {
+                fputcsv($fh, [$u->id, $u->name, $u->email, $u->phone ?? '', $u->role, $u->created_at->format('d/m/Y')], ';');
+            }
+            fclose($fh);
+        };
+        return response()->stream($callback, 200, $headers);
     }
 
     // ═══════════════════════════════════════════════════════════
