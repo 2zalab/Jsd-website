@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ressource;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
 class RessourceController extends Controller
 {
@@ -111,5 +113,40 @@ class RessourceController extends Controller
     {
         Ressource::findOrFail($id)->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $edition = $request->get('edition', 'all');
+        $type    = $request->get('type', 'all');
+        $query   = Ressource::query()->orderBy('edition')->orderBy('ordre');
+        if ($edition !== 'all') $query->where('edition', $edition);
+        if ($type    !== 'all') $query->where('type', $type);
+        $ressources = $query->get();
+        $pdf = Pdf::loadView('admin.exports.ressources-pdf', compact('ressources'))
+                  ->setPaper('a4', 'landscape');
+        return $pdf->download('ressources-jsd.pdf');
+    }
+
+    public function exportCsv(Request $request)
+    {
+        $edition = $request->get('edition', 'all');
+        $type    = $request->get('type', 'all');
+        $query   = Ressource::query()->orderBy('edition')->orderBy('ordre');
+        if ($edition !== 'all') $query->where('edition', $edition);
+        if ($type    !== 'all') $query->where('type', $type);
+        $ressources = $query->get();
+
+        $headers = ['Content-Type' => 'text/csv; charset=UTF-8', 'Content-Disposition' => 'attachment; filename="ressources-jsd.csv"'];
+        $callback = function () use ($ressources) {
+            $fh = fopen('php://output', 'w');
+            fprintf($fh, chr(0xEF).chr(0xBB).chr(0xBF));
+            fputcsv($fh, ['ID', 'Titre', 'Description', 'Type', 'Édition', 'Catégorie', 'Fichier', 'Lien', 'Ordre'], ';');
+            foreach ($ressources as $r) {
+                fputcsv($fh, [$r->id, $r->titre, $r->description ?? '', $r->type, $r->edition, $r->categorie ?? '', $r->fichier ?? '', $r->lien ?? '', $r->ordre], ';');
+            }
+            fclose($fh);
+        };
+        return response()->stream($callback, 200, $headers);
     }
 }

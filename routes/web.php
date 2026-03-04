@@ -99,8 +99,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // ── Utilisateurs ──────────────────────────────────────────────────────────
     Route::get('/admin/utilisateurs',              [AdminController::class, 'users'])->name('admin.users');
+    Route::post('/admin/utilisateurs',             [AdminController::class, 'storeUser'])->name('admin.users.store');
     Route::patch('/admin/utilisateurs/{id}/role',  [AdminController::class, 'updateUserRole'])->name('admin.users.role');
     Route::delete('/admin/utilisateurs/{id}',      [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+    Route::get('/admin/utilisateurs/export-pdf',   [AdminController::class, 'exportUsersPdf'])->name('admin.users.export.pdf');
+    Route::get('/admin/utilisateurs/export-csv',   [AdminController::class, 'exportUsersCsv'])->name('admin.users.export.csv');
 
     // ── Notifications ─────────────────────────────────────────────────────────
     Route::get('/admin/notifications',  [AdminController::class, 'notificationsAdmin'])->name('admin.notifications');
@@ -124,12 +127,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/activites/{id}',          [ActiviteController::class, 'destroy'])->name('admin.activites.destroy');
 
     // ── Ressources ────────────────────────────────────────────────────────────
-    Route::get('/admin/ressources',                 [RessourceController::class, 'index'])->name('admin.ressources.index');
-    Route::get('/admin/ressources/creer',           [RessourceController::class, 'create'])->name('admin.ressources.create');
-    Route::post('/admin/ressources',                [RessourceController::class, 'store'])->name('admin.ressources.store');
-    Route::get('/admin/ressources/{id}/modifier',   [RessourceController::class, 'edit'])->name('admin.ressources.edit');
-    Route::put('/admin/ressources/{id}',            [RessourceController::class, 'update'])->name('admin.ressources.update');
-    Route::delete('/admin/ressources/{id}',         [RessourceController::class, 'destroy'])->name('admin.ressources.destroy');
+    Route::get('/admin/ressources',                  [RessourceController::class, 'index'])->name('admin.ressources.index');
+    Route::get('/admin/ressources/creer',            [RessourceController::class, 'create'])->name('admin.ressources.create');
+    Route::post('/admin/ressources',                 [RessourceController::class, 'store'])->name('admin.ressources.store');
+    Route::get('/admin/ressources/export-pdf',       [RessourceController::class, 'exportPdf'])->name('admin.ressources.export.pdf');
+    Route::get('/admin/ressources/export-csv',       [RessourceController::class, 'exportCsv'])->name('admin.ressources.export.csv');
+    Route::get('/admin/ressources/{id}/modifier',    [RessourceController::class, 'edit'])->name('admin.ressources.edit');
+    Route::put('/admin/ressources/{id}',             [RessourceController::class, 'update'])->name('admin.ressources.update');
+    Route::delete('/admin/ressources/{id}',          [RessourceController::class, 'destroy'])->name('admin.ressources.destroy');
 });
 
 // ─── Routes publiques ─────────────────────────────────────────────────────────
