@@ -31,7 +31,7 @@
             @foreach($champs as $c)
             <td>
                 @if($c === 'langages')
-                    @php $l = json_decode($p->langages, true); echo is_array($l) ? implode(', ', $l) : $p->langages; @endphp
+                    {{ is_array($p->langages) ? implode(', ', $p->langages) : $p->langages }}
                 @else
                     {{ $p->$c ?? '' }}
                 @endif

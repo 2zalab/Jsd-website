@@ -38,7 +38,7 @@
                         <td class="px-5 py-4 text-sm text-gray-700">{{ $programmeur->etablissement }}</td>
                         <td class="px-5 py-4 text-sm text-gray-700">{{ $programmeur->classe }}</td>
                         <td class="px-5 py-4 text-sm text-gray-700">
-                            @php $l = json_decode($programmeur->langages, true); echo is_array($l) ? implode(', ', $l) : $programmeur->langages; @endphp
+                            {{ is_array($programmeur->langages) ? implode(', ', $programmeur->langages) : $programmeur->langages }}
                         </td>
                         <td class="px-5 py-4 text-sm flex gap-3">
                             <a href="#" class="text-indigo-600 hover:text-indigo-800"><i class="fas fa-edit"></i></a>
