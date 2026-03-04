@@ -414,6 +414,13 @@
         .then(r => r.text())
         .then(html => {
             mainEl.innerHTML = html;
+            /* Re-execute <script> tags — innerHTML does NOT auto-execute them (HTML5 spec) */
+            mainEl.querySelectorAll('script').forEach(oldScript => {
+                const s = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(a => s.setAttribute(a.name, a.value));
+                s.textContent = oldScript.textContent;
+                oldScript.parentNode.replaceChild(s, oldScript);
+            });
             if (title) pageTitle.textContent = title;
             attachFormListeners();
             updateActiveLink(url);
