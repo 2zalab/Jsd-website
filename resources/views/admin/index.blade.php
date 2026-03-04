@@ -132,6 +132,42 @@
                         </ul>
                     </li>
 
+                    <!-- Partenaires -->
+                    <li class="group">
+                        <a href="#" class="flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
+                            <span class="menu-icon"><i class="fas fa-handshake"></i></span>
+                            <span class="text-sm font-medium">Partenaires</span>
+                        </a>
+                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
+                            <li><a href="{{ route('admin.partenaires.index') }}" class="menu-link block py-1 hover:text-blue-400">Liste</a></li>
+                            <li><a href="{{ route('admin.partenaires.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Ajouter</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Activités -->
+                    <li class="group">
+                        <a href="#" class="flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
+                            <span class="menu-icon"><i class="fas fa-calendar-check"></i></span>
+                            <span class="text-sm font-medium">Activités</span>
+                        </a>
+                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
+                            <li><a href="{{ route('admin.activites.index') }}" class="menu-link block py-1 hover:text-blue-400">Liste</a></li>
+                            <li><a href="{{ route('admin.activites.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Ajouter</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Ressources -->
+                    <li class="group">
+                        <a href="#" class="flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
+                            <span class="menu-icon"><i class="fas fa-photo-video"></i></span>
+                            <span class="text-sm font-medium">Ressources</span>
+                        </a>
+                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
+                            <li><a href="{{ route('admin.ressources.index') }}" class="menu-link block py-1 hover:text-blue-400">Liste</a></li>
+                            <li><a href="{{ route('admin.ressources.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Ajouter</a></li>
+                        </ul>
+                    </li>
+
                     <!-- Utilisateurs -->
                     <li>
                         <a href="{{ route('admin.users') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">

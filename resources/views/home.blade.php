@@ -111,41 +111,19 @@
         <p>Découvrez les activités phares des Journées Sahel Digital 2026&nbsp;: hackathons, concours de programmation, expositions de startups et conférences inspirantes.</p>
 
         <div class="activity-grid">
+            @forelse($activites as $activite)
             <div class="activity-card">
-                <img src="{{ asset('images/hackathon.png') }}" alt="Hackathon" loading="lazy">
+                @if($activite->image)
+                <img src="{{ asset('images/' . $activite->image) }}" alt="{{ $activite->titre }}" loading="lazy">
+                @endif
                 <div class="activity-card-body">
-                    <h3>Hackathon</h3>
-                    <p>Participez à un hackathon intensif pour relever les défis numériques du Sahel à travers l'innovation technologique.</p>
+                    <h3>{{ $activite->titre }}</h3>
+                    <p>{{ $activite->description }}</p>
                 </div>
             </div>
-            <div class="activity-card">
-                <img src="{{ asset('images/digital-project-contest.png') }}" alt="Concours de Programmation" loading="lazy">
-                <div class="activity-card-body">
-                    <h3>Concours de Programmation</h3>
-                    <p>Montrez vos compétences et remportez des prix pour vos solutions ingénieuses lors du concours du Meilleur Programmeur.</p>
-                </div>
-            </div>
-            <div class="activity-card">
-                <img src="{{ asset('images/digital-project-contest.png') }}" alt="Meilleur Projet Digital" loading="lazy">
-                <div class="activity-card-body">
-                    <h3>Meilleur Projet Digital</h3>
-                    <p>Présentez vos idées innovantes et propulsez votre startup ou projet lors de ce concours phare.</p>
-                </div>
-            </div>
-            <div class="activity-card">
-                <img src="{{ asset('images/startup-expo.png') }}" alt="Conférences et Débats" loading="lazy">
-                <div class="activity-card-body">
-                    <h3>Conférences &amp; Débats</h3>
-                    <p>Assistez à des conférences animées par des experts du numérique, avec un focus sur l'IA et l'innovation.</p>
-                </div>
-            </div>
-            <div class="activity-card">
-                <img src="{{ asset('images/startup-expo.png') }}" alt="Exposition des Startups" loading="lazy">
-                <div class="activity-card-body">
-                    <h3>Exposition des Startups</h3>
-                    <p>Découvrez les startups les plus prometteuses du Sahel et leurs solutions technologiques innovantes.</p>
-                </div>
-            </div>
+            @empty
+            <p style="color:var(--color-text-muted)">Aucune activité disponible pour le moment.</p>
+            @endforelse
         </div>
 
         <div style="text-align:center;">
@@ -195,17 +173,17 @@
         <p>Nos partenaires soutiennent cette édition pour en faire un succès. Ensemble, nous façonnons l'avenir numérique du Sahel.</p>
 
         <div class="partner-logos">
-            <img src="{{ asset('images/partner1.png') }}"  alt="Partenaire 1" loading="lazy">
-            <img src="{{ asset('images/partner2.jpeg') }}" alt="Partenaire 2" loading="lazy">
-            <img src="{{ asset('images/partner3.png') }}"  alt="Partenaire 3" loading="lazy">
-            <img src="{{ asset('images/partner4.png') }}"  alt="Partenaire 4" loading="lazy">
-            <img src="{{ asset('images/partner8.png') }}"  alt="Partenaire 8" loading="lazy">
-            <img src="{{ asset('images/partner9.jpeg') }}" alt="Partenaire 9" loading="lazy">
-            <img src="{{ asset('images/partner5.png') }}"  alt="Partenaire 5" loading="lazy">
-            <img src="{{ asset('images/partner6.png') }}"  alt="Partenaire 6" loading="lazy">
-            <img src="{{ asset('images/partner7.png') }}"  alt="Partenaire 7" loading="lazy">
-            <img src="{{ asset('images/partner10.png') }}" alt="2zaLab" loading="lazy">
-            <img src="{{ asset('images/mit-logo.png') }}"  alt="MIT" loading="lazy">
+            @forelse($partenaires as $partenaire)
+                @if($partenaire->lien)
+                    <a href="{{ $partenaire->lien }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ asset('images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom ?? 'Partenaire' }}" loading="lazy">
+                    </a>
+                @else
+                    <img src="{{ asset('images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom ?? 'Partenaire' }}" loading="lazy">
+                @endif
+            @empty
+                <p style="color:var(--color-text-muted)">Aucun partenaire pour le moment.</p>
+            @endforelse
         </div>
     </div>
 </section>
