@@ -464,14 +464,15 @@
         }
     }
 
-    /* ── nav link clicks (menu-link class = AJAX load) ── */
-    document.querySelectorAll('.menu-link').forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const url = this.getAttribute('href');
-            const title = this.querySelector('span')?.textContent || this.textContent.trim();
-            loadContent(url, title);
-        });
+    /* ── nav link clicks (event delegation — works for static AND dynamic content) ── */
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest('a.menu-link, a.submenu-link');
+        if (!link) return;
+        const url = link.getAttribute('href');
+        if (!url || url === '#') return;
+        e.preventDefault();
+        const title = link.querySelector('span')?.textContent || link.textContent.trim();
+        loadContent(url, title);
     });
 
     /* ── toggle submenu ── */

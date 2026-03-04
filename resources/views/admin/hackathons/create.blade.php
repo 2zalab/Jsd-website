@@ -91,7 +91,7 @@
 </div>
 
 <script>
-// Ajouter dynamiquement des membres
+(function() {
 let membreCount = 1;
 document.getElementById('add-membre').addEventListener('click', function() {
     membreCount++;
@@ -126,4 +126,5 @@ document.getElementById('hack-form').addEventListener('submit', function(e) {
     })
     .catch(() => { alert.className = 'bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm'; alert.textContent = 'Erreur réseau.'; alert.classList.remove('hidden'); });
 });
+})();
 </script>
