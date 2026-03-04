@@ -326,6 +326,7 @@
 <div class="toast-wrap" id="toast-wrap"></div>
 
 <script>
+(function() {
 const CSRF = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 /* ── toast ── */
@@ -432,4 +433,13 @@ function submitAddUser() {
         btn.innerHTML = '<i class="fas fa-save"></i> Créer l\'utilisateur';
     });
 }
+
+/* expose onclick handlers to global scope */
+window.filterRole         = filterRole;
+window.updateRole         = updateRole;
+window.deleteUser         = deleteUser;
+window.openAddUserModal   = openAddUserModal;
+window.closeAddUserModal  = closeAddUserModal;
+window.submitAddUser      = submitAddUser;
+})();
 </script>
