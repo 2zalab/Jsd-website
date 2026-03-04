@@ -117,10 +117,41 @@
                         </a>
                     </li>
 
+                    <!-- Gestion des inscriptions -->
+                    <li class="group">
+                        <a href="#" class="flex items-center h-12 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
+                            <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span>
+                            <span class="text-sm font-medium">Inscriptions</span>
+                        </a>
+                        <ul class="submenu mt-1 hidden text-gray-600 space-y-2">
+                            <li><a href="{{ route('admin.inscriptions') }}" class="menu-link block py-1 hover:text-blue-400">Vue consolidée</a></li>
+                            <li><a href="{{ route('admin.programmeurs.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Programmeur</a></li>
+                            <li><a href="{{ route('admin.projets.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Projet Digital</a></li>
+                            <li><a href="{{ route('admin.hackathons.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Hackathon</a></li>
+                            <li><a href="{{ route('admin.stands.create') }}" class="menu-link block py-1 hover:text-blue-400">+ Stand</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Utilisateurs -->
+                    <li>
+                        <a href="{{ route('admin.users') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
+                            <span class="menu-icon"><i class="fas fa-users"></i></span>
+                            <span class="text-sm font-medium">Utilisateurs</span>
+                        </a>
+                    </li>
+
+                    <!-- Notifications -->
+                    <li>
+                        <a href="{{ route('admin.notifications') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
+                            <span class="menu-icon"><i class="fas fa-bell"></i></span>
+                            <span class="text-sm font-medium">Notifications</span>
+                        </a>
+                    </li>
+
                     <li>
                         <a href="{{ route('register') }}" class="menu-link flex items-center h-10 px-4 text-gray-400 hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-200">
                             <span class="menu-icon"><i class="fas fa-user-plus"></i></span>
-                            <span class="text-sm font-medium">Ajouter un administrateur</span>
+                            <span class="text-sm font-medium">Ajouter un admin</span>
                         </a>
                     </li>
                 </ul>
@@ -261,68 +292,6 @@
 
     </script>
 
-    <script>
-        // Récupération des données des projets depuis l'attribut data
-        const projetsData = document.getElementById('projectsData');
-        const projets = JSON.parse(projetsData.dataset.projects);
-
-        function openModal(projectId) {
-            const projet = projets.find(p => p.id == projectId);
-            if (projet) {
-                document.getElementById('modalTitle').textContent = projet.nom_projet;
-                document.getElementById('modalContent').innerHTML = `
-                    <p class="text-sm text-gray-700 mb-2"><strong>Équipe:</strong> ${projet.nom_equipe}</p>
-                    <p class="text-sm text-gray-700 mb-2"><strong>Chef d'équipe:</strong> ${projet.chef_equipe}</p>
-                    <p class="text-sm text-gray-700 mb-2"><strong>Email:</strong> ${projet.email_chef_equipe}</p>
-                    <p class="text-sm text-gray-700 mb-2"><strong>Établissement:</strong> ${projet.etablissement}</p>
-                    <p class="text-sm text-gray-700 mb-4"><strong>Description:</strong> ${projet.description || 'Non disponible'}</p>
-                    <a href="${projet.lien_youtube}" target="_blank" class="text-blue-600 hover:text-blue-800">Voir la vidéo YouTube</a>
-                `;
-                document.getElementById('projectModal').classList.remove('hidden');
-            } else {
-                alert('Projet non trouvé');
-            }
-        }
-
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('projectModal').classList.add('hidden');
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const modalButtons = document.querySelectorAll('.open-modal-btn');
-
-            modalButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const projectId = this.getAttribute('data-id');
-                    openModal(projectId);  // Appel de la fonction openModal avec l'ID du projet
-                });
-            });
-        });
-
-        function deleteProject(projectId) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
-                // Ici, vous devriez faire une requête AJAX pour supprimer le projet
-                console.log('Projet supprimé:', projectId);
-                alert('Le projet a été supprimé (simulation)');
-                // Recharger la page ou mettre à jour la liste des projets
-            }
-        }
-
-        document.getElementById('search').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        });
-
-        function downloadPDF() {
-            // Simuler le téléchargement d'un PDF
-            alert('Téléchargement du PDF en cours (simulation)');
-            // Ici, vous devriez implémenter la logique réelle pour générer et télécharger le PDF
-        }
-    </script>
 
 </body>
 </html>

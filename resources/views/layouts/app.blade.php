@@ -25,43 +25,46 @@
     <!-- Payment -->
     <script src="https://cdn.cinetpay.com/seamless/main.js" type="text/javascript"></script>
 
+    <!-- Hero slider overrides -->
     <style>
-    /* ── Hero Slider ── */
     .hero {
         position: relative;
         min-height: 480px;
         display: flex;
         align-items: center;
         overflow: hidden;
+        background: none !important;
     }
+    .hero::before { display: none !important; }
 
+    /* slides */
     .hero-slides {
         position: absolute;
         inset: 0;
         z-index: 0;
     }
-
     .hero-slide {
         position: absolute;
         inset: 0;
         background-size: cover;
         background-position: center;
         opacity: 0;
-        transition: opacity 1s ease-in-out;
+        transition: opacity 1s ease;
     }
-
     .hero-slide.active { opacity: 1; }
 
-    .hero-slide::after {
-        content: '';
+    /* overlay */
+    .hero-overlay {
         position: absolute;
         inset: 0;
         background: linear-gradient(135deg, rgba(15,23,42,.78) 0%, rgba(30,64,175,.62) 100%);
+        z-index: 1;
     }
 
+    /* content above overlay */
     .hero-content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         max-width: var(--container-max);
         width: 100%;
         margin: 0 auto;
@@ -73,59 +76,54 @@
         color: #fff;
     }
 
-    /* Dots navigation */
+    /* prev / next arrows */
+    .hero-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        background: rgba(255,255,255,.18);
+        border: 1px solid rgba(255,255,255,.3);
+        backdrop-filter: blur(4px);
+        color: #fff;
+        font-size: 1.5rem;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .2s;
+        line-height: 1;
+    }
+    .hero-arrow:hover { background: rgba(255,255,255,.32); }
+    .hero-arrow.prev { left: 1rem; }
+    .hero-arrow.next { right: 1rem; }
+
+    /* dots */
     .hero-dots {
         position: absolute;
         bottom: 1.25rem;
         left: 50%;
         transform: translateX(-50%);
+        z-index: 3;
         display: flex;
         gap: .5rem;
-        z-index: 2;
     }
-
     .hero-dot {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: rgba(255,255,255,.4);
+        background: rgba(255,255,255,.45);
         cursor: pointer;
-        transition: background .3s, transform .3s;
         border: none;
         padding: 0;
+        transition: background .2s, transform .2s;
     }
-
     .hero-dot.active {
         background: #fff;
-        transform: scale(1.25);
-    }
-
-    /* Flèches slider */
-    .hero-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 2;
-        background: rgba(255,255,255,.15);
-        border: 1px solid rgba(255,255,255,.3);
-        color: #fff;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background .2s;
-        backdrop-filter: blur(4px);
-    }
-
-    .hero-arrow:hover { background: rgba(255,255,255,.28); }
-    .hero-arrow.prev { left: 1.25rem; }
-    .hero-arrow.next { right: 1.25rem; }
-
-    @media (max-width: 768px) {
-        .hero-arrow { display: none; }
+        transform: scale(1.3);
     }
     </style>
 
@@ -141,17 +139,17 @@
             </a>
 
             <ul class="nav-links" id="nav-links" role="list">
-                <li><a href="{{ route('home') }}"          class="nav-link">Accueil</a></li>
-                <li><a href="{{ route('activities') }}"    class="nav-link">Activités</a></li>
-                <li><a href="{{ route('ressources.index') }}"  class="nav-link">Ressources</a></li>
-                <li><a href="{{ route('about') }}"         class="nav-link">À Propos</a></li>
-                <li><a href="{{ route('contact.index') }}" class="nav-link">Contact</a></li>
+                <li><a href="{{ route('home') }}"             class="nav-link">Accueil</a></li>
+                <li><a href="{{ route('activities') }}"       class="nav-link">Activités</a></li>
+                <li><a href="{{ route('ressources.index') }}" class="nav-link">Ressources</a></li>
+                <li><a href="{{ route('about') }}"            class="nav-link">À Propos</a></li>
+                <li><a href="{{ route('contact.index') }}"    class="nav-link">Contact</a></li>
                 @auth
-                    <li><a href="{{ route('dashboard') }}" class="nav-link">
-                        <i class="fas fa-user-circle"></i> Mon Espace
-                    </a></li>
+                <li><a href="{{ route('dashboard') }}"        class="nav-link">
+                    <i class="fas fa-user-circle"></i> Mon Espace
+                </a></li>
                 @endauth
-                <li><a href="{{ route('concours.index') }}" class="nav-link nav-cta">
+                <li><a href="{{ route('concours.index') }}"  class="nav-link nav-cta">
                     <i class="fas fa-user-plus"></i> S'inscrire
                 </a></li>
             </ul>
@@ -164,25 +162,25 @@
         </nav>
     </header>
 
-    <!-- ===== HERO SLIDER ===== -->
-    <section class="hero">
-        <!-- Slides arrière-plan -->
-        <div class="hero-slides" aria-hidden="true">
-            <div class="hero-slide active"
-                 style="background-image:url('{{ asset('images/hero-background.png') }}')"></div>
-            <div class="hero-slide"
-                 style="background-image:url('{{ asset('images/hackathon.jpg') }}')"></div>
-            <div class="hero-slide"
-                 style="background-image:url('{{ asset('images/projet-presentation.jpg') }}')"></div>
-            <div class="hero-slide"
-                 style="background-image:url('{{ asset('images/photo-famille.jpg') }}')"></div>
+    <!-- ===== HERO (slider 4 images) ===== -->
+    <section class="hero" id="hero-section">
+
+        <!-- Slides -->
+        <div class="hero-slides">
+            <div class="hero-slide active" style="background-image:url('{{ asset('images/hero-background.png') }}')"></div>
+            <div class="hero-slide"        style="background-image:url('{{ asset('images/hackathon.jpg') }}')"></div>
+            <div class="hero-slide"        style="background-image:url('{{ asset('images/projet-presentation.jpg') }}')"></div>
+            <div class="hero-slide"        style="background-image:url('{{ asset('images/photo-famille.jpg') }}')"></div>
         </div>
 
-        <!-- Contenu texte (toujours visible) -->
+        <!-- Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Content -->
         <div class="hero-content">
             <div class="hero-left">
                 <h1>Journées<br>Sahel Digital 2026</h1>
-                <p class="subtitle">Innovation à l'ère de l'Intelligence Artificielle</p>
+                <p class="subtitle">Intelligence artificielle et développement de l'économie numérique : enjeux et perspectives pour le Sahel</p>
                 <hr/>
             </div>
             <div class="hero-right">
@@ -198,20 +196,16 @@
             </div>
         </div>
 
-        <!-- Flèches -->
-        <button class="hero-arrow prev" id="hero-prev" aria-label="Image précédente">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="hero-arrow next" id="hero-next" aria-label="Image suivante">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+        <!-- Arrows -->
+        <button class="hero-arrow prev" id="hero-prev" aria-label="Image précédente">&#8249;</button>
+        <button class="hero-arrow next" id="hero-next" aria-label="Image suivante">&#8250;</button>
 
         <!-- Dots -->
         <div class="hero-dots" role="tablist">
             <button class="hero-dot active" data-index="0" aria-label="Image 1"></button>
-            <button class="hero-dot" data-index="1" aria-label="Image 2"></button>
-            <button class="hero-dot" data-index="2" aria-label="Image 3"></button>
-            <button class="hero-dot" data-index="3" aria-label="Image 4"></button>
+            <button class="hero-dot"        data-index="1" aria-label="Image 2"></button>
+            <button class="hero-dot"        data-index="2" aria-label="Image 3"></button>
+            <button class="hero-dot"        data-index="3" aria-label="Image 4"></button>
         </div>
     </section>
 
@@ -229,7 +223,7 @@
                         <img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'26">
                     </a>
                 </div>
-                <p>Journées Sahel Digital 2026 — Un programme riche en innovation : conférences, ateliers, concours et opportunités d'apprentissage au cœur du Sahel.</p>
+                <p>Journées Sahel Digital 2026 — Intelligence artificielle et développement de l'économie numérique : enjeux et perspectives pour le Sahel.</p>
                 <div class="footer-contact">
                     <p><i class="fas fa-envelope"></i> info@saheldigital.net</p>
                     <p><i class="fas fa-phone"></i> +237 697 460 267</p>
@@ -241,7 +235,7 @@
                 <ul>
                     <li><a href="{{ route('about') }}">À Propos</a></li>
                     <li><a href="{{ route('activities') }}">Activités</a></li>
-                    <li><a href="{{ route('ressources.index') }}">Photos & Documents</a></li>
+                    <li><a href="{{ route('ressources.index') }}">Photos &amp; Documents</a></li>
                     <li><a href="{{ route('sponsor.form') }}">Sponsors</a></li>
                     <li><a href="{{ route('contact.index') }}">Contact</a></li>
                 </ul>
@@ -259,7 +253,7 @@
 
             <div class="footer-newsletter">
                 <h4>Nous Rejoindre</h4>
-                <p>Inscrivez-vous à notre newsletter pour ne rien manquer des JSD'26.</p>
+                <p>Inscrivez-vous à notre newsletter pour ne rien manquer de JSD'26.</p>
                 <form id="newsletter">
                     @csrf
                     <input type="email" name="email" placeholder="Votre adresse email" required>
@@ -384,48 +378,46 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ─── Hero Slider ─────────────────────────────────────────────────
-        const slides = document.querySelectorAll('.hero-slide');
-        const dots   = document.querySelectorAll('.hero-dot');
-        const prevBtn = document.getElementById('hero-prev');
-        const nextBtn = document.getElementById('hero-next');
-        let current = 0;
-        let timer;
+        // --- Hero Slider ---
+        (function () {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots   = document.querySelectorAll('.hero-dot');
+            if (!slides.length) return;
 
-        function goTo(index) {
-            slides[current].classList.remove('active');
-            dots[current].classList.remove('active');
-            current = (index + slides.length) % slides.length;
-            slides[current].classList.add('active');
-            dots[current].classList.add('active');
-        }
+            let current = 0;
+            let timer   = null;
 
-        function startAuto() {
-            timer = setInterval(() => goTo(current + 1), 5000);
-        }
+            function goTo(idx) {
+                slides[current].classList.remove('active');
+                dots[current].classList.remove('active');
+                current = (idx + slides.length) % slides.length;
+                slides[current].classList.add('active');
+                dots[current].classList.add('active');
+            }
 
-        function resetAuto() {
-            clearInterval(timer);
-            startAuto();
-        }
+            function start() {
+                timer = setInterval(() => goTo(current + 1), 5000);
+            }
+            function stop() {
+                clearInterval(timer);
+            }
 
-        if (slides.length > 1) {
-            startAuto();
+            document.getElementById('hero-prev')?.addEventListener('click', () => { stop(); goTo(current - 1); start(); });
+            document.getElementById('hero-next')?.addEventListener('click', () => { stop(); goTo(current + 1); start(); });
 
             dots.forEach(dot => {
                 dot.addEventListener('click', () => {
+                    stop();
                     goTo(parseInt(dot.dataset.index));
-                    resetAuto();
+                    start();
                 });
             });
 
-            if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-            if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+            document.getElementById('hero-section')?.addEventListener('mouseenter', stop);
+            document.getElementById('hero-section')?.addEventListener('mouseleave', start);
 
-            // Pause sur hover
-            document.querySelector('.hero').addEventListener('mouseenter', () => clearInterval(timer));
-            document.querySelector('.hero').addEventListener('mouseleave', startAuto);
-        }
+            start();
+        })();
     })();
     </script>
 

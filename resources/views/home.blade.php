@@ -97,7 +97,7 @@
         <div class="message-content">
             <h3>Mot du Président du Comité d'Organisation</h3>
             <p>Chers participants, chers partenaires,</p>
-            <p>C'est avec une immense fierté que je vous souhaite une massive participation à la troisième édition des Journées Sahel Digital (JSD'26). Sous le thème <strong>«&nbsp;Innovation à l'ère de l'intelligence artificielle&nbsp;»</strong>, cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
+            <p>C'est avec une immense fierté que je vous souhaite une massive participation à la troisième édition des Journées Sahel Digital (JSD'26). Sous le thème <strong>«&nbsp;Intelligence artificielle et développement de l'économie numérique : enjeux et perspectives pour le Sahel&nbsp;»</strong>, cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
             <p>En tant que promoteurs de cette initiative, nous croyons fermement que l'avenir du continent africain passe par l'innovation technologique et numérique. L'intelligence artificielle offre des opportunités inédites pour relever les défis socio-économiques auxquels nous sommes confrontés.</p>
             <p>Que vous soyez programmeur·euse, entrepreneur·euse, étudiant·e ou simplement passionné·e du numérique, les Journées Sahel Digital sont faites pour vous. Ensemble, cultivons l'esprit d'innovation pour un Sahel prospère, connecté et résilient.</p>
         </div>
