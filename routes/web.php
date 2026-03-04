@@ -44,9 +44,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin',             [AdminController::class, 'index'])->name('admin.index');
 
     // Hackathons
-    Route::get('/hackathons/lycee',    [AdminController::class, 'showHackathonsLycee'])->name('hackathons.lycee');
-    Route::get('/hackathons/superieur',[AdminController::class, 'showHackathonsSuperieur'])->name('hackathons.superieur');
-    Route::get('/generate-pdf-lycee',  [AdminController::class, 'generatePdfHackatonLycee']);
+    Route::get('/hackathons/lycee',         [AdminController::class, 'showHackathonsLycee'])->name('hackathons.lycee');
+    Route::get('/hackathons/superieur',     [AdminController::class, 'showHackathonsSuperieur'])->name('hackathons.superieur');
+    Route::get('/generate-pdf-lycee',       [AdminController::class, 'generatePdfHackatonLycee']);
+    Route::get('/hackathons/superieur/pdf', [AdminController::class, 'generatePdfHackatonSuperieur'])->name('admin.hackaton.superieur.pdf');
 
     Route::get('/admin/dashboard',     [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
@@ -55,23 +56,31 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/messages/{message}',[AdminController::class, 'destroy'])->name('messages.destroy');
 
     // Concours programmeurs
-    Route::get('/concours/cmpl',  [AdminController::class, 'getCmpl'])->name('concours.cmpl');
-    Route::get('/concours/cmps',  [AdminController::class, 'getCmps'])->name('concours.cmps');
+    Route::get('/concours/cmpl',      [AdminController::class, 'getCmpl'])->name('concours.cmpl');
+    Route::get('/concours/cmpl/pdf',  [AdminController::class, 'generatePdfCmpl'])->name('admin.cmpl.pdf');
+    Route::get('/concours/cmps',      [AdminController::class, 'getCmps'])->name('concours.cmps');
+    Route::get('/concours/cmps/pdf',  [AdminController::class, 'generatePdfCmps'])->name('admin.cmps.pdf');
 
     // Concours projets digitaux
-    Route::get('/concours/cmpdl', [AdminController::class, 'getCmpdl'])->name('concours.cmpdl');
-    Route::get('/concours/cmpds', [AdminController::class, 'getCmpds'])->name('concours.cmpds');
+    Route::get('/concours/cmpdl',     [AdminController::class, 'getCmpdl'])->name('concours.cmpdl');
+    Route::get('/concours/cmpdl/pdf', [AdminController::class, 'generatePdfCmpdl'])->name('admin.cmpdl.pdf');
+    Route::get('/concours/cmpds',     [AdminController::class, 'getCmpds'])->name('concours.cmpds');
+    Route::get('/concours/cmpds/pdf', [AdminController::class, 'generatePdfCmpds'])->name('admin.cmpds.pdf');
 
     // Stands
     Route::get('/stands',     [AdminController::class, 'getStands'])->name('admin.stands');
     Route::get('/stands/pdf', [AdminController::class, 'generatePDF'])->name('stands.pdf');
 
     // Sponsors
-    Route::get('/sponsors',             [AdminController::class, 'getSponsors'])->name('admin.sponsors');
-    Route::delete('/sponsors/{sponsor}',[AdminController::class, 'destroySponsor'])->name('sponsors.destroy');
+    Route::get('/sponsors',              [AdminController::class, 'getSponsors'])->name('admin.sponsors');
+    Route::get('/sponsors/pdf',          [AdminController::class, 'exportSponsorsPdf'])->name('admin.sponsors.pdf');
+    Route::get('/sponsors/csv',          [AdminController::class, 'exportSponsorsCsv'])->name('admin.sponsors.csv');
+    Route::delete('/sponsors/{sponsor}', [AdminController::class, 'destroySponsor'])->name('sponsors.destroy');
 
     // Newsletter
-    Route::get('/newsletter', [AdminController::class, 'getNewsletters'])->name('admin.newsletter');
+    Route::get('/newsletter',            [AdminController::class, 'getNewsletters'])->name('admin.newsletter');
+    Route::get('/newsletter/export-csv', [AdminController::class, 'exportNewsletterCsv'])->name('admin.newsletter.csv');
+    Route::delete('/newsletter/{id}',    [AdminController::class, 'destroyNewsletter'])->name('admin.newsletter.destroy');
 
     // ── Gestion unifiée des inscriptions ──────────────────────────────────────
     Route::get('/admin/inscriptions', [AdminController::class, 'inscriptions'])->name('admin.inscriptions');
