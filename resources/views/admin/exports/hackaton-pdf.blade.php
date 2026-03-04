@@ -35,8 +35,7 @@
             <td>{{ $h->nombre_participants }}</td>
             <td>{{ $h->etablissement }}</td>
             <td>
-                @php $membres = is_array($h->membres) ? $h->membres : json_decode($h->membres ?? '[]', true); @endphp
-                {{ implode(', ', $membres ?? []) }}
+                {{ implode(', ', is_array($h->membres) ? $h->membres : []) }}
             </td>
         </tr>
         @empty
