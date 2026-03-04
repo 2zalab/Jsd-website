@@ -1,86 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projets CMPDL</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
-    <div class="container mx-auto mt-10 px-4">
-        <h1 class="text-3xl font-bold mb-6">Projets CMPDL</h1>
-
-        <!-- Barre de recherche, nombre de projets et bouton PDF -->
-        <div class="flex justify-between items-center mb-6">
-            <div class="w-1/2">
-                <input type="text" id="search" placeholder="Rechercher un projet..." class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div class="flex items-center space-x-4">
-                <button onclick="downloadPDF()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                    <i class="fas fa-file-pdf mr-2"></i>Télécharger PDF
-                </button>
-                <div class="text-gray-600">
-                    Nombre total de projets : <span class="font-bold">{{ count($cmpdl) }}</span>
-                </div>
-            </div>
+<div class="p-6">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Concours Meilleurs Projets Digitaux — Lycée (CMPDL)</h1>
+        <div class="flex gap-2">
+            <span class="text-sm text-gray-500 self-center">{{ count($cmpdl) }} projet(s)</span>
+            <a href="{{ route('admin.cmpdl.pdf') }}" target="_blank"
+               class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
+                <i class="fas fa-file-pdf"></i> Télécharger PDF
+            </a>
         </div>
+    </div>
 
-        <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md">
-            <table class="min-w-full bg-white">
-                <thead class="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div class="flex gap-3 mb-4">
+        <input id="searchInput" placeholder="Rechercher (équipe, établissement, projet...)"
+               class="w-full max-w-sm border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table id="cmpdlTable" class="min-w-full">
+                <thead class="bg-indigo-600 text-white">
                     <tr>
-                        <th class="py-3 px-4 text-left text-sm font-medium">Nom de l'équipe</th>
-                        <th class="py-3 px-4 text-left text-sm font-medium">Chef d'équipe</th>
-                        <th class="py-3 px-4 text-left text-sm font-medium">E-mail</th>
-                        <th class="py-3 px-4 text-left text-sm font-medium">Établissement</th>
-                        <th class="py-3 px-4 text-left text-sm font-medium">Nom du projet</th>
-                        <th class="py-3 px-4 text-left text-sm font-medium">Actions</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Nom de l'équipe</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Chef d'équipe</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Email</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Établissement</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Nom du projet</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($cmpdl as $projet)
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="py-3 px-4">{{ $projet->nom_equipe }}</td>
-                            <td class="py-3 px-4">{{ $projet->chef_equipe }}</td>
-                            <td class="py-3 px-4">{{ $projet->email_chef_equipe }}</td>
-                            <td class="py-3 px-4">{{ $projet->etablissement }}</td>
-                            <td class="py-3 px-4">{{ $projet->nom_projet }}</td>
-                            <td class="py-3 px-4 flex space-x-2">
-                                <button data-id="{{ $projet->id }}" class="open-modal-btn text-blue-600 hover:text-blue-800">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button onclick="deleteProject('{{ $projet->id }}')" class="text-red-600 hover:text-red-800">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
+                <tbody class="divide-y divide-gray-100">
+                    @forelse($cmpdl as $projet)
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 text-sm font-medium text-gray-900">{{ $projet->nom_equipe }}</td>
+                        <td class="px-5 py-4 text-sm text-gray-700">{{ $projet->chef_equipe }}</td>
+                        <td class="px-5 py-4 text-sm text-gray-700">{{ $projet->email_chef_equipe }}</td>
+                        <td class="px-5 py-4 text-sm text-gray-700">{{ $projet->etablissement }}</td>
+                        <td class="px-5 py-4 text-sm text-gray-700">{{ $projet->nom_projet }}</td>
+                        <td class="px-5 py-4 text-sm flex gap-3">
+                            @if($projet->lien_youtube)
+                            <a href="{{ $projet->lien_youtube }}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Voir la vidéo">
+                                <i class="fas fa-play-circle"></i>
+                            </a>
+                            @endif
+                            <button onclick="deleteCmpdl({{ $projet->id }}, this)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-5 py-10 text-center text-gray-400">Aucun projet inscrit.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <!-- Modal -->
-    <div id="projectModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
-        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
-            <div class="mt-3 text-center">
-                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modalTitle"></h3>
-                <div class="mt-2 px-7 py-3" id="modalContent">
-                    <!-- Le contenu du modal sera injecté ici -->
-                </div>
-                <div class="items-center px-4 py-3">
-                    <button id="closeModal" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300">
-                        Fermer
-                    </button>
-                </div>
-            </div>
+        <div class="px-5 py-4 bg-gray-50 border-t flex items-center justify-between text-sm text-gray-600">
+            <span>Total : <strong>{{ count($cmpdl) }}</strong> projet(s)</span>
         </div>
     </div>
+</div>
 
-    <!-- Élément avec les données des projets -->
-    <div id="projectsData" data-projects="{{ json_encode($cmpdl) }}"></div>
+<script>
+(function() {
+    const table = document.getElementById('cmpdlTable');
+    const searchInput = document.getElementById('searchInput');
 
-    
-</body>
-</html>
+    searchInput.addEventListener('input', function() {
+        const term = this.value.toLowerCase();
+        table.querySelectorAll('tbody tr').forEach(row => {
+            row.classList.toggle('hidden', !row.textContent.toLowerCase().includes(term));
+        });
+    });
+})();
+
+function deleteCmpdl(id, btn) {
+    if (!confirm('Supprimer ce projet ?')) return;
+    const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    fetch(`/admin/projets/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' }
+    }).then(r => r.json()).then(data => {
+        if (data.success) btn.closest('tr').remove();
+    });
+}
+</script>

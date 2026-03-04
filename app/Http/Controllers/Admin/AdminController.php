@@ -704,7 +704,111 @@ public function generatePDF()
         return response()->json(['success' => true, 'message' => 'Notification envoyée avec succès.']);
     }
 
+    // ══════════════════════════════════════════════════════════════
+    //  PDF / CSV EXPORTS — Concours & Hackathons
+    // ══════════════════════════════════════════════════════════════
 
+    public function generatePdfCmpl()
+    {
+        $cmpl = Programmeur::where('type_concours', 'CMPL')->get();
+        $pdf = Pdf::loadView('admin.exports.concours-programmeurs-pdf', [
+            'participants' => $cmpl,
+            'titre'        => 'Concours Meilleurs Programmeurs — Lycée (CMPL)',
+            'colonnes'     => ['Nom', 'Établissement', 'Classe', 'Langages'],
+            'champs'       => ['nom', 'etablissement', 'classe', 'langages'],
+        ])->setPaper('a4', 'landscape');
+        return $pdf->download('cmpl_participants.pdf');
+    }
 
+    public function generatePdfCmps()
+    {
+        $cmps = Programmeur::where('type_concours', 'CMPS')->get();
+        $pdf = Pdf::loadView('admin.exports.concours-programmeurs-pdf', [
+            'participants' => $cmps,
+            'titre'        => 'Concours Meilleurs Programmeurs — Supérieur (CMPS)',
+            'colonnes'     => ['Nom', 'Établissement', "Niveau d'étude", 'Langages'],
+            'champs'       => ['nom', 'etablissement', 'niveau_etude', 'langages'],
+        ])->setPaper('a4', 'landscape');
+        return $pdf->download('cmps_participants.pdf');
+    }
 
+    public function generatePdfCmpdl()
+    {
+        $cmpdl = ProjetDigital::where('type_concours', 'CMPDL')->get();
+        $pdf = Pdf::loadView('admin.exports.concours-projets-pdf', [
+            'projets' => $cmpdl,
+            'titre'   => 'Concours Meilleurs Projets Digitaux — Lycée (CMPDL)',
+        ])->setPaper('a4', 'landscape');
+        return $pdf->download('cmpdl_projets.pdf');
+    }
+
+    public function generatePdfCmpds()
+    {
+        $cmpds = ProjetDigital::where('type_concours', 'CMPDS')->get();
+        $pdf = Pdf::loadView('admin.exports.concours-projets-pdf', [
+            'projets' => $cmpds,
+            'titre'   => 'Concours Meilleurs Projets Digitaux — Supérieur (CMPDS)',
+        ])->setPaper('a4', 'landscape');
+        return $pdf->download('cmpds_projets.pdf');
+    }
+
+    public function generatePdfHackatonSuperieur()
+    {
+        $hackathons = Hackathon::where('niveau_etudes', 'superieur')->get();
+        $pdf = Pdf::loadView('admin.exports.hackaton-pdf', [
+            'hackathons' => $hackathons,
+            'titre'      => 'Participants Hackathon — Supérieur',
+        ])->setPaper('a4', 'landscape');
+        return $pdf->download('hackathon_superieur.pdf');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    //  PDF / CSV EXPORTS — Newsletter & Sponsors
+    // ══════════════════════════════════════════════════════════════
+
+    public function exportNewsletterCsv()
+    {
+        $letters = Newsletter::orderBy('created_at', 'desc')->get();
+        $headers = ['Content-Type' => 'text/csv; charset=UTF-8', 'Content-Disposition' => 'attachment; filename="newsletter_abonnes.csv"'];
+        $callback = function () use ($letters) {
+            $handle = fopen('php://output', 'w');
+            fputs($handle, "\xEF\xBB\xBF"); // BOM UTF-8
+            fputcsv($handle, ['Email', 'Date inscription'], ';');
+            foreach ($letters as $l) {
+                fputcsv($handle, [$l->email, $l->created_at->format('d/m/Y H:i')], ';');
+            }
+            fclose($handle);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function destroyNewsletter($id)
+    {
+        Newsletter::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function exportSponsorsPdf()
+    {
+        $sponsors = Sponsor::latest()->get();
+        $pdf = Pdf::loadView('admin.exports.sponsors-pdf', compact('sponsors'))
+            ->setPaper('a4', 'landscape');
+        return $pdf->download('sponsors.pdf');
+    }
+
+    public function exportSponsorsCsv()
+    {
+        $sponsors = Sponsor::latest()->get();
+        $headers = ['Content-Type' => 'text/csv; charset=UTF-8', 'Content-Disposition' => 'attachment; filename="sponsors.csv"'];
+        $callback = function () use ($sponsors) {
+            $handle = fopen('php://output', 'w');
+            fputs($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, ['Nom', 'Email', 'Téléphone', 'Adresse', 'Motivation'], ';');
+            foreach ($sponsors as $s) {
+                fputcsv($handle, [$s->nom, $s->email, $s->telephone, $s->adresse, $s->motivation], ';');
+            }
+            fclose($handle);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
 }
