@@ -30,13 +30,15 @@ Route::middleware('auth')->group(function () {
 
 // ─── Dashboard Utilisateur ────────────────────────────────────────────────────
 Route::middleware('auth')->prefix('mon-espace')->group(function () {
-    Route::get('/',                 [UserDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/notifications',    [UserDashboardController::class, 'notifications'])->name('dashboard.notifications');
-    Route::post('/notifications/{id}/read', [UserDashboardController::class, 'markRead'])->name('dashboard.notifications.read');
-    Route::post('/notifications/read-all',  [UserDashboardController::class, 'markAllRead'])->name('dashboard.notifications.read-all');
-    Route::get('/profil',           [UserDashboardController::class, 'profile'])->name('dashboard.profile');
-    Route::put('/profil',           [UserDashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
-    Route::put('/profil/password',  [UserDashboardController::class, 'updatePassword'])->name('dashboard.password.update');
+    Route::get('/',                               [UserDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/notifications',                  [UserDashboardController::class, 'notifications'])->name('dashboard.notifications');
+    Route::post('/notifications/{id}/read',       [UserDashboardController::class, 'markRead'])->name('dashboard.notifications.read');
+    Route::post('/notifications/read-all',        [UserDashboardController::class, 'markAllRead'])->name('dashboard.notifications.read-all');
+    Route::delete('/notifications/{id}',          [UserDashboardController::class, 'deleteNotification'])->name('dashboard.notifications.delete');
+    Route::get('/profil',                         [UserDashboardController::class, 'profile'])->name('dashboard.profile');
+    Route::put('/profil',                         [UserDashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
+    Route::put('/profil/password',                [UserDashboardController::class, 'updatePassword'])->name('dashboard.password.update');
+    Route::delete('/compte',                      [UserDashboardController::class, 'deleteAccount'])->name('dashboard.account.delete');
 });
 
 // ─── Panel Admin (auth + rôle admin) ─────────────────────────────────────────
