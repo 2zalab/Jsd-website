@@ -1,8 +1,8 @@
 <style>
 .ed-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem; }
 .ed-title  { font-size:1.25rem; font-weight:700; color:#1e293b; }
-.ed-table-wrap { background:#fff; border-radius:12px; border:1px solid #e2e8f0; overflow:hidden; }
-.ed-table   { width:100%; border-collapse:collapse; font-size:13.5px; }
+.ed-table-wrap { background:#fff; border-radius:12px; border:1px solid #e2e8f0; overflow-x:auto; }
+.ed-table   { width:100%; min-width:900px; border-collapse:collapse; font-size:13.5px; }
 .ed-table th { background:#f8fafc; color:#64748b; font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; padding:10px 16px; border-bottom:1px solid #e2e8f0; text-align:left; }
 .ed-table td { padding:12px 16px; border-bottom:1px solid #f1f5f9; color:#1e293b; vertical-align:middle; }
 .ed-table tr:last-child td { border-bottom:none; }
