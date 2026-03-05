@@ -68,8 +68,11 @@
         @if($user->phone)<div class="id-detail"><i class="fas fa-phone" style="font-size:.75rem;opacity:.7;margin-right:.3rem"></i>{{ $user->phone }}</div>@endif
         <div class="id-since">Membre depuis le {{ $user->created_at->format('d F Y') }}</div>
         <div class="id-badge">
-            @if($user->role === 'admin')<i class="fas fa-shield-alt"></i> Administrateur
-            @else<i class="fas fa-user"></i> Participant@endif
+            @if($user->role === 'admin')
+                <i class="fas fa-shield-alt"></i> Administrateur
+            @else
+                <i class="fas fa-user"></i> Participant
+            @endif
         </div>
     </div>
 </div>
