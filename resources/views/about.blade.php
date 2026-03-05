@@ -35,18 +35,18 @@
         </ul>
     </div>
 
-    @if($stats['participants'] > 0 || $stats['projets'] > 0)
+    @if($globalStats['participants'] > 0 || $globalStats['projets'] > 0)
     <div class="content-section">
         <h2>JSD en chiffres — toutes éditions confondues</h2>
         <ul>
-            @if($stats['participants'])
-            <li>Plus de {{ number_format($stats['participants']) }} participants : élèves, étudiants, entrepreneurs, startupeurs, enseignants-chercheurs et acteurs de la transformation numérique</li>
+            @if($globalStats['participants'])
+            <li>Plus de {{ number_format($globalStats['participants']) }} participants : élèves, étudiants, entrepreneurs, startupeurs, enseignants-chercheurs et acteurs de la transformation numérique</li>
             @endif
-            @if($stats['projets'])
-            <li>{{ $stats['projets'] }} projets présentés au Concours de Meilleur Projet Digital, couvrant des thématiques cruciales pour le Sahel</li>
+            @if($globalStats['projets'])
+            <li>{{ $globalStats['projets'] }} projets présentés au Concours de Meilleur Projet Digital, couvrant des thématiques cruciales pour le Sahel</li>
             @endif
-            @if($stats['programmeurs'])
-            <li>{{ $stats['programmeurs'] }} candidats au Concours du Meilleur Programmeur</li>
+            @if($globalStats['programmeurs'])
+            <li>{{ $globalStats['programmeurs'] }} candidats au Concours du Meilleur Programmeur</li>
             @endif
             <li>Participation de plusieurs startups et de l'entreprise CAMTEL</li>
             <li>Une leçon inaugurale magistrale par le Prof. KOLYANG</li>
