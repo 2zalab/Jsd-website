@@ -33,11 +33,15 @@
 
             <p class="event-description">
                 Préparez-vous à découvrir des projets créatifs, à participer à des concours passionnants et à assister à des débats sur les technologies de demain.
-                Ne manquez pas cet événement du <span class="highlight">26 au 28 novembre 2026</span>&nbsp;!
+                @if($edition->date_debut && $edition->date_fin)
+                Ne manquez pas cet événement du <span class="highlight">{{ $edition->date_debut->isoFormat('D') }} au {{ $edition->date_fin->isoFormat('D MMMM YYYY') }}</span>&nbsp;!
+                @endif
             </p>
+            @if($edition->date_limite_inscription)
             <p class="registration-deadline">
-                Inscrivez-vous et soumettez vos projets avant le <span class="highlight">15 novembre 2026</span>&nbsp;!
+                Inscrivez-vous et soumettez vos projets avant le <span class="highlight">{{ $edition->date_limite_inscription->isoFormat('D MMMM YYYY') }}</span>&nbsp;!
             </p>
+            @endif
 
             <div class="cta-buttons">
                 <a href="{{ route('concours.index') }}" class="btn btn-primary">
@@ -54,14 +58,14 @@
 {{-- ===== MODAL DATES ===== --}}
 <div id="contest-dates-modal" class="modal">
     <div class="modal-content" style="max-width:520px;">
-        <h3 style="font-size:1.4rem;font-weight:800;text-align:center;margin-bottom:0.25rem;color:var(--color-text)">Dates des Concours</h3>
+        <h3 style="font-size:1.4rem;font-weight:800;text-align:center;margin-bottom:0.25rem;color:var(--color-text)">Dates des Concours — {{ $edition->nom }}</h3>
         <p style="text-align:center;color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:1.5rem">Inscrivez-vous dès maintenant !</p>
 
         <div style="display:flex;flex-direction:column;gap:1rem;">
             <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-radius:var(--radius-xl);background:#eff6ff;">
                 <i class="fas fa-laptop-code" style="font-size:1.75rem;color:var(--color-primary-light);margin-top:2px;flex-shrink:0;"></i>
                 <div>
-                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:var(--color-primary);margin-bottom:0.25rem;">26 novembre</h4>
+                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:var(--color-primary);margin-bottom:0.25rem;">{{ $edition->date_debut ? $edition->date_debut->isoFormat('D MMMM') : 'À venir' }}</h4>
                     <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:0.75rem;">Concours des Meilleurs Projets Digital &amp; Hackathon</p>
                     <a href="{{ route('concours.index') }}" class="btn btn-primary" style="padding:0.4rem 1rem;font-size:var(--font-size-sm);">
                         <i class="fas fa-sign-in-alt"></i> S'inscrire
@@ -72,7 +76,7 @@
             <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-radius:var(--radius-xl);background:#f0fdf4;">
                 <i class="fas fa-code" style="font-size:1.75rem;color:var(--color-success);margin-top:2px;flex-shrink:0;"></i>
                 <div>
-                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:#065f46;margin-bottom:0.25rem;">27 novembre</h4>
+                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:#065f46;margin-bottom:0.25rem;">{{ $edition->date_debut ? $edition->date_debut->addDay()->isoFormat('D MMMM') : 'À venir' }}</h4>
                     <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:0.75rem;">Concours des Meilleurs Programmeurs</p>
                     <a href="{{ route('concours.index') }}" class="btn" style="padding:0.4rem 1rem;font-size:var(--font-size-sm);background:var(--color-success);color:#fff;border-color:var(--color-success);">
                         <i class="fas fa-sign-in-alt"></i> S'inscrire
@@ -97,7 +101,7 @@
         <div class="message-content">
             <h3>Mot du Président du Comité d'Organisation</h3>
             <p>Chers participants, chers partenaires,</p>
-            <p>C'est avec une immense fierté que je vous souhaite une massive participation à la troisième édition des Journées Sahel Digital (JSD'26). Sous le thème <strong>«&nbsp;Intelligence artificielle et développement de l'économie numérique : enjeux et perspectives pour le Sahel&nbsp;»</strong>, cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
+            <p>C'est avec une immense fierté que je vous souhaite une massive participation à la {{ $edition->numero }}{{ $edition->numero == 1 ? 'ère' : 'ème' }} édition des Journées Sahel Digital ({{ $edition->nom }}). Sous le thème @if($edition->theme)<strong>«&nbsp;{{ $edition->theme }}&nbsp;»</strong>@endif, cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
             <p>En tant que promoteurs de cette initiative, nous croyons fermement que l'avenir du continent africain passe par l'innovation technologique et numérique. L'intelligence artificielle offre des opportunités inédites pour relever les défis socio-économiques auxquels nous sommes confrontés.</p>
             <p>Que vous soyez programmeur·euse, entrepreneur·euse, étudiant·e ou simplement passionné·e du numérique, les Journées Sahel Digital sont faites pour vous. Ensemble, cultivons l'esprit d'innovation pour un Sahel prospère, connecté et résilient.</p>
         </div>
@@ -108,7 +112,7 @@
 <section class="activities">
     <div class="activities-inner">
         <h2 class="section-title centered">Activités</h2>
-        <p>Découvrez les activités phares des Journées Sahel Digital 2026&nbsp;: hackathons, concours de programmation, expositions de startups et conférences inspirantes.</p>
+        <p>Découvrez les activités phares des Journées Sahel Digital {{ $edition->annee }}&nbsp;: hackathons, concours de programmation, expositions de startups et conférences inspirantes.</p>
 
         <div class="activity-grid">
             @forelse($activites as $activite)
@@ -142,22 +146,28 @@
             <p>Le Département d'Informatique de l'École Nationale Supérieure Polytechnique de Maroua et ses partenaires initient les « Journées Sahel Digital » afin de faire éclore et promouvoir le génie des jeunes camerounais et d'encourager les porteurs de projets digitaux.</p>
 
             <div class="stats-grid">
+                @if($edition->stats_participants)
                 <div class="stat-item">
-                    <span class="stat-number">500+</span>
+                    <span class="stat-number">{{ number_format($edition->stats_participants) }}+</span>
                     <p>Participants : étudiants, entrepreneurs et passionnés de technologie venus de tout le Sahel.</p>
                 </div>
+                @endif
+                @if($edition->stats_projets)
                 <div class="stat-item">
-                    <span class="stat-number">11+</span>
+                    <span class="stat-number">{{ $edition->stats_projets }}+</span>
                     <p>Projets technologiques concrets ayant un impact positif sur la communauté locale.</p>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">11+</span>
-                    <p>Projets innovants présentés lors de la JSD'23, de l'e-commerce à l'intelligence artificielle.</p>
+                    <span class="stat-number">{{ $edition->stats_projets }}+</span>
+                    <p>Projets innovants présentés lors de la {{ $edition->nom }}, de l'e-commerce à l'intelligence artificielle.</p>
                 </div>
+                @endif
+                @if($edition->stats_programmeurs)
                 <div class="stat-item">
-                    <span class="stat-number">30+</span>
+                    <span class="stat-number">{{ $edition->stats_programmeurs }}+</span>
                     <p>Candidats talentueux aux concours des programmeurs et du Meilleur Projet Digital.</p>
                 </div>
+                @endif
             </div>
         </div>
         <div class="about-image">
@@ -170,7 +180,7 @@
 <section class="partners">
     <div class="partners-inner">
         <h2 class="section-title centered">Partenaires Officiels</h2>
-        <p>Nos partenaires soutiennent cette édition pour en faire un succès. Ensemble, nous façonnons l'avenir numérique du Sahel.</p>
+        <p>Nos partenaires soutiennent {{ $edition->nom }} pour en faire un succès. Ensemble, nous façonnons l'avenir numérique du Sahel.</p>
 
         <div class="partner-logos">
             @forelse($partenaires as $partenaire)
@@ -203,7 +213,7 @@
 <script>
 (function () {
     // --- Countdown ---
-    const countDownDate = new Date("Nov 26, 2026 08:00:00").getTime();
+    const countDownDate = new Date("{{ $edition->date_debut ? $edition->date_debut->format('M d, Y') . ' 08:00:00' : 'Jan 1, 2099 00:00:00' }}").getTime();
     const el = {
         days:    document.getElementById('days'),
         hours:   document.getElementById('hours'),

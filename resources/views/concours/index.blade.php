@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="page-header">
-    <h1>Participez aux Activités JSD'24</h1>
-    <p>Inscrivez-vous et prenez part aux compétitions et événements des Journées Sahel Digital.</p>
+    <h1>Participez aux Activités {{ $edition->nom }}</h1>
+    <p>Inscrivez-vous et prenez part aux compétitions et événements des Journées Sahel Digital {{ $edition->annee }}.</p>
 </div>
 
 <div class="container max-w-5xl mx-auto px-4 py-12">

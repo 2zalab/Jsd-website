@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PartenaireController;
 use App\Http\Controllers\Admin\ActiviteController;
 use App\Http\Controllers\Admin\RessourceController;
+use App\Http\Controllers\Admin\EditionController;
 
 // ─── Auth (invités uniquement) ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
@@ -142,6 +143,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/activites/{id}/modifier',    [ActiviteController::class, 'edit'])->name('admin.activites.edit');
     Route::put('/admin/activites/{id}',             [ActiviteController::class, 'update'])->name('admin.activites.update');
     Route::delete('/admin/activites/{id}',          [ActiviteController::class, 'destroy'])->name('admin.activites.destroy');
+
+    // ── Éditions ──────────────────────────────────────────────────────────────
+    Route::get('/admin/editions',              [EditionController::class, 'index'])->name('admin.editions.index');
+    Route::post('/admin/editions',             [EditionController::class, 'store'])->name('admin.editions.store');
+    Route::get('/admin/editions/{id}/json',    [EditionController::class, 'show'])->name('admin.editions.show');
+    Route::put('/admin/editions/{id}',         [EditionController::class, 'update'])->name('admin.editions.update');
+    Route::delete('/admin/editions/{id}',      [EditionController::class, 'destroy'])->name('admin.editions.destroy');
+    Route::post('/admin/editions/{id}/courante',[EditionController::class, 'setCourante'])->name('admin.editions.courante');
 
     // ── Ressources ────────────────────────────────────────────────────────────
     Route::get('/admin/ressources',                  [RessourceController::class, 'index'])->name('admin.ressources.index');

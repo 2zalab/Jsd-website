@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>JSD'26 — Journées Sahel Digital 2026</title>
+    <title>{{ $edition->nom }} — Journées Sahel Digital {{ $edition->annee }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -134,8 +134,8 @@
     <!-- ===== NAVIGATION ===== -->
     <header id="site-header">
         <nav>
-            <a href="{{ route('home') }}" class="logo" aria-label="Accueil JSD'26">
-                <img src="{{ asset('images/logo_jsd.png') }}" alt="Logo JSD'26">
+            <a href="{{ route('home') }}" class="logo" aria-label="Accueil {{ $edition->nom }}">
+                <img src="{{ asset('images/logo_jsd.png') }}" alt="Logo {{ $edition->nom }}">
             </a>
 
             <ul class="nav-links" id="nav-links" role="list">
@@ -179,12 +179,14 @@
         <!-- Content -->
         <div class="hero-content">
             <div class="hero-left">
-                <h1>Journées<br>Sahel Digital 2026</h1>
-                <p class="subtitle">Intelligence artificielle et développement de l'économie numérique : enjeux et perspectives pour le Sahel</p>
+                <h1>Journées<br>Sahel Digital {{ $edition->annee }}</h1>
+                @if($edition->theme)
+                <p class="subtitle">{{ $edition->theme }}</p>
+                @endif
                 <hr/>
             </div>
             <div class="hero-right">
-                <div class="hero-badge">3ème Édition</div>
+                <div class="hero-badge">{{ $edition->numero }}{{ $edition->numero == 1 ? 'ère' : 'ème' }} Édition</div>
                 <div class="cta-buttons">
                     <a href="{{ route('sponsor.form') }}" class="btn btn-primary">
                         <i class="fas fa-handshake"></i> Devenir Sponsor
@@ -223,7 +225,7 @@
                         <img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'26">
                     </a>
                 </div>
-                <p>Journées Sahel Digital 2026 — Intelligence artificielle et développement de l'économie numérique : enjeux et perspectives pour le Sahel.</p>
+                <p>Journées Sahel Digital {{ $edition->annee }}@if($edition->theme) — {{ $edition->theme }}@endif.</p>
                 <div class="footer-contact">
                     <p><i class="fas fa-envelope"></i> info@saheldigital.net</p>
                     <p><i class="fas fa-phone"></i> +237 697 460 267</p>
@@ -253,7 +255,7 @@
 
             <div class="footer-newsletter">
                 <h4>Nous Rejoindre</h4>
-                <p>Inscrivez-vous à notre newsletter pour ne rien manquer de JSD'26.</p>
+                <p>Inscrivez-vous à notre newsletter pour ne rien manquer de {{ $edition->nom }}.</p>
                 <form id="newsletter">
                     @csrf
                     <input type="email" name="email" placeholder="Votre adresse email" required>
@@ -276,7 +278,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; Journées Sahel Digital 2026 — Tous droits réservés</p>
+            <p>&copy; Journées Sahel Digital {{ $edition->annee }} — Tous droits réservés</p>
             <p>Conçu par <a href="https://2zalab.com" target="_blank" rel="noopener">2zaLab</a></p>
             <div class="social-icons">
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
