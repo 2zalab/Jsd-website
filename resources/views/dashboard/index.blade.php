@@ -133,9 +133,9 @@
         <h1>Bonjour, {{ explode(' ', $user->name)[0] }} 👋</h1>
         <p>Bienvenue sur votre espace personnel JSD'24 — {{ now()->format('l d F Y') }}</p>
     </div>
-    <a href="{{ route('concours.index') }}" class="btn-white">
+    <button onclick="openInscModal(event)" class="btn-white">
         <i class="fas fa-plus"></i> Nouvelle inscription
-    </a>
+    </button>
 </div>
 
 {{-- ── KPI cards ── --}}
@@ -160,18 +160,18 @@
 
 {{-- ── Quick actions ── --}}
 <div class="qa-grid">
-    <a href="{{ route('dashboard.inscription.programmeur') }}" class="qa-btn">
+    <button onclick="openFormPanel('programmeur')" class="qa-btn" style="font-family:inherit;cursor:pointer;font-size:.875rem">
         <div class="qa-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-code"></i></div>
         <div><div>Concours Programmeur</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">CMPL / CMPS</div></div>
-    </a>
-    <a href="{{ route('dashboard.inscription.projet-digital') }}" class="qa-btn">
+    </button>
+    <button onclick="openFormPanel('projet-digital')" class="qa-btn" style="font-family:inherit;cursor:pointer;font-size:.875rem">
         <div class="qa-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-laptop-code"></i></div>
         <div><div>Projet Digital</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">CMPDL / CMPDS</div></div>
-    </a>
-    <a href="{{ route('dashboard.inscription.hackathon') }}" class="qa-btn">
+    </button>
+    <button onclick="openFormPanel('hackathon')" class="qa-btn" style="font-family:inherit;cursor:pointer;font-size:.875rem">
         <div class="qa-icon" style="background:#fdf4ff;color:#a855f7"><i class="fas fa-rocket"></i></div>
         <div><div>Hackathon JSD'24</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">Lycée / Supérieur</div></div>
-    </a>
+    </button>
 </div>
 
 {{-- ── Inscriptions ── --}}
@@ -184,7 +184,7 @@
         <div class="empty-box">
             <i class="fas fa-inbox"></i>
             <p>Vous n'avez aucune inscription pour le moment.</p>
-            <a href="{{ route('concours.index') }}" class="btn btn-primary" style="font-size:.875rem"><i class="fas fa-plus"></i> S'inscrire à un concours</a>
+            <button onclick="openInscModal(event)" class="btn btn-primary" style="font-size:.875rem;font-family:inherit;cursor:pointer"><i class="fas fa-plus"></i> S'inscrire à un concours</button>
         </div>
     @else
         {{-- Type filter --}}
