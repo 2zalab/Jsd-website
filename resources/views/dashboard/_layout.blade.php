@@ -111,12 +111,12 @@
         .ds-overlay.show{display:block}
 
         /* ── Responsive ── */
-        @media(max-width:1024px){
+        @@media(max-width:1024px){
             .ds-sidebar{transform:translateX(-100%)}
             .ds-main{margin-left:0;padding:1.5rem}
             .ds-topbar{display:flex}
         }
-        @media(max-width:640px){
+        @@media(max-width:640px){
             .ds-main{padding:1rem}
         }
     </style>

@@ -57,8 +57,11 @@ class ConcoursController extends Controller
             'langages' => json_encode($validated['langages']),
         ]));
 
-        return redirect()->route('concours.programmeur')
-            ->with('success', 'Votre inscription au concours de programmeur a été enregistrée avec succès.');
+        $success = 'Votre inscription au concours de programmeur a été enregistrée avec succès.';
+        if ($request->input('_from') === 'dashboard') {
+            return redirect()->route('dashboard')->with('success', $success);
+        }
+        return redirect()->route('concours.programmeur')->with('success', $success);
     }
 
     // ─── Projet Digital ──────────────────────────────────────────────────
@@ -119,8 +122,11 @@ class ConcoursController extends Controller
 
         $projetDigital->save();
 
-        return redirect()->route('concours.projet-digital')
-            ->with('success', 'Votre projet digital a été soumis avec succès.');
+        $success = 'Votre projet digital a été soumis avec succès.';
+        if ($request->input('_from') === 'dashboard') {
+            return redirect()->route('dashboard')->with('success', $success);
+        }
+        return redirect()->route('concours.projet-digital')->with('success', $success);
     }
 
     // ─── Hackathon ───────────────────────────────────────────────────────
@@ -150,8 +156,11 @@ class ConcoursController extends Controller
 
         Hackathon::create(array_merge($validated, ['user_id' => Auth::id()]));
 
-        return redirect()->route('concours.hackathon')
-            ->with('success', 'Votre équipe a été inscrite au Hackathon avec succès.');
+        $success = 'Votre équipe a été inscrite au Hackathon avec succès.';
+        if ($request->input('_from') === 'dashboard') {
+            return redirect()->route('dashboard')->with('success', $success);
+        }
+        return redirect()->route('concours.hackathon')->with('success', $success);
     }
 
     // ─── Stand ───────────────────────────────────────────────────────────
@@ -174,7 +183,10 @@ class ConcoursController extends Controller
 
         Stand::create(array_merge($validated, ['user_id' => Auth::id()]));
 
-        return redirect()->route('concours.stand')
-            ->with('success', 'Votre réservation de stand a été enregistrée avec succès.');
+        $success = 'Votre réservation de stand a été enregistrée avec succès.';
+        if ($request->input('_from') === 'dashboard') {
+            return redirect()->route('dashboard')->with('success', $success);
+        }
+        return redirect()->route('concours.stand')->with('success', $success);
     }
 }

@@ -39,6 +39,11 @@ Route::middleware('auth')->prefix('mon-espace')->group(function () {
     Route::put('/profil',                         [UserDashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
     Route::put('/profil/password',                [UserDashboardController::class, 'updatePassword'])->name('dashboard.password.update');
     Route::delete('/compte',                      [UserDashboardController::class, 'deleteAccount'])->name('dashboard.account.delete');
+    // Inscriptions dans l'espace utilisateur
+    Route::get('/inscriptions/programmeur',    [UserDashboardController::class, 'inscriptionProgrammeur'])->name('dashboard.inscription.programmeur');
+    Route::get('/inscriptions/projet-digital', [UserDashboardController::class, 'inscriptionProjetDigital'])->name('dashboard.inscription.projet-digital');
+    Route::get('/inscriptions/hackathon',      [UserDashboardController::class, 'inscriptionHackathon'])->name('dashboard.inscription.hackathon');
+    Route::get('/inscriptions/stand',          [UserDashboardController::class, 'inscriptionStand'])->name('dashboard.inscription.stand');
 });
 
 // ─── Panel Admin (auth + rôle admin) ─────────────────────────────────────────

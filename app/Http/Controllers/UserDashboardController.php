@@ -124,4 +124,46 @@ class UserDashboardController extends Controller
 
         return redirect('/')->with('success', 'Votre compte a été supprimé.');
     }
+
+    public function inscriptionProgrammeur()
+    {
+        $user  = Auth::user();
+        $unread = $user->unreadNotificationsCount();
+        $typesConcours = [
+            'CMPL' => 'Concours Meilleur.e Programmeur.e Lycéen (CMPL)',
+            'CMPS' => 'Concours Meilleur.e Programmeur.e Senior (CMPS)',
+        ];
+        $langagesProgrammation = [
+            'JavaScript','Python','Java','C','C++','C#','Ruby','PHP','Swift',
+            'Go','Rust','TypeScript','Kotlin','Scala','R','Dart',
+            'Lua','Perl','Haskell','Julia','COBOL','Pascal',
+        ];
+        return view('dashboard.inscriptions.programmeur', compact('user', 'unread', 'typesConcours', 'langagesProgrammation'));
+    }
+
+    public function inscriptionProjetDigital()
+    {
+        $user  = Auth::user();
+        $unread = $user->unreadNotificationsCount();
+        $typesConcours = [
+            'CMPDL' => 'Concours Meilleur Projet Digital Lycéen (CMPDL)',
+            'CMPDS' => 'Concours Meilleur Projet Digital Senior (CMPDS)',
+        ];
+        return view('dashboard.inscriptions.projet-digital', compact('user', 'unread', 'typesConcours'));
+    }
+
+    public function inscriptionHackathon()
+    {
+        $user  = Auth::user();
+        $unread = $user->unreadNotificationsCount();
+        return view('dashboard.inscriptions.hackathon', compact('user', 'unread'));
+    }
+
+    public function inscriptionStand()
+    {
+        $user  = Auth::user();
+        $unread = $user->unreadNotificationsCount();
+        return view('dashboard.inscriptions.stand', compact('user', 'unread'));
+    }
+
 }

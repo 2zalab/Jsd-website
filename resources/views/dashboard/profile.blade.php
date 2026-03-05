@@ -48,7 +48,7 @@
 .btn-cancel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.65rem 1.25rem;font-size:.875rem;font-weight:600;color:#64748b;cursor:pointer;font-family:inherit;transition:all .15s}
 .btn-cancel:hover{background:#f1f5f9}
 
-@media(max-width:900px){.profile-grid{grid-template-columns:1fr}}
+@@media(max-width:900px){.profile-grid{grid-template-columns:1fr}}
 </style>
 @endpush
 
