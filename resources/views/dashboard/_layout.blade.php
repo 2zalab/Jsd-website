@@ -137,8 +137,8 @@
         .itc-name{font-size:.9rem;font-weight:700;color:#0f172a;margin-bottom:.2rem}
         .itc-sub{font-size:.72rem;color:#94a3b8}
 
-        /* ── Form panels (full-screen slide-over) ── */
-        .form-panel{position:fixed;inset:0;z-index:2001;background:#f4f6fb;overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+        /* ── Form panels (side-panel — sidebar stays visible) ── */
+        .form-panel{position:fixed;left:260px;top:0;bottom:0;right:0;z-index:200;background:#f4f6fb;overflow-y:auto;transform:translateX(calc(100% + 260px));transition:transform .3s cubic-bezier(.32,.72,0,1)}
         .form-panel.open{transform:translateX(0)}
         .fp-header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #e8ecf0;padding:.875rem 1.5rem;display:flex;align-items:center;gap:1rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
         .fp-back{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #e2e8f0;cursor:pointer;font-size:.85rem;font-weight:600;color:#64748b;padding:.4rem .875rem;border-radius:9px;transition:all .15s;font-family:inherit}
@@ -179,6 +179,9 @@
         .fp-err li{color:#991b1b;font-size:.85rem;margin-bottom:.2rem}
         .fp-file input[type=file]{width:100%;padding:.6rem .875rem;border:1.5px dashed #e2e8f0;border-radius:10px;font-size:.85rem;cursor:pointer;background:#fafbfc}
         .fp-file input[type=file]:hover{border-color:#6366f1}
+        @@media(max-width:900px){
+            .form-panel{left:0;transform:translateX(100%)}
+        }
         @@media(max-width:600px){
             .insc-type-grid{grid-template-columns:1fr}
             .fp-grid,.fp-type-row{grid-template-columns:1fr}
