@@ -51,8 +51,8 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-            $view->with('edition', $edition);
-            $view->with('stats',   $stats);
+            $view->with('edition',     $edition);
+            $view->with('globalStats', $stats);
         });
     }
 }

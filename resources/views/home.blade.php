@@ -242,19 +242,19 @@
 
             <div class="stats-grid">
                 <div class="stat-item">
-                    <span class="stat-number">{{ number_format($stats['participants']) }}+</span>
+                    <span class="stat-number">{{ number_format($globalStats['participants']) }}+</span>
                     <p>Participants : étudiants, entrepreneurs et passionnés de technologie venus de tout le Sahel.</p>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">{{ $stats['projets'] }}+</span>
+                    <span class="stat-number">{{ $globalStats['projets'] }}+</span>
                     <p>Projets technologiques concrets ayant un impact positif sur la communauté locale.</p>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">{{ $stats['editions'] }}</span>
+                    <span class="stat-number">{{ $globalStats['editions'] }}</span>
                     <p>Éditions organisées depuis le lancement des Journées Sahel Digital.</p>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">{{ $stats['programmeurs'] }}+</span>
+                    <span class="stat-number">{{ $globalStats['programmeurs'] }}+</span>
                     <p>Candidats talentueux aux concours des programmeurs et du Meilleur Projet Digital.</p>
                 </div>
             </div>
