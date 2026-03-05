@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ressource;
+use App\Models\Edition;
 
 class PhotoController extends Controller
 {
     public function index()
     {
-        $jsd23Photos = Ressource::edition('JSD23')->photos()->orderBy('ordre')->get();
-        $jsd23Docs   = Ressource::edition('JSD23')->documents()->orderBy('ordre')->get();
-        $jsd26Photos = Ressource::edition('JSD26')->photos()->orderBy('ordre')->get();
-        $jsd26Docs   = Ressource::edition('JSD26')->documents()->orderBy('ordre')->get();
+        $editions = Edition::orderByDesc('numero')->get();
 
-        return view('ressources.index', compact('jsd23Photos', 'jsd23Docs', 'jsd26Photos', 'jsd26Docs'));
+        $ressourcesParEdition = $editions->map(function ($ed) {
+            $key = str_replace("'", "", $ed->nom); // JSD'23 → JSD23
+            return [
+                'edition' => $ed,
+                'photos'  => Ressource::edition($key)->photos()->orderBy('ordre')->get(),
+                'docs'    => Ressource::edition($key)->documents()->orderBy('ordre')->get(),
+            ];
+        });
+
+        return view('ressources.index', compact('editions', 'ressourcesParEdition'));
     }
 }

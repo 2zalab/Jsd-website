@@ -125,6 +125,12 @@
         background: #fff;
         transform: scale(1.3);
     }
+    /* ── Active nav link ── */
+    .nav-link.active {
+        color: #16a34a !important;
+        border-bottom: 2px solid #16a34a;
+        padding-bottom: 2px;
+    }
     </style>
 
     @yield('styles')
@@ -139,19 +145,16 @@
             </a>
 
             <ul class="nav-links" id="nav-links" role="list">
-                <li><a href="{{ route('home') }}"             class="nav-link">Accueil</a></li>
-                <li><a href="{{ route('activities') }}"       class="nav-link">Activités</a></li>
-                <li><a href="{{ route('ressources.index') }}" class="nav-link">Ressources</a></li>
-                <li><a href="{{ route('about') }}"            class="nav-link">À Propos</a></li>
-                <li><a href="{{ route('contact.index') }}"    class="nav-link">Contact</a></li>
+                <li><a href="{{ route('home') }}"             class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Accueil</a></li>
+                <li><a href="{{ route('about') }}"            class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">À Propos</a></li>
+                <li><a href="{{ route('activities') }}"       class="nav-link {{ request()->routeIs('activities') ? 'active' : '' }}">Activités</a></li>
+                <li><a href="{{ route('ressources.index') }}" class="nav-link {{ request()->routeIs('ressources.*') ? 'active' : '' }}">Ressources</a></li>
+                <li><a href="{{ route('contact.index') }}"    class="nav-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact</a></li>
                 @auth
-                <li><a href="{{ route('dashboard') }}"        class="nav-link">
+                <li><a href="{{ route('dashboard') }}"        class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
                     <i class="fas fa-user-circle"></i> Mon Espace
                 </a></li>
                 @endauth
-                <li><a href="{{ route('concours.index') }}"  class="nav-link nav-cta">
-                    <i class="fas fa-user-plus"></i> S'inscrire
-                </a></li>
             </ul>
 
             <button class="menu-toggle" id="menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
@@ -188,8 +191,8 @@
             <div class="hero-right">
                 <div class="hero-badge">{{ $edition->numero }}{{ $edition->numero == 1 ? 'ère' : 'ème' }} Édition</div>
                 <div class="cta-buttons">
-                    <a href="{{ route('sponsor.form') }}" class="btn btn-primary">
-                        <i class="fas fa-handshake"></i> Devenir Sponsor
+                    <a href="{{ route('concours.index') }}" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> S'inscrire aux concours
                     </a>
                     <a href="{{ route('donate.index') }}" class="btn btn-secondary">
                         <i class="fas fa-donate"></i> Faire un don

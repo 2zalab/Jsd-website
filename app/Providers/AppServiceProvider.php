@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Edition;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // French locale for all Carbon dates
+        Carbon::setLocale('fr');
+
         // Share the current edition and global stats with all views
         View::composer('*', function ($view) {
             static $edition  = null;
