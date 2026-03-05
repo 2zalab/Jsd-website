@@ -180,25 +180,54 @@
         <h2 class="section-title centered">Activités</h2>
         <p>Découvrez les activités phares des Journées Sahel Digital {{ $edition->annee }}&nbsp;: hackathons, concours de programmation, expositions de startups et conférences inspirantes.</p>
 
-        <div class="activity-grid">
-            @forelse($activites as $activite)
-            <div class="activity-card">
-                @if($activite->image)
-                <img src="{{ asset('images/' . $activite->image) }}" alt="{{ $activite->titre }}" loading="lazy">
-                @endif
-                <div class="activity-card-body">
-                    <h3>{{ $activite->titre }}</h3>
-                    <p>{{ $activite->description }}</p>
-                </div>
+        @if($activites->isNotEmpty())
+        @php $featured = $activites->first(); $others = $activites->slice(1)->take(4); @endphp
+
+        {{-- Featured activity (Hackathon) — full width horizontal card --}}
+        <div style="display:flex;gap:0;border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:1.5rem;min-height:260px;background:var(--color-bg-card);">
+            @if($featured->image)
+            <div style="flex:0 0 42%;max-width:42%;overflow:hidden;">
+                <img src="{{ asset('images/' . $featured->image) }}" alt="{{ $featured->titre }}" loading="lazy"
+                     style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
             </div>
-            @empty
-            <p style="color:var(--color-text-muted)">Aucune activité disponible pour le moment.</p>
-            @endforelse
+            @endif
+            <div style="flex:1;padding:2rem 2.25rem;display:flex;flex-direction:column;justify-content:center;gap:.75rem;">
+                <span style="display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,#eff6ff,#dbeafe);color:var(--color-primary);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .85rem;border-radius:999px;width:fit-content;">
+                    <i class="fas fa-star" style="font-size:.65rem;"></i> À la une
+                </span>
+                <h3 style="font-size:1.35rem;font-weight:800;color:var(--color-text);margin:0;">{{ $featured->titre }}</h3>
+                <p style="color:var(--color-text-muted);font-size:.95rem;line-height:1.65;margin:0;">{{ $featured->description }}</p>
+                <a href="{{ route('concours.hackathon') }}" class="btn btn-primary" style="width:fit-content;margin-top:.25rem;font-size:.875rem;padding:.5rem 1.25rem;">
+                    <i class="fas fa-rocket"></i> S'inscrire
+                </a>
+            </div>
         </div>
 
+        {{-- 2 × 2 grid for remaining activities --}}
+        @if($others->count())
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:1.5rem;">
+            @foreach($others as $activite)
+            <div style="background:var(--color-bg-card);border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow var(--transition),transform var(--transition);" onmouseover="this.style.boxShadow='var(--shadow-md)';this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='var(--shadow-sm)';this.style.transform='translateY(0)'">
+                @if($activite->image)
+                <img src="{{ asset('images/' . $activite->image) }}" alt="{{ $activite->titre }}" loading="lazy"
+                     style="width:100%;height:180px;object-fit:cover;display:block;">
+                @endif
+                <div style="padding:1.25rem 1.5rem;">
+                    <h3 style="font-size:1rem;font-weight:700;color:var(--color-text);margin-bottom:.4rem;">{{ $activite->titre }}</h3>
+                    <p style="font-size:.875rem;color:var(--color-text-muted);line-height:1.6;margin:0;">{{ $activite->description }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        @else
+        <p style="color:var(--color-text-muted)">Aucune activité disponible pour le moment.</p>
+        @endif
+
         <div style="text-align:center;">
-            <a href="{{ route('concours.index') }}" class="btn btn-primary">
-                Participez à une activité <i class="fas fa-arrow-right"></i>
+            <a href="{{ route('activities') }}" class="btn btn-primary">
+                Voir toutes les activités <i class="fas fa-arrow-right"></i>
             </a>
         </div>
     </div>
