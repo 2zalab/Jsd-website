@@ -28,7 +28,7 @@
                 <li>Choisissez parmi une variété de langages de programmation</li>
                 <li>Deux catégories : Lycéen (CMPL) et Senior (CMPS)</li>
             </ul>
-            <a href="{{ route('concours.programmeur') }}" class="btn btn-primary" style="font-size:.875rem;">
+            <a href="{{ auth()->check() ? route('dashboard').'?panel=programmeur' : route('login') }}" class="btn btn-primary" style="font-size:.875rem;">
                 <i class="fas fa-user-plus"></i> S'inscrire
             </a>
         </div>
@@ -43,7 +43,7 @@
                 <li>Fournir un descriptif, un certificat de scolarité et une présentation vidéo</li>
                 <li>Business plan facultatif mais recommandé</li>
             </ul>
-            <a href="{{ route('concours.projet-digital') }}" class="btn btn-primary" style="background:linear-gradient(135deg,#10b981,#059669); box-shadow:0 4px 14px rgba(16,185,129,.35); font-size:.875rem;">
+            <a href="{{ auth()->check() ? route('dashboard').'?panel=projet-digital' : route('login') }}" class="btn btn-primary" style="background:linear-gradient(135deg,#10b981,#059669); box-shadow:0 4px 14px rgba(16,185,129,.35); font-size:.875rem;">
                 <i class="fas fa-user-plus"></i> S'inscrire
             </a>
         </div>
@@ -58,7 +58,7 @@
                 <li>Travaillez sur un projet pendant 24 à 48 heures</li>
                 <li>Présentez votre solution devant un jury</li>
             </ul>
-            <a href="{{ route('concours.hackathon') }}" class="btn btn-primary" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed); box-shadow:0 4px 14px rgba(124,58,237,.35); font-size:.875rem;">
+            <a href="{{ auth()->check() ? route('dashboard').'?panel=hackathon' : route('login') }}" class="btn btn-primary" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed); box-shadow:0 4px 14px rgba(124,58,237,.35); font-size:.875rem;">
                 <i class="fas fa-user-plus"></i> S'inscrire
             </a>
         </div>

@@ -363,10 +363,17 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('insc-overlay').addEventListener('click', function (e) {
         if (e.target === this) closeInscModal();
     });
-    /* Auto-open panel if form had validation errors */
     const validPanels = ['programmeur', 'projet-digital', 'hackathon'];
-    const autoPanel = '{{ old("_form_panel") }}';
-    if (validPanels.includes(autoPanel)) openFormPanel(autoPanel);
+    /* From ?panel= URL param (redirect from /concours) */
+    const urlPanel = new URLSearchParams(window.location.search).get('panel');
+    /* From form validation errors */
+    const errPanel = '{{ old("_form_panel") }}';
+    const autoPanel = validPanels.includes(urlPanel) ? urlPanel : (validPanels.includes(errPanel) ? errPanel : null);
+    if (autoPanel) {
+        openFormPanel(autoPanel);
+        /* Clean URL without reloading */
+        history.replaceState(null, '', window.location.pathname);
+    }
 });
 </script>
 
