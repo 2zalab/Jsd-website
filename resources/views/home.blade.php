@@ -47,49 +47,115 @@
                 <a href="{{ route('concours.index') }}" class="btn btn-primary">
                     <i class="fas fa-user-plus"></i> S'inscrire aux concours
                 </a>
-                <button id="open-contest-dates-modal" class="btn btn-secondary2">
-                    <i class="fas fa-calendar-alt"></i> Dates des concours
-                </button>
+                <a href="{{ route('sponsor.form') }}" class="btn btn-secondary2">
+                    <i class="fas fa-handshake"></i> Devenir Sponsor
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-{{-- ===== MODAL DATES ===== --}}
-<div id="contest-dates-modal" class="modal">
-    <div class="modal-content" style="max-width:520px;">
-        <h3 style="font-size:1.4rem;font-weight:800;text-align:center;margin-bottom:0.25rem;color:var(--color-text)">Dates des Concours — {{ $edition->nom }}</h3>
-        <p style="text-align:center;color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:1.5rem">Inscrivez-vous dès maintenant !</p>
-
-        <div style="display:flex;flex-direction:column;gap:1rem;">
-            <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-radius:var(--radius-xl);background:#eff6ff;">
-                <i class="fas fa-laptop-code" style="font-size:1.75rem;color:var(--color-primary-light);margin-top:2px;flex-shrink:0;"></i>
-                <div>
-                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:var(--color-primary);margin-bottom:0.25rem;">{{ $edition->date_debut ? $edition->date_debut->isoFormat('D MMMM') : 'À venir' }}</h4>
-                    <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:0.75rem;">Concours des Meilleurs Projets Digital &amp; Hackathon</p>
-                    <a href="{{ route('concours.index') }}" class="btn btn-primary" style="padding:0.4rem 1rem;font-size:var(--font-size-sm);">
-                        <i class="fas fa-sign-in-alt"></i> S'inscrire
-                    </a>
-                </div>
-            </div>
-
-            <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-radius:var(--radius-xl);background:#f0fdf4;">
-                <i class="fas fa-code" style="font-size:1.75rem;color:var(--color-success);margin-top:2px;flex-shrink:0;"></i>
-                <div>
-                    <h4 style="font-size:var(--font-size-lg);font-weight:700;color:#065f46;margin-bottom:0.25rem;">{{ $edition->date_debut ? $edition->date_debut->addDay()->isoFormat('D MMMM') : 'À venir' }}</h4>
-                    <p style="color:var(--color-text-muted);font-size:var(--font-size-sm);margin-bottom:0.75rem;">Concours des Meilleurs Programmeurs</p>
-                    <a href="{{ route('concours.index') }}" class="btn" style="padding:0.4rem 1rem;font-size:var(--font-size-sm);background:var(--color-success);color:#fff;border-color:var(--color-success);">
-                        <i class="fas fa-sign-in-alt"></i> S'inscrire
-                    </a>
-                </div>
-            </div>
+{{-- ===== PROGRAMME 3 JOURS ===== --}}
+@if($edition->date_debut)
+<section style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%);padding:3rem 0;">
+    <div style="max-width:var(--container-max,1200px);margin:0 auto;padding:0 1.5rem;">
+        <div style="text-align:center;margin-bottom:2rem;">
+            <span style="display:inline-block;background:rgba(99,102,241,.2);color:#a5b4fc;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem 1rem;border-radius:999px;margin-bottom:.75rem;">
+                <i class="fas fa-calendar-check"></i>&nbsp; Programme {{ $edition->nom }}
+            </span>
+            <h2 style="color:#fff;font-size:1.6rem;font-weight:800;margin:0;">
+                {{ $edition->date_debut->isoFormat('D') }} – {{ $edition->date_fin ? $edition->date_fin->isoFormat('D MMMM YYYY') : '' }}
+                &nbsp;·&nbsp; {{ $edition->lieu }}
+            </h2>
         </div>
 
-        <button id="close-modal" style="margin-top:1.5rem;width:100%;padding:0.75rem;background:var(--color-bg-section);border:none;border-radius:var(--radius-xl);font-weight:600;color:var(--color-text-muted);cursor:pointer;transition:background var(--transition);" onmouseover="this.style.background='var(--color-border)'" onmouseout="this.style.background='var(--color-bg-section)'">
-            <i class="fas fa-times"></i> Fermer
-        </button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;">
+
+            {{-- Jour 1 --}}
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.5rem;backdrop-filter:blur(6px);transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;">
+                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:#fff;flex-shrink:0;">1</div>
+                    <div>
+                        <div style="color:#a5b4fc;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Jour 1</div>
+                        <div style="color:#fff;font-weight:700;font-size:.95rem;">{{ $edition->date_debut->isoFormat('dddd D MMMM') }}</div>
+                    </div>
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.6rem;">
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-flag" style="color:#818cf8;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Cérémonie de lancement
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-laptop-code" style="color:#818cf8;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Évaluation des Projets Digitaux
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-rocket" style="color:#818cf8;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Lancement du Hackathon
+                    </li>
+                </ul>
+            </div>
+
+            {{-- Jour 2 --}}
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.5rem;backdrop-filter:blur(6px);transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;">
+                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:#fff;flex-shrink:0;">2</div>
+                    <div>
+                        <div style="color:#6ee7b7;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Jour 2</div>
+                        <div style="color:#fff;font-weight:700;font-size:.95rem;">{{ $edition->date_debut->copy()->addDay()->isoFormat('dddd D MMMM') }}</div>
+                    </div>
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.6rem;">
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-code" style="color:#34d399;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Évaluation du Hackathon
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-trophy" style="color:#34d399;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Concours Meilleur Programmeur
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-gift" style="color:#34d399;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Préparation des prix
+                    </li>
+                </ul>
+            </div>
+
+            {{-- Jour 3 --}}
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.5rem;backdrop-filter:blur(6px);transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;">
+                    <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:#fff;flex-shrink:0;">3</div>
+                    <div>
+                        <div style="color:#fcd34d;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Jour 3</div>
+                        <div style="color:#fff;font-weight:700;font-size:.95rem;">{{ $edition->date_debut->copy()->addDays(2)->isoFormat('dddd D MMMM') }}</div>
+                    </div>
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.6rem;">
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-award" style="color:#fbbf24;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Remise des prix &amp; récompenses
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#cbd5e1;font-size:.875rem;">
+                        <i class="fas fa-flag-checkered" style="color:#fbbf24;margin-top:2px;flex-shrink:0;font-size:.8rem;"></i>
+                        Cérémonie de clôture
+                    </li>
+                    <li style="display:flex;align-items:flex-start;gap:.6rem;color:#94a3b8;font-size:.8rem;font-style:italic;">
+                        <i class="fas fa-info-circle" style="color:#64748b;margin-top:2px;flex-shrink:0;font-size:.75rem;"></i>
+                        Programme détaillé à finaliser par le secrétariat
+                    </li>
+                </ul>
+            </div>
+
+        </div>{{-- /grid --}}
+
+        <div style="text-align:center;margin-top:1.75rem;">
+            <a href="{{ route('concours.index') }}" class="btn btn-primary" style="background:rgba(99,102,241,.9);border-color:transparent;">
+                <i class="fas fa-user-plus"></i> S'inscrire maintenant
+            </a>
+        </div>
     </div>
-</div>
+</section>
+@endif
 
 {{-- ===== MOT DU PRÉSIDENT ===== --}}
 <section style="background:#fff; padding: 4rem 0; border-top: 1px solid #e2e8f0;">
@@ -146,28 +212,22 @@
             <p>Le Département d'Informatique de l'École Nationale Supérieure Polytechnique de Maroua et ses partenaires initient les « Journées Sahel Digital » afin de faire éclore et promouvoir le génie des jeunes camerounais et d'encourager les porteurs de projets digitaux.</p>
 
             <div class="stats-grid">
-                @if($edition->stats_participants)
                 <div class="stat-item">
-                    <span class="stat-number">{{ number_format($edition->stats_participants) }}+</span>
+                    <span class="stat-number">{{ number_format($stats['participants']) }}+</span>
                     <p>Participants : étudiants, entrepreneurs et passionnés de technologie venus de tout le Sahel.</p>
                 </div>
-                @endif
-                @if($edition->stats_projets)
                 <div class="stat-item">
-                    <span class="stat-number">{{ $edition->stats_projets }}+</span>
+                    <span class="stat-number">{{ $stats['projets'] }}+</span>
                     <p>Projets technologiques concrets ayant un impact positif sur la communauté locale.</p>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">{{ $edition->stats_projets }}+</span>
-                    <p>Projets innovants présentés lors de la {{ $edition->nom }}, de l'e-commerce à l'intelligence artificielle.</p>
+                    <span class="stat-number">{{ $stats['editions'] }}</span>
+                    <p>Éditions organisées depuis le lancement des Journées Sahel Digital.</p>
                 </div>
-                @endif
-                @if($edition->stats_programmeurs)
                 <div class="stat-item">
-                    <span class="stat-number">{{ $edition->stats_programmeurs }}+</span>
+                    <span class="stat-number">{{ $stats['programmeurs'] }}+</span>
                     <p>Candidats talentueux aux concours des programmeurs et du Meilleur Projet Digital.</p>
                 </div>
-                @endif
             </div>
         </div>
         <div class="about-image">
@@ -238,16 +298,6 @@
         if (el.seconds) el.seconds.textContent = pad(Math.floor((distance % 60000)    / 1000));
     }, 1000);
 
-    // --- Modal dates ---
-    const modal   = document.getElementById('contest-dates-modal');
-    const openBtn = document.getElementById('open-contest-dates-modal');
-    const closeBtn= document.getElementById('close-modal');
-
-    if (modal && openBtn && closeBtn) {
-        openBtn.addEventListener('click',  () => modal.style.display = 'block');
-        closeBtn.addEventListener('click', () => modal.style.display = 'none');
-        modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
-    }
 })();
 </script>
 @endsection

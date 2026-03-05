@@ -15,9 +15,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // Share the current edition with all views
+        // Share the current edition and global stats with all views
         View::composer('*', function ($view) {
-            static $edition = null;
+            static $edition  = null;
+            static $stats    = null;
+
             if ($edition === null) {
                 try {
                     $edition = Edition::courante() ?? new Edition([
@@ -27,6 +29,12 @@ class AppServiceProvider extends ServiceProvider
                         'theme'  => '',
                         'lieu'   => 'Maroua, Cameroun',
                     ]);
+                    $stats = [
+                        'participants' => Edition::sum('stats_participants') ?: 500,
+                        'projets'      => Edition::sum('stats_projets')      ?: 11,
+                        'programmeurs' => Edition::sum('stats_programmeurs') ?: 30,
+                        'editions'     => Edition::count()                   ?: 1,
+                    ];
                 } catch (\Throwable $e) {
                     $edition = new Edition([
                         'nom'    => "JSD",
@@ -35,9 +43,12 @@ class AppServiceProvider extends ServiceProvider
                         'theme'  => '',
                         'lieu'   => 'Maroua, Cameroun',
                     ]);
+                    $stats = ['participants' => 500, 'projets' => 11, 'programmeurs' => 30, 'editions' => 1];
                 }
             }
+
             $view->with('edition', $edition);
+            $view->with('stats',   $stats);
         });
     }
 }
