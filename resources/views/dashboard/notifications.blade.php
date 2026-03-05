@@ -65,7 +65,7 @@
 }
 .toast.show{transform:translateX(0)}
 
-@media(max-width:640px){
+@@media(max-width:640px){
     .notif-row{padding:.875rem 1rem}
     .notif-actions{opacity:1}
 }

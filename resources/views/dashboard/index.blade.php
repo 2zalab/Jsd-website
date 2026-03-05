@@ -115,8 +115,8 @@
 }
 .btn-white:hover{background:#f8f7ff;transform:translateY(-1px)}
 
-@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){
+@@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@@media(max-width:640px){
     .kpi-grid{grid-template-columns:repeat(2,1fr)}
     .qa-grid{grid-template-columns:1fr}
     .welcome-banner{padding:1.25rem}
@@ -160,15 +160,15 @@
 
 {{-- ── Quick actions ── --}}
 <div class="qa-grid">
-    <a href="{{ route('concours.programmeur') }}" class="qa-btn">
+    <a href="{{ route('dashboard.inscription.programmeur') }}" class="qa-btn">
         <div class="qa-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-code"></i></div>
         <div><div>Concours Programmeur</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">CMPL / CMPS</div></div>
     </a>
-    <a href="{{ route('concours.projet-digital') }}" class="qa-btn">
+    <a href="{{ route('dashboard.inscription.projet-digital') }}" class="qa-btn">
         <div class="qa-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-laptop-code"></i></div>
         <div><div>Projet Digital</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">CMPDL / CMPDS</div></div>
     </a>
-    <a href="{{ route('concours.hackathon') }}" class="qa-btn">
+    <a href="{{ route('dashboard.inscription.hackathon') }}" class="qa-btn">
         <div class="qa-icon" style="background:#fdf4ff;color:#a855f7"><i class="fas fa-rocket"></i></div>
         <div><div>Hackathon JSD'24</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">Lycée / Supérieur</div></div>
     </a>
