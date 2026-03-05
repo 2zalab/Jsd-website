@@ -101,4 +101,27 @@ class UserDashboardController extends Controller
 
         return back()->with('success', 'Mot de passe modifié avec succès.');
     }
+
+    public function deleteNotification($id)
+    {
+        UserNotification::where('user_id', Auth::id())->findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $request->validate(['password' => ['required']]);
+
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return back()->withErrors(['password' => 'Mot de passe incorrect.'])->withFragment('danger-zone');
+        }
+
+        $user = Auth::user();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $user->delete();
+
+        return redirect('/')->with('success', 'Votre compte a été supprimé.');
+    }
 }

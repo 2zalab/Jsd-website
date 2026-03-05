@@ -1,280 +1,314 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Espace — JSD'24</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        /* ── Layout Dashboard ── */
-        body{background:var(--color-bg-section)}
-        .dash-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-        /* ── Sidebar ── */
-        .dash-sidebar{background:#fff;border-right:1px solid var(--color-border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
-        .dash-logo{padding:1.5rem;border-bottom:1px solid var(--color-border)}
-        .dash-logo img{height:40px}
-        .dash-user{padding:1.25rem 1.5rem;border-bottom:1px solid var(--color-border);display:flex;align-items:center;gap:.875rem}
-        .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--color-primary-light),var(--color-accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1rem;flex-shrink:0}
-        .user-info p{font-size:.875rem;font-weight:600;color:var(--color-text);margin:0;line-height:1.3}
-        .user-info span{font-size:.75rem;color:var(--color-text-muted)}
-        .dash-nav{flex:1;padding:1rem 0}
-        .nav-section{padding:.5rem 1.5rem .25rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-muted)}
-        .dash-nav-link{display:flex;align-items:center;gap:.75rem;padding:.65rem 1.5rem;font-size:.9rem;color:var(--color-text-muted);transition:all .2s;position:relative;text-decoration:none}
-        .dash-nav-link:hover{background:rgba(59,130,246,.06);color:var(--color-primary-light)}
-        .dash-nav-link.active{background:rgba(59,130,246,.08);color:var(--color-primary-light);font-weight:600}
-        .dash-nav-link.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;background:var(--color-primary-light);border-radius:0 4px 4px 0}
-        .dash-nav-link i{width:20px;text-align:center;font-size:.95rem}
-        .notif-badge{margin-left:auto;background:var(--color-danger);color:#fff;font-size:.7rem;font-weight:700;padding:.1rem .45rem;border-radius:999px;min-width:18px;text-align:center}
-        .sidebar-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--color-border)}
-        .btn-logout{display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--color-text-muted);cursor:pointer;background:none;border:none;width:100%;text-align:left;padding:.5rem 0;transition:color .2s;font-family:var(--font-sans)}
-        .btn-logout:hover{color:var(--color-danger)}
-        /* ── Main ── */
-        .dash-main{padding:2rem;max-width:1000px}
-        .dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
-        .dash-header h1{font-size:1.5rem;font-weight:800;color:var(--color-text)}
-        .dash-header p{color:var(--color-text-muted);font-size:.875rem}
-        /* ── Stats Cards ── */
-        .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
-        .stat-card{background:#fff;border-radius:var(--radius-xl);padding:1.25rem;border:1px solid var(--color-border);box-shadow:var(--shadow-sm)}
-        .stat-card .icon{width:44px;height:44px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.875rem}
-        .stat-card .num{font-size:2rem;font-weight:900;color:var(--color-text);line-height:1}
-        .stat-card .label{font-size:.8rem;color:var(--color-text-muted);margin-top:.25rem}
-        .icon-blue{background:#eff6ff;color:var(--color-primary-light)}
-        .icon-yellow{background:#fffbeb;color:#f59e0b}
-        .icon-green{background:#f0fdf4;color:#10b981}
-        .icon-red{background:#fef2f2;color:#ef4444}
-        /* ── Section ── */
-        .dash-section{background:#fff;border-radius:var(--radius-xl);border:1px solid var(--color-border);margin-bottom:1.5rem;overflow:hidden}
-        .section-head{padding:1.25rem 1.5rem;border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center}
-        .section-head h2{font-size:1rem;font-weight:700;color:var(--color-text)}
-        .section-head a{font-size:.8rem;color:var(--color-primary-light);font-weight:600}
-        /* ── Table inscriptions ── */
-        .inscriptions-table{width:100%;border-collapse:collapse}
-        .inscriptions-table th{text-align:left;padding:.875rem 1.5rem;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);background:var(--color-bg-section);border-bottom:1px solid var(--color-border)}
-        .inscriptions-table td{padding:1rem 1.5rem;border-bottom:1px solid var(--color-border);font-size:.875rem;color:var(--color-text)}
-        .inscriptions-table tr:last-child td{border-bottom:none}
-        .inscriptions-table tr:hover td{background:rgba(59,130,246,.02)}
-        .badge{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .75rem;border-radius:999px;font-size:.75rem;font-weight:700}
-        .badge-pending{background:#fffbeb;color:#92400e}
-        .badge-approved{background:#f0fdf4;color:#065f46}
-        .badge-rejected{background:#fef2f2;color:#991b1b}
-        .type-tag{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--color-text-muted);background:var(--color-bg-section);padding:.2rem .6rem;border-radius:var(--radius-sm)}
-        /* ── Notifications ── */
-        .notif-item{padding:1rem 1.5rem;border-bottom:1px solid var(--color-border);display:flex;align-items:flex-start;gap:1rem;transition:background .15s}
-        .notif-item:last-child{border-bottom:none}
-        .notif-item:hover{background:rgba(59,130,246,.02)}
-        .notif-item.unread{background:#f8faff}
-        .notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
-        .notif-content p{font-size:.875rem;color:var(--color-text);margin:0;font-weight:500}
-        .notif-content .notif-msg{color:var(--color-text-muted);font-weight:400;margin-top:.2rem;font-size:.82rem}
-        .notif-content .notif-time{color:var(--color-text-light);font-size:.75rem;margin-top:.35rem}
-        .unread-dot{width:8px;height:8px;background:var(--color-primary-light);border-radius:50%;margin-left:auto;flex-shrink:0;margin-top:.5rem}
-        /* ── Empty state ── */
-        .empty-state{text-align:center;padding:3rem 2rem}
-        .empty-state i{font-size:3rem;color:var(--color-text-light);margin-bottom:1rem}
-        .empty-state p{color:var(--color-text-muted);margin-bottom:1.25rem}
-        /* ── Topbar mobile ── */
-        .dash-topbar{display:none;background:#fff;border-bottom:1px solid var(--color-border);padding:1rem 1.5rem;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-        @media(max-width:1024px){.stats-row{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:768px){
-            .dash-layout{grid-template-columns:1fr}
-            .dash-sidebar{display:none}
-            .dash-topbar{display:flex}
-            .dash-main{padding:1.25rem}
-        }
-    </style>
-</head>
-<body>
-<div class="dash-layout">
-    <!-- ── Sidebar ── -->
-    <aside class="dash-sidebar">
-        <div class="dash-logo">
-            <a href="{{ route('home') }}"><img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'24"></a>
-        </div>
-        <div class="dash-user">
-            <div class="avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
-            <div class="user-info">
-                <p>{{ $user->name }}</p>
-                <span>{{ $user->email }}</span>
-            </div>
-        </div>
-        <nav class="dash-nav">
-            <div class="nav-section">Navigation</div>
-            <a href="{{ route('dashboard') }}" class="dash-nav-link active">
-                <i class="fas fa-th-large"></i> Vue d'ensemble
-            </a>
-            <a href="{{ route('dashboard') }}#inscriptions" class="dash-nav-link">
-                <i class="fas fa-list-check"></i> Mes inscriptions
-                @if($stats['total'] > 0)<span class="notif-badge" style="background:var(--color-primary-light)">{{ $stats['total'] }}</span>@endif
-            </a>
-            <a href="{{ route('dashboard.notifications') }}" class="dash-nav-link">
-                <i class="fas fa-bell"></i> Notifications
-                @if($unread > 0)<span class="notif-badge">{{ $unread }}</span>@endif
-            </a>
-            <div class="nav-section" style="margin-top:.5rem">Concours</div>
-            <a href="{{ route('concours.index') }}" class="dash-nav-link">
-                <i class="fas fa-plus-circle"></i> Nouvelle inscription
-            </a>
-            <a href="{{ route('dashboard.profile') }}" class="dash-nav-link">
-                <i class="fas fa-user-circle"></i> Mon profil
-            </a>
-        </nav>
-        <div class="sidebar-footer">
-            <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--color-text-muted);margin-bottom:.75rem;text-decoration:none;padding:.35rem 0;">
-                <i class="fas fa-home" style="width:20px;text-align:center;"></i> Retour au site
-            </a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn-logout">
-                    <i class="fas fa-sign-out-alt" style="width:20px;text-align:center;"></i> Se déconnecter
-                </button>
-            </form>
-        </div>
-    </aside>
+@extends('dashboard._layout')
+@php $pageTitle = 'Vue d\'ensemble'; $activeNav = 'home'; @endphp
 
-    <!-- ── Main Content ── -->
-    <main>
-        <!-- Topbar mobile -->
-        <div class="dash-topbar">
-            <img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'24" style="height:32px;">
-            <form method="POST" action="{{ route('logout') }}">@csrf
-                <button type="submit" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;font-size:.875rem;font-family:var(--font-sans);">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </button>
-            </form>
-        </div>
+@push('styles')
+<style>
+/* ── KPI cards ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.75rem}
+.kpi-card{
+    background:#fff;border-radius:14px;border:1px solid #e8ecf0;
+    padding:1.25rem;display:flex;align-items:center;gap:1rem;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.kpi-icon{
+    width:46px;height:46px;border-radius:12px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.kpi-num{font-size:1.85rem;font-weight:900;color:#0f172a;line-height:1}
+.kpi-lbl{font-size:.75rem;color:#94a3b8;margin-top:.2rem;font-weight:500}
 
-        <div class="dash-main">
-            @if(session('success'))
-                <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:var(--radius-md);padding:1rem;margin-bottom:1.5rem;color:#166534;display:flex;align-items:center;gap:.75rem;">
-                    <i class="fas fa-check-circle"></i> {{ session('success') }}
-                </div>
-            @endif
+/* ── Quick actions ── */
+.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.875rem;margin-bottom:1.75rem}
+.qa-btn{
+    display:flex;align-items:center;gap:.875rem;
+    background:#fff;border:1px solid #e8ecf0;border-radius:14px;
+    padding:1rem 1.25rem;text-decoration:none;color:#374151;
+    font-size:.875rem;font-weight:600;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);transition:all .15s;
+}
+.qa-btn:hover{border-color:#6366f1;color:#4f46e5;transform:translateY(-1px);box-shadow:0 4px 12px rgba(99,102,241,.12)}
+.qa-btn .qa-icon{
+    width:38px;height:38px;border-radius:10px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
 
-            <!-- Header -->
-            <div class="dash-header">
-                <div>
-                    <h1>Bonjour, {{ explode(' ', $user->name)[0] }} 👋</h1>
-                    <p>Voici un aperçu de vos activités sur JSD'24</p>
-                </div>
-                <a href="{{ route('concours.index') }}" class="btn btn-primary" style="font-size:.875rem;padding:.6rem 1.25rem;">
-                    <i class="fas fa-plus"></i> S'inscrire
-                </a>
-            </div>
+/* ── Section card ── */
+.ds-card{background:#fff;border-radius:16px;border:1px solid #e8ecf0;overflow:hidden;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.ds-card-head{
+    padding:1.1rem 1.5rem;border-bottom:1px solid #f1f5f9;
+    display:flex;justify-content:space-between;align-items:center;
+}
+.ds-card-title{font-size:.95rem;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:.5rem}
+.ds-card-link{font-size:.8rem;color:#6366f1;font-weight:600;text-decoration:none}
+.ds-card-link:hover{text-decoration:underline}
 
-            <!-- Stats -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="icon icon-blue"><i class="fas fa-clipboard-list"></i></div>
-                    <div class="num">{{ $stats['total'] }}</div>
-                    <div class="label">Total inscriptions</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon icon-yellow"><i class="fas fa-clock"></i></div>
-                    <div class="num">{{ $stats['pending'] }}</div>
-                    <div class="label">En attente</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon icon-green"><i class="fas fa-check-circle"></i></div>
-                    <div class="num">{{ $stats['approved'] }}</div>
-                    <div class="label">Acceptées</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon icon-red"><i class="fas fa-times-circle"></i></div>
-                    <div class="num">{{ $stats['rejected'] }}</div>
-                    <div class="label">Refusées</div>
-                </div>
-            </div>
+/* ── Filter tabs ── */
+.filter-tabs{display:flex;gap:.375rem;flex-wrap:wrap;padding:1rem 1.5rem;border-bottom:1px solid #f1f5f9}
+.filter-tab{
+    padding:.375rem .875rem;border-radius:999px;font-size:.78rem;font-weight:600;
+    border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;
+    transition:all .15s;
+}
+.filter-tab.active,.filter-tab:hover{background:#6366f1;color:#fff;border-color:#6366f1}
 
-            <!-- Inscriptions -->
-            <div class="dash-section" id="inscriptions">
-                <div class="section-head">
-                    <h2><i class="fas fa-list-check" style="color:var(--color-primary-light);margin-right:.5rem;"></i> Mes Inscriptions</h2>
-                </div>
-                @if(count($inscriptions) === 0)
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>Vous n'avez encore aucune inscription.</p>
-                        <a href="{{ route('concours.index') }}" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Participer à un concours
-                        </a>
-                    </div>
-                @else
-                    <div style="overflow-x:auto;">
-                        <table class="inscriptions-table">
-                            <thead>
-                                <tr>
-                                    <th>Concours</th>
-                                    <th>Nom / Équipe</th>
-                                    <th>Date</th>
-                                    <th>Statut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($inscriptions as $insc)
-                                <tr>
-                                    <td>
-                                        <div style="font-weight:600;color:var(--color-text);margin-bottom:.25rem;">{{ $insc['type'] }}</div>
-                                        <span class="type-tag">{{ $insc['label'] }}</span>
-                                    </td>
-                                    <td>{{ $insc['name'] }}</td>
-                                    <td style="color:var(--color-text-muted);">{{ $insc['date']->format('d/m/Y') }}</td>
-                                    <td>
-                                        @if($insc['status'] === 'approved')
-                                            <span class="badge badge-approved"><i class="fas fa-check"></i> Acceptée</span>
-                                        @elseif($insc['status'] === 'rejected')
-                                            <span class="badge badge-rejected"><i class="fas fa-times"></i> Refusée</span>
-                                        @else
-                                            <span class="badge badge-pending"><i class="fas fa-clock"></i> En attente</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endif
-            </div>
+/* ── Inscriptions table ── */
+.insc-table{width:100%;border-collapse:collapse}
+.insc-table th{
+    text-align:left;padding:.75rem 1.5rem;font-size:.72rem;
+    font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+    color:#94a3b8;background:#fafbfc;border-bottom:1px solid #f1f5f9;
+}
+.insc-table td{padding:.95rem 1.5rem;border-bottom:1px solid #f8fafc;font-size:.875rem;color:#374151;vertical-align:middle}
+.insc-table tr:last-child td{border-bottom:none}
+.insc-table tr:hover td{background:#fafbfe}
+.insc-type-icon{
+    width:34px;height:34px;border-radius:9px;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:.85rem;flex-shrink:0;margin-right:.625rem;
+}
 
-            <!-- Notifications -->
-            <div class="dash-section">
-                <div class="section-head">
-                    <h2>
-                        <i class="fas fa-bell" style="color:var(--color-primary-light);margin-right:.5rem;"></i> Notifications récentes
-                        @if($unread > 0)
-                            <span class="notif-badge" style="margin-left:.5rem;vertical-align:middle;">{{ $unread }}</span>
-                        @endif
-                    </h2>
-                    <a href="{{ route('dashboard.notifications') }}">Voir tout</a>
-                </div>
-                @if($notifications->isEmpty())
-                    <div class="empty-state">
-                        <i class="fas fa-bell-slash"></i>
-                        <p>Aucune notification pour le moment.</p>
-                    </div>
-                @else
-                    @foreach($notifications as $notif)
-                    <div class="notif-item {{ $notif->isRead() ? '' : 'unread' }}">
-                        <div class="notif-icon"
-                             style="background:{{ $notif->type === 'success' ? '#f0fdf4' : ($notif->type === 'error' ? '#fef2f2' : ($notif->type === 'warning' ? '#fffbeb' : '#eff6ff')) }};
-                                    color:{{ $notif->type === 'success' ? '#10b981' : ($notif->type === 'error' ? '#ef4444' : ($notif->type === 'warning' ? '#f59e0b' : 'var(--color-primary-light)')) }};">
-                            <i class="fas {{ $notif->icon ?? ($notif->type === 'success' ? 'fa-check-circle' : ($notif->type === 'error' ? 'fa-times-circle' : ($notif->type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'))) }}"></i>
-                        </div>
-                        <div class="notif-content" style="flex:1;">
-                            <p>{{ $notif->title }}</p>
-                            <div class="notif-msg">{{ $notif->message }}</div>
-                            <div class="notif-time"><i class="fas fa-clock" style="font-size:.7rem;"></i> {{ $notif->created_at->diffForHumans() }}</div>
-                        </div>
-                        @if(!$notif->isRead())<div class="unread-dot"></div>@endif
-                    </div>
-                    @endforeach
-                @endif
-            </div>
-        </div>
-    </main>
+/* ── Status badges ── */
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .7rem;border-radius:999px;font-size:.73rem;font-weight:700}
+.badge-pending{background:#fffbeb;color:#92400e}
+.badge-approved{background:#f0fdf4;color:#065f46}
+.badge-rejected{background:#fef2f2;color:#991b1b}
+
+/* ── Notifications ── */
+.notif-row{
+    display:flex;align-items:flex-start;gap:.875rem;
+    padding:.875rem 1.5rem;border-bottom:1px solid #f8fafc;
+    transition:background .15s;
+}
+.notif-row:last-child{border-bottom:none}
+.notif-row.unread{background:#f8faff}
+.notif-row:hover{background:#f8faff}
+.notif-dot-icon{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:.85rem;
+}
+.notif-body{flex:1;min-width:0}
+.notif-title{font-size:.875rem;font-weight:600;color:#0f172a;margin-bottom:.15rem}
+.notif-msg{font-size:.8rem;color:#64748b;line-height:1.5}
+.notif-time{font-size:.72rem;color:#94a3b8;margin-top:.25rem}
+.unread-indicator{width:8px;height:8px;border-radius:50%;background:#6366f1;flex-shrink:0;margin-top:.5rem}
+
+/* ── Empty state ── */
+.empty-box{text-align:center;padding:3rem 2rem}
+.empty-box i{font-size:2.75rem;color:#cbd5e1;margin-bottom:.875rem;display:block}
+.empty-box p{color:#94a3b8;margin-bottom:1.25rem;font-size:.9rem}
+
+/* ── Welcome banner ── */
+.welcome-banner{
+    background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
+    border-radius:16px;padding:1.5rem 2rem;
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:1.75rem;color:#fff;gap:1rem;flex-wrap:wrap;
+}
+.welcome-banner h1{font-size:1.4rem;font-weight:800;margin:0 0 .3rem}
+.welcome-banner p{font-size:.85rem;opacity:.85;margin:0}
+.btn-white{
+    display:inline-flex;align-items:center;gap:.5rem;
+    background:#fff;color:#4f46e5;border:none;border-radius:10px;
+    padding:.65rem 1.25rem;font-size:.85rem;font-weight:700;
+    text-decoration:none;cursor:pointer;white-space:nowrap;
+    transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.btn-white:hover{background:#f8f7ff;transform:translateY(-1px)}
+
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){
+    .kpi-grid{grid-template-columns:repeat(2,1fr)}
+    .qa-grid{grid-template-columns:1fr}
+    .welcome-banner{padding:1.25rem}
+    .insc-table th,.insc-table td{padding:.75rem 1rem}
+}
+</style>
+@endpush
+
+@section('content')
+
+{{-- ── Welcome banner ── --}}
+<div class="welcome-banner">
+    <div>
+        <h1>Bonjour, {{ explode(' ', $user->name)[0] }} 👋</h1>
+        <p>Bienvenue sur votre espace personnel JSD'24 — {{ now()->format('l d F Y') }}</p>
+    </div>
+    <a href="{{ route('concours.index') }}" class="btn-white">
+        <i class="fas fa-plus"></i> Nouvelle inscription
+    </a>
 </div>
-</body>
-</html>
+
+{{-- ── KPI cards ── --}}
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-clipboard-list"></i></div>
+        <div><div class="kpi-num">{{ $stats['total'] }}</div><div class="kpi-lbl">Total inscriptions</div></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-clock"></i></div>
+        <div><div class="kpi-num">{{ $stats['pending'] }}</div><div class="kpi-lbl">En attente</div></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-check-circle"></i></div>
+        <div><div class="kpi-num">{{ $stats['approved'] }}</div><div class="kpi-lbl">Acceptées</div></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:#fef2f2;color:#ef4444"><i class="fas fa-times-circle"></i></div>
+        <div><div class="kpi-num">{{ $stats['rejected'] }}</div><div class="kpi-lbl">Refusées</div></div>
+    </div>
+</div>
+
+{{-- ── Quick actions ── --}}
+<div class="qa-grid">
+    <a href="{{ route('concours.programmeur') }}" class="qa-btn">
+        <div class="qa-icon" style="background:#eff6ff;color:#3b82f6"><i class="fas fa-code"></i></div>
+        <div><div>Concours Programmeur</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">CMPL / CMPS</div></div>
+    </a>
+    <a href="{{ route('concours.projet-digital') }}" class="qa-btn">
+        <div class="qa-icon" style="background:#f0fdf4;color:#10b981"><i class="fas fa-laptop-code"></i></div>
+        <div><div>Projet Digital</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">CMPDL / CMPDS</div></div>
+    </a>
+    <a href="{{ route('concours.hackathon') }}" class="qa-btn">
+        <div class="qa-icon" style="background:#fdf4ff;color:#a855f7"><i class="fas fa-rocket"></i></div>
+        <div><div>Hackathon JSD'24</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">Lycée / Supérieur</div></div>
+    </a>
+</div>
+
+{{-- ── Inscriptions ── --}}
+<div class="ds-card" id="inscriptions">
+    <div class="ds-card-head">
+        <div class="ds-card-title"><i class="fas fa-list-check" style="color:#6366f1"></i> Mes inscriptions</div>
+    </div>
+
+    @if(count($inscriptions) === 0)
+        <div class="empty-box">
+            <i class="fas fa-inbox"></i>
+            <p>Vous n'avez aucune inscription pour le moment.</p>
+            <a href="{{ route('concours.index') }}" class="btn btn-primary" style="font-size:.875rem"><i class="fas fa-plus"></i> S'inscrire à un concours</a>
+        </div>
+    @else
+        {{-- Type filter --}}
+        <div class="filter-tabs" id="filter-bar">
+            <button class="filter-tab active" data-filter="all">Tous ({{ count($inscriptions) }})</button>
+            @php
+                $types = collect($inscriptions)->groupBy('type')->keys();
+                $typeIcons = [
+                    'Concours Programmeur' => 'fa-code',
+                    'Projet Digital'       => 'fa-laptop-code',
+                    'Hackathon'            => 'fa-rocket',
+                    'Stand'                => 'fa-store',
+                ];
+            @endphp
+            @foreach($types as $t)
+            <button class="filter-tab" data-filter="{{ Str::slug($t) }}">
+                {{ $t }} ({{ collect($inscriptions)->where('type', $t)->count() }})
+            </button>
+            @endforeach
+        </div>
+
+        <div style="overflow-x:auto">
+            <table class="insc-table" id="insc-table">
+                <thead>
+                    <tr>
+                        <th>Concours</th>
+                        <th>Nom / Équipe</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($inscriptions as $insc)
+                    @php
+                        $slug = Str::slug($insc['type']);
+                        $iconMap = ['concours-programmeur'=>['fa-code','#eff6ff','#3b82f6'],'projet-digital'=>['fa-laptop-code','#f0fdf4','#10b981'],'hackathon'=>['fa-rocket','#fdf4ff','#a855f7'],'stand'=>['fa-store','#fffbeb','#f59e0b']];
+                        [$ico, $bg, $fg] = $iconMap[$slug] ?? ['fa-file','#f1f5f9','#64748b'];
+                    @endphp
+                    <tr data-type="{{ $slug }}">
+                        <td>
+                            <div style="display:flex;align-items:center">
+                                <div class="insc-type-icon" style="background:{{ $bg }};color:{{ $fg }}">
+                                    <i class="fas {{ $ico }}"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight:600;color:#0f172a;font-size:.875rem">{{ $insc['type'] }}</div>
+                                    <div style="font-size:.75rem;color:#94a3b8;margin-top:1px">{{ $insc['label'] }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-weight:500">{{ $insc['name'] }}</td>
+                        <td style="color:#94a3b8;white-space:nowrap">{{ $insc['date']->format('d/m/Y') }}</td>
+                        <td>
+                            @if($insc['status'] === 'approved')
+                                <span class="badge badge-approved"><i class="fas fa-check"></i> Acceptée</span>
+                            @elseif($insc['status'] === 'rejected')
+                                <span class="badge badge-rejected"><i class="fas fa-times"></i> Refusée</span>
+                            @else
+                                <span class="badge badge-pending"><i class="fas fa-clock"></i> En attente</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
+
+{{-- ── Recent notifications ── --}}
+<div class="ds-card">
+    <div class="ds-card-head">
+        <div class="ds-card-title">
+            <i class="fas fa-bell" style="color:#6366f1"></i> Notifications récentes
+            @if($unread > 0)<span class="ds-badge" style="margin-left:.25rem;position:static">{{ $unread }}</span>@endif
+        </div>
+        <a href="{{ route('dashboard.notifications') }}" class="ds-card-link">Tout voir →</a>
+    </div>
+
+    @if($notifications->isEmpty())
+        <div class="empty-box" style="padding:2rem">
+            <i class="fas fa-bell-slash" style="font-size:2rem;color:#cbd5e1;display:block;margin-bottom:.75rem"></i>
+            <p style="color:#94a3b8;font-size:.85rem;margin:0">Aucune notification.</p>
+        </div>
+    @else
+        @foreach($notifications as $notif)
+        @php
+            $colors = ['success'=>['#f0fdf4','#10b981'],'error'=>['#fef2f2','#ef4444'],'warning'=>['#fffbeb','#f59e0b'],'info'=>['#eff6ff','#3b82f6']];
+            [$nbg, $nfg] = $colors[$notif->type] ?? ['#f8fafc','#64748b'];
+        @endphp
+        <div class="notif-row {{ $notif->isRead() ? '' : 'unread' }}">
+            <div class="notif-dot-icon" style="background:{{ $nbg }};color:{{ $nfg }}">
+                <i class="fas {{ $notif->icon ?? 'fa-info-circle' }}"></i>
+            </div>
+            <div class="notif-body">
+                <div class="notif-title">{{ $notif->title }}</div>
+                <div class="notif-msg">{{ Str::limit($notif->message, 90) }}</div>
+                <div class="notif-time"><i class="fas fa-clock" style="font-size:.68rem"></i> {{ $notif->created_at->diffForHumans() }}</div>
+            </div>
+            @if(!$notif->isRead())<div class="unread-indicator"></div>@endif
+        </div>
+        @endforeach
+        <div style="padding:.875rem 1.5rem;border-top:1px solid #f1f5f9;text-align:center">
+            <a href="{{ route('dashboard.notifications') }}" class="ds-card-link" style="font-size:.82rem">
+                Voir toutes les notifications →
+            </a>
+        </div>
+    @endif
+</div>
+
+@endsection
+
+@push('scripts')
+<script>
+/* ── Inscription filter ── */
+document.querySelectorAll('#filter-bar .filter-tab').forEach(btn => {
+    btn.addEventListener('click', function () {
+        document.querySelectorAll('#filter-bar .filter-tab').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.dataset.filter;
+        document.querySelectorAll('#insc-table tbody tr').forEach(row => {
+            row.style.display = (filter === 'all' || row.dataset.type === filter) ? '' : 'none';
+        });
+    });
+});
+</script>
+@endpush
