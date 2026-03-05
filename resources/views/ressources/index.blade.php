@@ -266,7 +266,13 @@
         <div class="coming-soon">
             <div class="coming-soon-icon"><i class="fas fa-camera"></i></div>
             <h3>Aucune photo disponible</h3>
-            <p>Les photos de {{ $ed->nom }} seront publiées ici@if($ed->date_fin && $ed->date_fin->isPast()) .@else &nbsp;après l'événement. Restez connectés&nbsp;!@endif</p>
+            <p>Les photos de {{ $ed->nom }} seront publiées ici
+                @if($ed->date_fin && $ed->date_fin->isPast())
+                    .
+                @else
+                    &nbsp;après l'événement. Restez connectés&nbsp;!
+                @endif
+            </p>
             @if($ed->est_courante)
             <a href="{{ route('concours.index') }}" class="btn btn-primary">
                 <i class="fas fa-user-plus"></i> S'inscrire à {{ $ed->nom }}
