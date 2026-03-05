@@ -4,7 +4,7 @@
 
 <div class="page-header">
     <h1>À Propos des JSD</h1>
-    <p>Journées Sahel Digital — Promouvoir l'innovation numérique en Afrique</p>
+    <p>{{ $edition->nom }} — Promouvoir l'innovation numérique en Afrique</p>
 </div>
 
 <div class="container max-w-5xl mx-auto px-4 py-12">
@@ -35,17 +35,25 @@
         </ul>
     </div>
 
+    @if($edition->stats_participants || $edition->stats_projets || $edition->stats_programmeurs)
     <div class="content-section">
-        <h2>Résultats de l'édition 2023</h2>
+        <h2>Résultats de la {{ $edition->nom }}</h2>
         <ul>
-            <li>Plus de 500 participants : élèves, étudiants, entrepreneurs, startupeurs, enseignants-chercheurs et acteurs de la transformation numérique</li>
-            <li>11 projets présentés au Concours de Meilleur Projet Digital, couvrant des thématiques cruciales pour le Sahel</li>
-            <li>22 candidats au Concours du Meilleur Programmeur</li>
+            @if($edition->stats_participants)
+            <li>Plus de {{ number_format($edition->stats_participants) }} participants : élèves, étudiants, entrepreneurs, startupeurs, enseignants-chercheurs et acteurs de la transformation numérique</li>
+            @endif
+            @if($edition->stats_projets)
+            <li>{{ $edition->stats_projets }} projets présentés au Concours de Meilleur Projet Digital, couvrant des thématiques cruciales pour le Sahel</li>
+            @endif
+            @if($edition->stats_programmeurs)
+            <li>{{ $edition->stats_programmeurs }} candidats au Concours du Meilleur Programmeur</li>
+            @endif
             <li>Participation de plusieurs startups et de l'entreprise CAMTEL</li>
             <li>Une leçon inaugurale magistrale par le Prof. KOLYANG</li>
             <li>Une table ronde sur l'insertion socioprofessionnelle avec des intervenants de renom</li>
         </ul>
     </div>
+    @endif
 
     <div class="content-section">
         <h2>Perspectives</h2>

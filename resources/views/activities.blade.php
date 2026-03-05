@@ -4,7 +4,7 @@
 
 <div class="page-header">
     <h1>Activités du Forum de l'Innovation</h1>
-    <p>JSD'24 — 26 au 28 novembre 2024, Maroua, Cameroun</p>
+    <p>{{ $edition->nom }}@if($edition->date_debut && $edition->date_fin) — {{ $edition->date_debut->isoFormat('D') }} au {{ $edition->date_fin->isoFormat('D MMMM YYYY') }}, {{ $edition->lieu }}@endif</p>
 </div>
 
 <div class="container max-w-5xl mx-auto px-4 py-12">

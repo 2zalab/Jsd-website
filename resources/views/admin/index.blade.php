@@ -290,6 +290,13 @@
         <div class="nav-section-label">Contenu du Site</div>
 
         <div class="nav-item">
+            <a href="{{ route('admin.editions.index') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-layer-group"></i>
+                <span>Éditions JSD</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
             <button class="nav-link nav-toggle">
                 <i class="nav-icon fas fa-handshake"></i>
                 <span>Partenaires</span>

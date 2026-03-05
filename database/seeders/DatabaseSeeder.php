@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PartenaireSeeder::class,
             ActiviteSeeder::class,
             RessourceSeeder::class,
+            EditionSeeder::class,
         ]);
     }
 }
