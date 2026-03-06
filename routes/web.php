@@ -178,7 +178,15 @@ Route::post('/devenir-sponsor',[SponsorController::class, 'submitForm'])->name('
 
 Route::get('/photos',     [PhotoController::class, 'index'])->name('photos.index');
 Route::get('/ressources', [PhotoController::class, 'index'])->name('ressources.index');
-Route::get('/donate', [DonationController::class, 'index'])->name('donate.index');
+// ─── Donation (CamPay) ────────────────────────────────────────────────────────
+Route::get('/donate',              [DonationController::class, 'index'])->name('donate.index');
+Route::post('/donate/initiate',    [DonationController::class, 'initiate'])->name('donate.initiate');
+Route::get('/donate/pending',      [DonationController::class, 'pending'])->name('donate.pending');
+Route::get('/donate/check',        [DonationController::class, 'checkStatus'])->name('donate.check');
+Route::get('/donate/callback',     [DonationController::class, 'callback'])->name('donate.callback');
+Route::get('/donate/success',      [DonationController::class, 'success'])->name('donate.success');
+Route::get('/donate/failure',      [DonationController::class, 'failure'])->name('donate.failure');
+Route::post('/donate/webhook',     [DonationController::class, 'webhook'])->name('donate.webhook');
 
 // ─── Concours ─────────────────────────────────────────────────────────────────
 Route::get('/concours', [ConcoursController::class, 'index'])->name('concours.index');
