@@ -183,7 +183,13 @@
             .form-panel{left:0;transform:translateX(100%)}
         }
         @@media(max-width:600px){
-            .insc-type-grid{grid-template-columns:1fr}
+            .insc-box{padding:1.25rem 1rem}
+            .insc-box-head{margin-bottom:1rem}
+            .insc-type-grid{gap:.5rem}
+            .insc-type-card{padding:.75rem .5rem}
+            .itc-icon{width:36px;height:36px;border-radius:10px;font-size:.95rem;margin-bottom:.5rem}
+            .itc-name{font-size:.78rem}
+            .itc-sub{font-size:.65rem}
             .fp-grid,.fp-type-row{grid-template-columns:1fr}
             .fp-content{padding:1.25rem 1rem}
         }
