@@ -198,7 +198,7 @@
             <span class="about-label">L'organisateur</span>
             <h2>Département d'Informatique<br>de l'ENSPM</h2>
             <p>Les Journées Sahel Digital sont organisées par le <strong>Département d'Informatique de l'École Nationale Supérieure Polytechnique de Maroua</strong>, Université de Maroua. L'événement vise à être une vitrine de l'innovation et de l'entrepreneuriat numérique dans la région du Sahel.</p>
-            <a href="{{ route('contact') }}" class="about-btn">
+            <a href="{{ route('contact.index') }}" class="about-btn">
                 <i class="fas fa-envelope"></i> Nous contacter
             </a>
         </div>
