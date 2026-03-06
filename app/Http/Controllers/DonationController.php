@@ -12,84 +12,113 @@ use Illuminate\Support\Str;
 
 class DonationController extends Controller
 {
-    // ─── Page d'accueil du formulaire de don ──────────────────────────────────
+    protected string $campayBaseUrl;
+    protected string $campayUsername;
+    protected string $campayPassword;
+    protected string $campayToken;
+
+    public function __construct()
+    {
+        $this->campayBaseUrl = rtrim(config('campay.base_url', 'https://demo.campay.net/api'), '/');
+        $this->campayUsername = config('campay.app_username', '');
+        $this->campayPassword = config('campay.app_password', '');
+        $this->campayToken    = config('campay.token', '');
+    }
+
+    // ─── Page du formulaire de don ────────────────────────────────────────────
     public function index()
     {
         return view('donate.index');
     }
 
-    // ─── Initiation du paiement via CamPay ────────────────────────────────────
+    // ─── Initiation du paiement ───────────────────────────────────────────────
     public function initiate(Request $request)
     {
         $validated = $request->validate([
             'name'   => 'required|string|max:100',
-            'email'  => 'required|email|max:150',
-            'phone'  => ['required', 'string', 'regex:/^(6[5-9]\d{7}|237[6][5-9]\d{7})$/'],
+            'email'  => 'nullable|email|max:150',
+            'phone'  => ['required', 'string', 'regex:/^[6][5-9][0-9]{7}$/'],
             'amount' => 'required|integer|min:100|max:1000000',
         ], [
-            'phone.regex'  => 'Numéro invalide. Format attendu: 6XXXXXXXX ou 2376XXXXXXXX',
+            'phone.regex'  => 'Numéro invalide. Format: 6XXXXXXXX (9 chiffres, sans le 237)',
             'amount.min'   => 'Le montant minimum est de 100 FCFA.',
             'amount.max'   => 'Le montant maximum est de 1 000 000 FCFA.',
         ]);
 
-        // Normaliser le numéro de téléphone (ajouter 237 si absent)
-        $phone = $validated['phone'];
-        if (!str_starts_with($phone, '237')) {
-            $phone = '237' . $phone;
-        }
+        $externalRef   = 'JSD-' . strtoupper(Str::random(8)) . '-' . time();
+        $phoneWithCode = '237' . $validated['phone'];
 
-        // Créer une référence externe unique
-        $externalRef = 'JSD-' . strtoupper(Str::random(8)) . '-' . time();
+        // Détecter l'opérateur selon le préfixe du numéro
+        $prefix        = substr($validated['phone'], 0, 2);
+        $paymentMethod = match (true) {
+            in_array($prefix, ['67', '68', '50', '51', '52', '53', '54', '65']) => 'mtn_momo',
+            in_array($prefix, ['69', '55', '56', '57', '58', '59'])             => 'orange_money',
+            default                                                              => 'other',
+        };
+        $operator = str_starts_with($paymentMethod, 'mtn') ? 'MTN' : (str_starts_with($paymentMethod, 'orange') ? 'ORANGE' : null);
 
-        // Enregistrer le don en statut "pending"
         $donation = Donation::create([
             'external_reference' => $externalRef,
             'name'               => $validated['name'],
-            'email'              => $validated['email'],
-            'phone'              => $phone,
+            'email'              => $validated['email'] ?? null,
+            'phone'              => $validated['phone'],
             'amount'             => (int) $validated['amount'],
             'currency'           => 'XAF',
+            'payment_method'     => $paymentMethod,
+            'operator'           => $operator,
             'description'        => 'Don pour les Journées Sahel Digital',
             'status'             => 'pending',
         ]);
 
-        // Appeler l'API CamPay
         try {
-            $token = $this->getCamPayToken();
+            $token = $this->getCampayToken();
+
+            Log::info('CamPay token debug', [
+                'token_obtained' => !empty($token),
+                'base_url'       => $this->campayBaseUrl,
+                'using_method'   => !empty($this->campayToken) ? 'permanent' : 'username_password',
+            ]);
 
             if (!$token) {
+                $donation->update(['status' => 'failed']);
                 return back()->withInput()->with('error', 'Service de paiement temporairement indisponible. Veuillez réessayer.');
             }
 
-            $response = Http::withToken($token)
-                ->post(config('campay.base_url') . 'collect/', [
-                    'amount'             => (string) $validated['amount'],
-                    'currency'           => 'XAF',
-                    'from'               => $phone,
-                    'description'        => 'Don pour les Journées Sahel Digital (JSD)',
-                    'external_reference' => $externalRef,
-                    'redirect_url'       => route('donate.callback', ['ref' => $externalRef]),
-                ]);
+            $response = Http::withHeaders([
+                'Authorization' => "Token {$token}",
+                'Content-Type'  => 'application/json',
+            ])->post("{$this->campayBaseUrl}/collect/", [
+                'amount'             => (string) $validated['amount'],
+                'currency'           => 'XAF',
+                'from'               => $phoneWithCode,
+                'description'        => 'Don pour les Journées Sahel Digital (JSD)',
+                'external_reference' => $externalRef,
+            ]);
 
-            $data = $response->json();
-            Log::info('CamPay collect response', ['data' => $data, 'ref' => $externalRef]);
+            Log::info('CamPay collect response', [
+                'status' => $response->status(),
+                'body'   => $response->json(),
+                'ref'    => $externalRef,
+            ]);
 
-            if ($response->successful() && isset($data['reference'])) {
-                // Mettre à jour le don avec la référence CamPay
+            if ($response->successful()) {
+                $data = $response->json();
                 $donation->update([
-                    'campay_reference' => $data['reference'],
-                    'operator'         => $data['operator'] ?? null,
+                    'campay_reference' => $data['reference'] ?? null,
                     'campay_data'      => $data,
                 ]);
 
-                // Rediriger vers la page d'attente
-                return redirect()->route('donate.pending', ['ref' => $externalRef])
-                    ->with('success', 'Demande de paiement envoyée ! Veuillez confirmer sur votre téléphone.');
+                session([
+                    'donation_id'    => $donation->id,
+                    'donation_phone' => $validated['phone'],
+                ]);
+
+                return redirect()->route('donate.pending')
+                    ->with('success', 'Demande envoyée ! Confirmez le paiement sur votre téléphone.');
             }
 
-            // Erreur CamPay
-            $errorMsg = $data['detail'] ?? $data['message'] ?? 'Erreur lors de l\'initiation du paiement.';
-            Log::error('CamPay collect failed', ['data' => $data, 'ref' => $externalRef]);
+            $errorMsg = $response->json('message') ?? $response->json('detail') ?? 'Erreur lors de l\'initiation du paiement.';
+            Log::error('CamPay collect failed', ['body' => $response->json(), 'ref' => $externalRef]);
             $donation->update(['status' => 'failed']);
 
             return back()->withInput()->with('error', $errorMsg);
@@ -101,69 +130,80 @@ class DonationController extends Controller
         }
     }
 
-    // ─── Page d'attente de confirmation ───────────────────────────────────────
-    public function pending(Request $request)
+    // ─── Page d'attente ───────────────────────────────────────────────────────
+    public function pending()
     {
-        $donation = Donation::where('external_reference', $request->query('ref'))->firstOrFail();
+        $donationId = session('donation_id');
+        if (!$donationId) {
+            return redirect()->route('donate.index');
+        }
+        $donation = Donation::findOrFail($donationId);
         return view('donate.pending', compact('donation'));
     }
 
     // ─── Vérification du statut (polling AJAX) ────────────────────────────────
     public function checkStatus(Request $request)
     {
-        $donation = Donation::where('external_reference', $request->query('ref'))->firstOrFail();
+        $donationId = session('donation_id');
+        if (!$donationId) {
+            return response()->json(['status' => 'not_found']);
+        }
 
-        // Si déjà terminé, retourner le statut actuel
-        if (!$donation->isPending()) {
+        $donation = Donation::find($donationId);
+        if (!$donation) {
+            return response()->json(['status' => 'not_found']);
+        }
+
+        // Déjà terminé
+        if (in_array($donation->status, ['successful', 'failed', 'cancelled'])) {
             return response()->json([
                 'status'   => $donation->status,
-                'redirect' => $donation->isSuccessful()
-                    ? route('donate.success', ['ref' => $donation->external_reference])
-                    : route('donate.failure', ['ref' => $donation->external_reference]),
+                'redirect' => $donation->status === 'successful'
+                    ? route('donate.success')
+                    : route('donate.failure'),
             ]);
         }
 
-        // Interroger CamPay si on a une référence
+        // Interroger CamPay
         if ($donation->campay_reference) {
             try {
-                $token = $this->getCamPayToken();
+                $token = $this->getCampayToken();
                 if ($token) {
-                    $response = Http::withToken($token)
-                        ->get(config('campay.base_url') . 'transaction/' . $donation->campay_reference . '/');
+                    $response = Http::withHeaders([
+                        'Authorization' => "Token {$token}",
+                    ])->get("{$this->campayBaseUrl}/transaction/{$donation->campay_reference}/");
 
-                    $data = $response->json();
-                    Log::info('CamPay status check', ['data' => $data, 'ref' => $donation->external_reference]);
+                    Log::info('CamPay status check', [
+                        'reference'   => $donation->campay_reference,
+                        'status_code' => $response->status(),
+                        'body'        => $response->json(),
+                    ]);
 
                     if ($response->successful()) {
-                        $campayStatus = strtoupper($data['status'] ?? '');
+                        $campayStatus = strtoupper($response->json('status', 'PENDING'));
 
                         if ($campayStatus === 'SUCCESSFUL') {
                             $donation->update([
-                                'status'      => 'successful',
-                                'campay_data' => $data,
+                                'status'  => 'successful',
+                                'paid_at' => now(),
                             ]);
-
-                            // Envoyer mail de confirmation
-                            try {
-                                Mail::to($donation->email)->send(new DonationConfirmation($donation));
-                            } catch (\Exception $e) {
-                                Log::warning('Mail donation failed', ['error' => $e->getMessage()]);
-                            }
+                            $this->sendConfirmationEmail($donation);
+                            session()->forget(['donation_id', 'donation_phone']);
+                            session(['last_successful_donation_id' => $donation->id]);
 
                             return response()->json([
                                 'status'   => 'successful',
-                                'redirect' => route('donate.success', ['ref' => $donation->external_reference]),
+                                'redirect' => route('donate.success'),
                             ]);
                         }
 
                         if ($campayStatus === 'FAILED') {
-                            $donation->update([
-                                'status'      => 'failed',
-                                'campay_data' => $data,
-                            ]);
+                            $donation->update(['status' => 'failed']);
+                            session()->forget(['donation_id', 'donation_phone']);
+
                             return response()->json([
                                 'status'   => 'failed',
-                                'redirect' => route('donate.failure', ['ref' => $donation->external_reference]),
+                                'redirect' => route('donate.failure'),
                             ]);
                         }
                     }
@@ -171,30 +211,25 @@ class DonationController extends Controller
             } catch (\Exception $e) {
                 Log::error('CamPay status check error', ['error' => $e->getMessage()]);
             }
+        } else {
+            Log::warning('No campay_reference for donation', ['id' => $donation->id]);
         }
 
         return response()->json(['status' => 'pending']);
     }
 
-    // ─── Callback CamPay (redirect après paiement) ────────────────────────────
-    public function callback(Request $request)
+    // ─── Annulation ───────────────────────────────────────────────────────────
+    public function cancel()
     {
-        $donation = Donation::where('external_reference', $request->query('ref'))->first();
-
-        if (!$donation) {
-            return redirect()->route('donate.index');
+        $donationId = session('donation_id');
+        if ($donationId) {
+            $donation = Donation::find($donationId);
+            if ($donation && $donation->status === 'pending') {
+                $donation->update(['status' => 'cancelled']);
+            }
+            session()->forget(['donation_id', 'donation_phone']);
         }
-
-        if ($donation->isSuccessful()) {
-            return redirect()->route('donate.success', ['ref' => $donation->external_reference]);
-        }
-
-        if ($donation->isFailed()) {
-            return redirect()->route('donate.failure', ['ref' => $donation->external_reference]);
-        }
-
-        // Toujours en attente : vérifier une dernière fois
-        return redirect()->route('donate.pending', ['ref' => $donation->external_reference]);
+        return redirect()->route('donate.index')->with('info', 'Don annulé.');
     }
 
     // ─── Webhook CamPay (notification serveur-à-serveur) ──────────────────────
@@ -208,7 +243,10 @@ class DonationController extends Controller
             return response()->json(['status' => 'error', 'message' => 'No external_reference'], 400);
         }
 
-        $donation = Donation::where('external_reference', $externalRef)->first();
+        $donation = Donation::where('external_reference', $externalRef)
+            ->orWhere('campay_reference', $data['reference'] ?? null)
+            ->first();
+
         if (!$donation) {
             return response()->json(['status' => 'error', 'message' => 'Donation not found'], 404);
         }
@@ -218,68 +256,76 @@ class DonationController extends Controller
         if ($campayStatus === 'SUCCESSFUL' && $donation->isPending()) {
             $donation->update([
                 'status'           => 'successful',
+                'paid_at'          => now(),
                 'campay_reference' => $data['reference'] ?? $donation->campay_reference,
-                'operator'         => $data['operator'] ?? $donation->operator,
                 'campay_data'      => $data,
             ]);
-
-            try {
-                Mail::to($donation->email)->send(new DonationConfirmation($donation));
-            } catch (\Exception $e) {
-                Log::warning('Mail donation confirmation failed', ['error' => $e->getMessage()]);
-            }
+            $this->sendConfirmationEmail($donation);
+            session(['last_successful_donation_id' => $donation->id]);
         } elseif ($campayStatus === 'FAILED' && $donation->isPending()) {
-            $donation->update([
-                'status'      => 'failed',
-                'campay_data' => $data,
-            ]);
+            $donation->update(['status' => 'failed', 'campay_data' => $data]);
         }
 
         return response()->json(['status' => 'ok']);
     }
 
     // ─── Page de succès ───────────────────────────────────────────────────────
-    public function success(Request $request)
+    public function success()
     {
-        $donation = Donation::where('external_reference', $request->query('ref'))->firstOrFail();
+        // Récupérer la dernière donation réussie depuis la session ou l'historique
+        $donationId = session('last_successful_donation_id');
+        $donation   = $donationId ? Donation::find($donationId) : null;
         return view('donate.success', compact('donation'));
     }
 
     // ─── Page d'échec ─────────────────────────────────────────────────────────
-    public function failure(Request $request)
+    public function failure()
     {
-        $donation = Donation::where('external_reference', $request->query('ref'))->firstOrFail();
-        return view('donate.failure', compact('donation'));
+        return view('donate.failure');
     }
 
-    // ─── Obtenir le token CamPay ──────────────────────────────────────────────
-    // Supporte deux méthodes :
-    // 1. Token permanent (CAMPAY_TOKEN) - disponible dans APP KEYS du dashboard CamPay
-    // 2. Token temporaire via username/password (CAMPAY_USERNAME + CAMPAY_PASSWORD)
-    private function getCamPayToken(): ?string
+    // ─── Token CamPay ─────────────────────────────────────────────────────────
+    // Méthode 1 : token permanent (CAMPAY_TOKEN) — prioritaire
+    // Méthode 2 : username + password via /token/
+    protected function getCampayToken(): ?string
     {
-        // Méthode 1 : token permanent (prioritaire si défini)
-        $permanentToken = config('campay.token');
-        if (!empty($permanentToken)) {
-            return $permanentToken;
+        if (!empty($this->campayToken)) {
+            return $this->campayToken;
         }
 
-        // Méthode 2 : token temporaire via /token/ endpoint
         try {
-            $response = Http::asJson()->post(config('campay.base_url') . 'token/', [
-                'username' => config('campay.app_username'),
-                'password' => config('campay.app_password'),
+            $response = Http::asJson()->post("{$this->campayBaseUrl}/token/", [
+                'username' => $this->campayUsername,
+                'password' => $this->campayPassword,
             ]);
 
-            if ($response->successful()) {
-                return $response->json('token');
+            Log::info('CamPay token response', [
+                'status' => $response->status(),
+                'body'   => $response->json(),
+            ]);
+
+            if ($response->successful() && isset($response->json()['token'])) {
+                return $response->json()['token'];
             }
 
-            Log::error('CamPay token error', ['response' => $response->json(), 'status' => $response->status()]);
             return null;
         } catch (\Exception $e) {
-            Log::error('CamPay token exception', ['message' => $e->getMessage()]);
+            Log::error('CamPay token error', ['message' => $e->getMessage()]);
             return null;
+        }
+    }
+
+    // ─── Envoi du mail de confirmation ────────────────────────────────────────
+    protected function sendConfirmationEmail(Donation $donation): void
+    {
+        if (empty($donation->email) || $donation->email_sent) {
+            return;
+        }
+        try {
+            Mail::to($donation->email)->send(new DonationConfirmation($donation));
+            $donation->update(['email_sent' => true]);
+        } catch (\Exception $e) {
+            Log::warning('Mail donation confirmation failed', ['error' => $e->getMessage()]);
         }
     }
 }

@@ -10,17 +10,21 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
-            $table->string('external_reference')->unique(); // notre référence interne
-            $table->string('campay_reference')->nullable();  // référence retournée par CamPay
+            $table->string('external_reference')->unique();
+            $table->string('campay_reference')->nullable();
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('phone');
             $table->unsignedInteger('amount');
             $table->string('currency', 10)->default('XAF');
-            $table->string('operator')->nullable();          // MTN, ORANGE
-            $table->enum('status', ['pending', 'successful', 'failed'])->default('pending');
+            $table->string('payment_method')->nullable();   // mtn_momo, orange_money
+            $table->string('operator')->nullable();         // MTN, ORANGE
+            $table->enum('status', ['pending', 'successful', 'failed', 'cancelled'])->default('pending');
+            $table->text('message')->nullable();            // message du donateur
             $table->text('description')->nullable();
-            $table->json('campay_data')->nullable();         // réponse brute CamPay
+            $table->boolean('email_sent')->default(false);
+            $table->timestamp('paid_at')->nullable();
+            $table->json('campay_data')->nullable();
             $table->timestamps();
         });
     }

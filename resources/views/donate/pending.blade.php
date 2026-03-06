@@ -197,7 +197,7 @@
             <span id="statusText">En attente de confirmation…</span>
         </div>
 
-        <a href="{{ route('donate.index') }}" class="cancel-link">
+        <a href="{{ route('donate.cancel') }}" class="cancel-link">
             <i class="fas fa-arrow-left"></i> Retour / Annuler
         </a>
     </div>
@@ -207,7 +207,6 @@
 @section('scripts')
 <script>
 (function () {
-    const ref        = @json($donation->external_reference);
     const checkUrl   = '{{ route('donate.check') }}';
     const statusBar  = document.getElementById('statusBar');
     const statusText = document.getElementById('statusText');
@@ -215,7 +214,7 @@
     const step2      = document.getElementById('step2');
     const step3      = document.getElementById('step3');
     let attempts     = 0;
-    const maxAttempts = 40; // ~3 min 20 s avec backoff
+    const maxAttempts = 40;
 
     function checkStatus() {
         if (attempts >= maxAttempts) {
@@ -225,7 +224,7 @@
             return;
         }
 
-        fetch(checkUrl + '?ref=' + encodeURIComponent(ref), {
+        fetch(checkUrl, {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(r => r.json())
