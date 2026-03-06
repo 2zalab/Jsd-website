@@ -147,10 +147,16 @@
 
         <h1 class="result-title">Merci pour votre don !</h1>
         <p class="result-sub">
-            Votre générosité est précieuse. Votre don de <strong style="color:#059669;">{{ $donation->formatted_amount }}</strong> a bien été reçu et contribuera au développement numérique du Sahel.
+            Votre générosité est précieuse.
+            @if($donation)
+                Votre don de <strong style="color:#059669;">{{ $donation->formatted_amount }}</strong> a bien été reçu et contribuera au développement numérique du Sahel.
+            @else
+                Votre don a bien été reçu et contribuera au développement numérique du Sahel.
+            @endif
         </p>
 
         {{-- Reçu --}}
+        @if($donation)
         <div class="receipt-box">
             <div class="receipt-header">
                 <i class="fas fa-receipt"></i>
@@ -166,7 +172,7 @@
             </div>
             <div class="receipt-row">
                 <span class="receipt-label">Opérateur</span>
-                <span class="receipt-value">{{ strtoupper($donation->operator ?? 'Mobile Money') }}</span>
+                <span class="receipt-value">{{ $donation->operator_label }}</span>
             </div>
             <div class="receipt-row">
                 <span class="receipt-label">Référence</span>
@@ -174,14 +180,17 @@
             </div>
             <div class="receipt-row">
                 <span class="receipt-label">Date</span>
-                <span class="receipt-value">{{ $donation->updated_at->format('d/m/Y à H:i') }}</span>
+                <span class="receipt-value">{{ ($donation->paid_at ?? $donation->updated_at)->format('d/m/Y à H:i') }}</span>
             </div>
         </div>
 
+        @if($donation->email)
         <p style="font-size:.82rem;color:#94a3b8;margin-bottom:1.5rem;">
             <i class="fas fa-envelope"></i>
             Un reçu a été envoyé à <strong>{{ $donation->email }}</strong>
         </p>
+        @endif
+        @endif
 
         <div class="action-btns">
             <a href="{{ route('donate.index') }}" class="btn-primary-donate">
