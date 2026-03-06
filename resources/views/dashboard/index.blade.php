@@ -138,6 +138,14 @@
     </button>
 </div>
 
+{{-- ── Success flash ── --}}
+@if(session('success'))
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:.875rem 1.25rem;color:#166534;font-size:.875rem;display:flex;align-items:center;gap:.625rem;margin-bottom:1.25rem">
+    <i class="fas fa-check-circle" style="color:#22c55e;font-size:1rem;flex-shrink:0"></i>
+    <span>{{ session('success') }}</span>
+</div>
+@endif
+
 {{-- ── KPI cards ── --}}
 <div class="kpi-grid">
     <div class="kpi-card">
