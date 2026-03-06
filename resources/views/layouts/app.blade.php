@@ -22,9 +22,6 @@
     <link href="{{ asset('css/concours.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/dialog-message-styles.css') }}">
 
-    <!-- Payment -->
-    <script src="https://cdn.cinetpay.com/seamless/main.js" type="text/javascript"></script>
-
     <style>
     /* ── Active nav link ── */
     .nav-link.active {
