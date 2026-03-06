@@ -24,7 +24,7 @@
                     <li>Prix : des récompenses substantielles pour les meilleures solutions</li>
                 </ul>
                 <div class="mt-4">
-                    <a href="{{ route('concours.hackathon') }}" class="btn btn-primary">
+                    <a href="{{ route('dashboard') }}?panel=hackathon" class="btn btn-primary">
                         <i class="fas fa-rocket"></i> S'inscrire au Hackathon
                     </a>
                 </div>
@@ -44,7 +44,7 @@
                     <li>Épreuves : Algorithmes, Structures de données, Résolution de problèmes</li>
                     <li>Langages acceptés : Python, Java, C++</li>
                 </ul>
-                <a href="{{ route('concours.programmeur') }}" class="btn btn-primary" style="font-size:.875rem; padding:.5rem 1rem;">Participer au CMPL</a>
+                <a href="{{ route('dashboard') }}?panel=programmeur" class="btn btn-primary" style="font-size:.875rem; padding:.5rem 1rem;">Participer au CMPL</a>
             </div>
             <div>
                 <h3 style="color: var(--color-success);">CMPS — Senior·e·s</h3>
@@ -54,7 +54,7 @@
                     <li>Épreuves : Optimisation, Sécurité, IA, Développement Web/Mobile</li>
                     <li>Langages acceptés : tous les langages majeurs</li>
                 </ul>
-                <a href="{{ route('concours.programmeur') }}" class="btn btn-primary" style="background:linear-gradient(135deg,#10b981,#059669); box-shadow:0 4px 14px rgba(16,185,129,.35); font-size:.875rem; padding:.5rem 1rem;">Participer au CMPS</a>
+                <a href="{{ route('dashboard') }}?panel=programmeur" class="btn btn-primary" style="background:linear-gradient(135deg,#10b981,#059669); box-shadow:0 4px 14px rgba(16,185,129,.35); font-size:.875rem; padding:.5rem 1rem;">Participer au CMPS</a>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
                     <li>Critères : créativité, faisabilité, impact social</li>
                     <li>Mentorat disponible pour guider les participants</li>
                 </ul>
-                <a href="{{ route('concours.projet-digital') }}" class="btn btn-primary" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed); box-shadow:0 4px 14px rgba(124,58,237,.35); font-size:.875rem; padding:.5rem 1rem;">Soumettre au CMPDL</a>
+                <a href="{{ route('dashboard') }}?panel=projet-digital" class="btn btn-primary" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed); box-shadow:0 4px 14px rgba(124,58,237,.35); font-size:.875rem; padding:.5rem 1rem;">Soumettre au CMPDL</a>
             </div>
             <div>
                 <h3 style="color: #7c3aed;">CMPDS — Senior·e·s</h3>
@@ -81,7 +81,7 @@
                     <li>Critères : innovation, modèle économique, scalabilité</li>
                     <li>Opportunités de financement et d'incubation pour les meilleurs projets</li>
                 </ul>
-                <a href="{{ route('concours.projet-digital') }}" class="btn btn-primary" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed); box-shadow:0 4px 14px rgba(124,58,237,.35); font-size:.875rem; padding:.5rem 1rem;">Soumettre au CMPDS</a>
+                <a href="{{ route('dashboard') }}?panel=projet-digital" class="btn btn-primary" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed); box-shadow:0 4px 14px rgba(124,58,237,.35); font-size:.875rem; padding:.5rem 1rem;">Soumettre au CMPDS</a>
             </div>
         </div>
     </div>
