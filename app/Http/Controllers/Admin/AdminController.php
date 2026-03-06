@@ -264,7 +264,8 @@ class AdminController extends Controller
 public function generatePDF()
 {
     $stands = Stand::all();
-    $pdf = \Barryvdh\DomPDF\PDF::loadView('admin.stands_pdf', compact('stands'));
+    $pdf = Pdf::loadView('admin.stands_pdf', compact('stands'));
+   // $pdf = \Barryvdh\DomPDF\PDF::loadView('admin.stands_pdf', compact('stands'));
     return $pdf->download('liste_des_stands.pdf');
 }
 
