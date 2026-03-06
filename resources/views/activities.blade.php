@@ -123,7 +123,7 @@
                     <li>Sessions de pitch où les startups présenteront leurs idées au public</li>
                 </ul>
                 <div class="mt-4">
-                    <a href="{{ route('concours.stand') }}" class="btn btn-primary">
+                    <a href="{{ route('dashboard') }}?panel=stand" class="btn btn-primary">
                         <i class="fas fa-store"></i> Réserver votre stand
                     </a>
                 </div>
