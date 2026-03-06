@@ -325,7 +325,7 @@
                     <li>Opportunité unique de networking et de recrutement</li>
                 </ul>
             </div>
-            <a href="{{ route('concours.stand') }}" class="ci-cta" style="background:#f59e0b">
+            <a href="{{ auth()->check() ? route('dashboard').'?panel=stand' : route('login') }}" class="ci-cta" style="background:#f59e0b">
                 <i class="fas fa-arrow-right"></i> Réserver un stand
             </a>
         </div>

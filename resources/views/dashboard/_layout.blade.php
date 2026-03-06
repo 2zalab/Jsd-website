@@ -130,7 +130,7 @@
         .insc-box-sub{font-size:.82rem;color:#94a3b8;margin-top:.25rem}
         .insc-close{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:1.1rem;padding:.3rem .4rem;border-radius:8px;transition:all .15s;flex-shrink:0}
         .insc-close:hover{background:#f1f5f9;color:#374151}
-        .insc-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.875rem}
+        .insc-type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.875rem}
         .insc-type-card{border:2px solid #e2e8f0;border-radius:14px;padding:1.25rem .875rem;text-align:center;cursor:pointer;transition:all .15s;background:#fff}
         .insc-type-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.09)}
         .itc-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin:0 auto .875rem}
@@ -225,6 +225,9 @@
             <span class="ds-nav-section" style="margin-top:.375rem">Concours</span>
             <button onclick="openInscModal(event)" class="ds-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:left;font-family:inherit;font-size:.875rem">
                 <i class="fas fa-plus-circle"></i> Nouvelle inscription
+            </button>
+            <button onclick="openFormPanel('stand')" class="ds-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:left;font-family:inherit;font-size:.875rem">
+                <i class="fas fa-store"></i> Réserver un stand
             </button>
             <a href="{{ route('dashboard.profile') }}" class="ds-nav-link {{ ($activeNav ?? '') === 'profile' ? 'active' : '' }}">
                 <i class="fas fa-user-circle"></i> Mon profil
@@ -346,6 +349,13 @@ function fpPdUpdateClasses() {
     opts.forEach(c => sel.appendChild(new Option(c, c)));
 }
 
+/* ── Stand panel ── */
+function fpStSelectTaille(val, el) {
+    document.querySelectorAll('#fp-stand .fp-tc').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type=radio]').checked = true;
+}
+
 /* ── Hackathon panel ── */
 function fpHkUpdateMembres() {
     const nb = parseInt(document.getElementById('fp-hk-nb').value) - 1;
@@ -363,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('insc-overlay').addEventListener('click', function (e) {
         if (e.target === this) closeInscModal();
     });
-    const validPanels = ['programmeur', 'projet-digital', 'hackathon'];
+    const validPanels = ['programmeur', 'projet-digital', 'hackathon', 'stand'];
     /* From ?panel= URL param (redirect from /concours) */
     const urlPanel = new URLSearchParams(window.location.search).get('panel');
     /* From form validation errors */
@@ -402,6 +412,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="itc-icon" style="background:#fdf4ff;color:#a855f7"><i class="fas fa-rocket"></i></div>
                 <div class="itc-name">Hackathon</div>
                 <div class="itc-sub">Lyc&eacute;e &middot; Sup&eacute;rieur</div>
+            </div>
+            <div class="insc-type-card" onclick="openFormPanel('stand')" style="border-color:#fde68a">
+                <div class="itc-icon" style="background:#fffbeb;color:#f59e0b"><i class="fas fa-store"></i></div>
+                <div class="itc-name">Stand</div>
+                <div class="itc-sub">R&eacute;servation d&rsquo;exposition</div>
             </div>
         </div>
     </div>
@@ -685,6 +700,92 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <div style="display:flex;gap:.875rem;align-items:center;margin-top:2rem;flex-wrap:wrap">
                     <button type="submit" class="fp-submit" style="background:#a855f7"><i class="fas fa-paper-plane"></i> Inscrire l'&eacute;quipe</button>
+                    <button type="button" class="fp-cancel" onclick="closeFormPanel()">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- ── Form panel: Stand ── --}}
+<div class="form-panel" id="fp-stand">
+    <div class="fp-header">
+        <button class="fp-back" onclick="closeFormPanel()"><i class="fas fa-arrow-left"></i> Retour</button>
+        <span class="fp-title"><i class="fas fa-store" style="color:#f59e0b;margin-right:.4rem"></i> R&eacute;servation &mdash; Stand d&rsquo;Exposition</span>
+    </div>
+    <div class="fp-content">
+        @if($errors->any())
+        <ul class="fp-err">
+            @foreach($errors->all() as $e)
+            <li><i class="fas fa-exclamation-circle" style="color:#ef4444;margin-right:.3rem"></i>{{ $e }}</li>
+            @endforeach
+        </ul>
+        @endif
+        <div class="fp-card" style="border-top:3px solid #f59e0b">
+            <div class="fp-card-head"><i class="fas fa-store" style="color:#f59e0b"></i> Formulaire de r&eacute;servation</div>
+            <form method="POST" action="{{ route('concours.stand.submit') }}" class="fp-body">
+                @csrf
+                <input type="hidden" name="_from" value="dashboard">
+                <input type="hidden" name="_form_panel" value="stand">
+
+                <div class="fp-sec">Entreprise / Porteur de projet</div>
+                <div class="fp-grid">
+                    <div class="fp-grp">
+                        <label class="fp-lbl">Nom de l&rsquo;entreprise / projet <span>*</span></label>
+                        <input type="text" name="nom_entreprise" class="fp-inp" value="{{ old('nom_entreprise') }}" required>
+                    </div>
+                    <div class="fp-grp">
+                        <label class="fp-lbl">Secteur d&rsquo;activit&eacute; <span>*</span></label>
+                        <input type="text" name="secteur_activite" class="fp-inp" value="{{ old('secteur_activite') }}" placeholder="ex : Tech, Fintech, Agriculture&hellip;" required>
+                    </div>
+                </div>
+                <div class="fp-grp" style="margin-top:1.25rem">
+                    <label class="fp-lbl">Adresse <span>*</span></label>
+                    <textarea name="adresse" class="fp-inp" rows="2" required>{{ old('adresse') }}</textarea>
+                </div>
+
+                <div class="fp-sec">Contact</div>
+                <div class="fp-grid">
+                    <div class="fp-grp">
+                        <label class="fp-lbl">Email de contact <span>*</span></label>
+                        <input type="email" name="email_contact" class="fp-inp" value="{{ old('email_contact', $user->email) }}" required>
+                    </div>
+                    <div class="fp-grp">
+                        <label class="fp-lbl">T&eacute;l&eacute;phone de contact <span>*</span></label>
+                        <input type="tel" name="telephone_contact" class="fp-inp" value="{{ old('telephone_contact', $user->phone) }}" required>
+                    </div>
+                </div>
+
+                <div class="fp-sec">Stand</div>
+                <div class="fp-sec" style="margin-top:0;margin-bottom:.5rem;border:none;font-size:.8rem;font-weight:400;letter-spacing:0;text-transform:none;color:#64748b">Choisissez la taille souhait&eacute;e pour votre stand.</div>
+                <div class="fp-type-row" style="grid-template-columns:repeat(3,1fr)">
+                    <div class="fp-tc" onclick="fpStSelectTaille('petit',this)">
+                        <input type="radio" name="taille_stand" value="petit">
+                        <div class="tc-title">Petit</div>
+                        <div class="tc-desc">Id&eacute;al pour les projets &eacute;tudiants</div>
+                        <div class="tc-chk"></div>
+                    </div>
+                    <div class="fp-tc" onclick="fpStSelectTaille('moyen',this)">
+                        <input type="radio" name="taille_stand" value="moyen">
+                        <div class="tc-title">Moyen</div>
+                        <div class="tc-desc">Startups &amp; PME</div>
+                        <div class="tc-chk"></div>
+                    </div>
+                    <div class="fp-tc" onclick="fpStSelectTaille('grand',this)">
+                        <input type="radio" name="taille_stand" value="grand">
+                        <div class="tc-title">Grand</div>
+                        <div class="tc-desc">Grandes entreprises</div>
+                        <div class="tc-chk"></div>
+                    </div>
+                </div>
+
+                <div class="fp-grp" style="margin-top:1.25rem">
+                    <label class="fp-lbl">Besoins sp&eacute;cifiques (optionnel)</label>
+                    <textarea name="besoins_specifiques" class="fp-inp" rows="3" placeholder="Ex : alimentation &eacute;lectrique, &eacute;cran, connexion internet&hellip;">{{ old('besoins_specifiques') }}</textarea>
+                </div>
+
+                <div style="display:flex;gap:.875rem;align-items:center;margin-top:2rem;flex-wrap:wrap">
+                    <button type="submit" class="fp-submit" style="background:#f59e0b"><i class="fas fa-paper-plane"></i> Soumettre la r&eacute;servation</button>
                     <button type="button" class="fp-cancel" onclick="closeFormPanel()">Annuler</button>
                 </div>
             </form>
