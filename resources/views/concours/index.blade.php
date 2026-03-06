@@ -242,7 +242,7 @@
                         <span class="ci-tag">Individuel</span>
                     </div>
                 </div>
-                <a href="{{ auth()->check() ? route('dashboard').'?panel=programmeur' : route('login') }}" class="ci-cta">
+                <a href="{{ route('dashboard') }}?panel=programmeur" class="ci-cta">
                     <i class="fas fa-arrow-right"></i> S'inscrire
                 </a>
             </div>
@@ -270,7 +270,7 @@
                         <span class="ci-tag">Innovation</span>
                     </div>
                 </div>
-                <a href="{{ auth()->check() ? route('dashboard').'?panel=projet-digital' : route('login') }}" class="ci-cta">
+                <a href="{{ route('dashboard') }}?panel=projet-digital" class="ci-cta">
                     <i class="fas fa-arrow-right"></i> S'inscrire
                 </a>
             </div>
@@ -298,7 +298,7 @@
                         <span class="ci-tag">Sprint créatif</span>
                     </div>
                 </div>
-                <a href="{{ auth()->check() ? route('dashboard').'?panel=hackathon' : route('login') }}" class="ci-cta">
+                <a href="{{ route('dashboard') }}?panel=hackathon" class="ci-cta">
                     <i class="fas fa-arrow-right"></i> S'inscrire
                 </a>
             </div>
@@ -325,7 +325,7 @@
                     <li>Opportunité unique de networking et de recrutement</li>
                 </ul>
             </div>
-            <a href="{{ auth()->check() ? route('dashboard').'?panel=stand' : route('login') }}" class="ci-cta" style="background:#f59e0b">
+            <a href="{{ route('dashboard') }}?panel=stand" class="ci-cta" style="background:#f59e0b">
                 <i class="fas fa-arrow-right"></i> Réserver un stand
             </a>
         </div>
