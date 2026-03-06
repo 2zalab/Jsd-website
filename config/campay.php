@@ -11,11 +11,19 @@ return [
     | Documentation: https://documenter.getpostman.com/view/2391374/T1LV8PVA
     */
 
+    // ── Méthode 1 : Token permanent (APP KEYS du dashboard CamPay) ──────────────
+    // Disponible dans : CamPay Dashboard → Applications → APP KEYS → Token
+    // Avantage : pas besoin d'appeler /token/ avant chaque requête
+    'token' => env('CAMPAY_TOKEN', ''),
+
+    // ── Méthode 2 : Username + Password (token temporaire via /token/) ──────────
+    // Disponible dans : CamPay Dashboard → Applications → APP KEYS
     'app_username' => env('CAMPAY_USERNAME', ''),
     'app_password' => env('CAMPAY_PASSWORD', ''),
 
-    // 'https://campay.net/api/' pour la production
-    // 'https://demo.campay.net/api/' pour le test/demo
+    // ── URL de base ─────────────────────────────────────────────────────────────
+    // 'https://campay.net/api/'      → production
+    // 'https://demo.campay.net/api/' → test/démo
     'base_url' => env('CAMPAY_BASE_URL', 'https://demo.campay.net/api/'),
 
     'currency' => 'XAF',
