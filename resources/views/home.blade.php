@@ -293,80 +293,644 @@
 @endif
 
 {{-- ===== MOT DU PRÉSIDENT ===== --}}
-<section style="background:#fff; padding: 4rem 0; border-top: 1px solid #e2e8f0;">
-    <div class="welcome-message">
-        <div class="presi-card">
-            <img src="{{ asset('images/pr-kaladzavi.jpg') }}" alt="Pr Kaladzavi Guidedi" loading="lazy">
-            <p><b>Pr. Kaladzavi Guidedi</b><br><i>Chef de département d'INFOTEL, ENSPM&nbsp;— UMa</i></p>
-        </div>
-        <div class="message-content">
-            <h3>Mot du Président du Comité d'Organisation</h3>
-            <p>Chers participants, chers partenaires,</p>
-            <p>C'est avec une immense fierté que je vous souhaite une massive participation à la {{ $edition->numero }}{{ $edition->numero == 1 ? 'ère' : 'ème' }} édition des Journées Sahel Digital ({{ $edition->nom }}). Sous le thème @if($edition->theme)<strong>«&nbsp;{{ $edition->theme }}&nbsp;»</strong>@endif, cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
-            <p>En tant que promoteurs de cette initiative, nous croyons fermement que l'avenir du continent africain passe par l'innovation technologique et numérique. L'intelligence artificielle offre des opportunités inédites pour relever les défis socio-économiques auxquels nous sommes confrontés.</p>
-            <p>Que vous soyez programmeur·euse, entrepreneur·euse, étudiant·e ou simplement passionné·e du numérique, les Journées Sahel Digital sont faites pour vous. Ensemble, cultivons l'esprit d'innovation pour un Sahel prospère, connecté et résilient.</p>
-        </div>
+<section class="pres-section">
+    {{-- Fond décoratif --}}
+    <div class="pres-deco" aria-hidden="true">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="rgba(16,185,129,.06)" d="M47,-55.4C59.5,-45.2,67.2,-28.3,68.1,-11.3C69,5.7,63.1,22.8,53.1,36.8C43.1,50.7,29,61.6,12,68.5C-5.1,75.3,-25.2,78.1,-41.5,70.7C-57.8,63.3,-70.3,45.7,-74.9,26.5C-79.5,7.4,-76.2,-13.3,-66.8,-29.6C-57.4,-45.8,-41.8,-57.6,-25.6,-66C-9.4,-74.4,7.4,-79.4,22.4,-74.1C37.4,-68.8,34.5,-65.7,47,-55.4Z" transform="translate(100 100)"/>
+        </svg>
     </div>
-</section>
 
-{{-- ===== ACTIVITÉS ===== --}}
-<section class="activities">
-    <div class="activities-inner">
-        <h2 class="section-title centered">Activités</h2>
-        <p>Découvrez les activités phares des Journées Sahel Digital {{ $edition->annee }}&nbsp;: hackathons, concours de programmation, expositions de startups et conférences inspirantes.</p>
+    <div class="pres-inner">
 
-        @if($activites->isNotEmpty())
-        @php $featured = $activites->first(); $others = $activites->slice(1)->take(4); @endphp
-
-        {{-- Featured activity (Hackathon) — full width horizontal card --}}
-        <div style="display:flex;gap:0;border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:1.5rem;min-height:260px;background:var(--color-bg-card);">
-            @if($featured->image)
-            <div style="flex:0 0 42%;max-width:42%;overflow:hidden;">
-                <img src="{{ asset('images/' . $featured->image) }}" alt="{{ $featured->titre }}" loading="lazy"
-                     style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+        {{-- ── Photo col ── --}}
+        <div class="pres-photo-col">
+            <div class="pres-photo-frame">
+                <div class="pres-photo-img">
+                    <img src="{{ asset('images/pr-kaladzavi.jpg') }}" alt="Pr. Kaladzavi Guidedi" loading="lazy">
+                </div>
+                {{-- Badge flottant --}}
+                <div class="pres-badge">
+                    <div class="pres-badge__icon"><i class="fas fa-user-tie"></i></div>
+                    <div>
+                        <strong>Pr. Kaladzavi Guidedi</strong>
+                        <span>Président du Comité d'Organisation</span>
+                    </div>
+                </div>
+                {{-- Ligne décorative --}}
+                <div class="pres-photo-accent"></div>
             </div>
-            @endif
-            <div style="flex:1;padding:2rem 2.25rem;display:flex;flex-direction:column;justify-content:center;gap:.75rem;">
-                <span style="display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,#eff6ff,#dbeafe);color:var(--color-primary);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .85rem;border-radius:999px;width:fit-content;">
-                    <i class="fas fa-star" style="font-size:.65rem;"></i> À la une
-                </span>
-                <h3 style="font-size:1.35rem;font-weight:800;color:var(--color-text);margin:0;">{{ $featured->titre }}</h3>
-                <p style="color:var(--color-text-muted);font-size:.95rem;line-height:1.65;margin:0;">{{ $featured->description }}</p>
-                <a href="{{ route('concours.hackathon') }}" class="btn btn-primary" style="width:fit-content;margin-top:.25rem;font-size:.875rem;padding:.5rem 1.25rem;">
-                    <i class="fas fa-rocket"></i> S'inscrire
+        </div>
+
+        {{-- ── Content col ── --}}
+        <div class="pres-content-col">
+            <span class="pres-eyebrow"><i class="fas fa-quote-left"></i> Message officiel</span>
+            <h2 class="pres-title">Mot du <em>Président</em></h2>
+
+            {{-- Grande citation d'accroche --}}
+            <blockquote class="pres-quote">
+                @if($edition->theme)
+                Sous le thème <strong>«&nbsp;{{ $edition->theme }}&nbsp;»</strong>, les {{ $edition->nom }} se veulent un espace de réflexion, de création et d'action.
+                @else
+                Ensemble, cultivons l'esprit d'innovation pour un Sahel prospère, connecté et résilient.
+                @endif
+            </blockquote>
+
+            <div class="pres-body">
+                <p>Chers participants, chers partenaires,</p>
+                <p>C'est avec une immense fierté que je vous souhaite une massive participation à la <strong>{{ $edition->numero }}{{ $edition->numero == 1 ? 'ère' : 'ème' }} édition des Journées Sahel Digital</strong>. Cet événement se veut un espace de réflexion, de création et d'action pour les jeunes talents et entrepreneur·e·s du Sahel.</p>
+                <p>En tant que promoteurs de cette initiative, nous croyons fermement que l'avenir du continent africain passe par l'innovation technologique et numérique. L'intelligence artificielle offre des opportunités inédites pour relever les défis socio-économiques auxquels nous sommes confrontés.</p>
+                <p>Que vous soyez programmeur·euse, entrepreneur·euse, étudiant·e ou simplement passionné·e du numérique, les JSD sont faites pour vous. <strong>Ensemble, façonnons l'avenir numérique du Sahel&nbsp;!</strong></p>
+            </div>
+
+            <div class="pres-footer">
+                <div class="pres-signature">
+                    <div class="pres-signature__line"></div>
+                    <div>
+                        <strong>Pr. Kaladzavi Guidedi</strong>
+                        <span>Chef de département INFOTEL · ENSPM — UMa</span>
+                    </div>
+                </div>
+                <a href="{{ route('contact.index') }}" class="pres-cta">
+                    <i class="fas fa-envelope"></i> Nous contacter
                 </a>
             </div>
         </div>
 
-        {{-- 2 × 2 grid for remaining activities --}}
-        @if($others->count())
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:1.5rem;">
-            @foreach($others as $activite)
-            <div style="background:var(--color-bg-card);border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow var(--transition),transform var(--transition);" onmouseover="this.style.boxShadow='var(--shadow-md)';this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='var(--shadow-sm)';this.style.transform='translateY(0)'">
-                @if($activite->image)
-                <img src="{{ asset('images/' . $activite->image) }}" alt="{{ $activite->titre }}" loading="lazy"
-                     style="width:100%;height:180px;object-fit:cover;display:block;">
-                @endif
-                <div style="padding:1.25rem 1.5rem;">
-                    <h3 style="font-size:1rem;font-weight:700;color:var(--color-text);margin-bottom:.4rem;">{{ $activite->titre }}</h3>
-                    <p style="font-size:.875rem;color:var(--color-text-muted);line-height:1.6;margin:0;">{{ $activite->description }}</p>
-                </div>
-            </div>
-            @endforeach
+    </div>
+</section>
+
+<style>
+/* ═══ MOT DU PRÉSIDENT ═══ */
+.pres-section {
+    position: relative;
+    background: linear-gradient(160deg, #f8fafc 0%, #fff 50%, #f0fdf4 100%);
+    padding: 6rem 2rem;
+    overflow: hidden;
+    border-top: 1px solid #e2e8f0;
+}
+.pres-deco {
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 480px; height: 480px;
+    pointer-events: none;
+    opacity: .6;
+}
+.pres-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+/* ── Photo col ── */
+.pres-photo-col { position: relative; }
+.pres-photo-frame { position: relative; }
+.pres-photo-img {
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    box-shadow: 0 24px 64px rgba(0,0,0,.13);
+    position: relative;
+}
+.pres-photo-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 55%, rgba(3,30,20,.6) 100%);
+}
+.pres-photo-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform .7s;
+}
+.pres-photo-frame:hover .pres-photo-img img { transform: scale(1.04); }
+.pres-photo-accent {
+    position: absolute;
+    top: -14px; left: -14px;
+    width: 100%; height: 100%;
+    border: 3px solid #10b981;
+    border-radius: 28px;
+    z-index: -1;
+    opacity: .35;
+}
+.pres-badge {
+    position: absolute;
+    bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
+    background: rgba(255,255,255,.9);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 2;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.pres-badge__icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, #059669, #10b981);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.1rem; flex-shrink: 0;
+}
+.pres-badge strong { display: block; font-size: .9rem; font-weight: 800; color: #0f172a; }
+.pres-badge span   { font-size: .78rem; color: #64748b; }
+
+/* ── Content col ── */
+.pres-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    color: #059669;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+.pres-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0 0 1.8rem;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+}
+.pres-title em {
+    font-style: normal;
+    background: linear-gradient(90deg, #059669, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pres-quote {
+    position: relative;
+    margin: 0 0 2rem;
+    padding: 1.5rem 1.75rem 1.5rem 2.5rem;
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border-left: 4px solid #10b981;
+    border-radius: 0 16px 16px 0;
+    font-size: 1.08rem;
+    font-style: italic;
+    color: #1e3a2f;
+    line-height: 1.7;
+}
+.pres-quote::before {
+    content: '\201C';
+    position: absolute;
+    top: -.4rem; left: .8rem;
+    font-size: 4.5rem;
+    font-family: Georgia, serif;
+    color: #10b981;
+    opacity: .4;
+    line-height: 1;
+}
+
+.pres-body { margin-bottom: 2.5rem; }
+.pres-body p {
+    color: #475569;
+    font-size: .97rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+.pres-body p:last-child { margin-bottom: 0; }
+
+.pres-footer {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.pres-signature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.pres-signature__line {
+    width: 3px;
+    height: 40px;
+    background: linear-gradient(to bottom, #10b981, #6ee7b7);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+.pres-signature strong { display: block; font-size: .92rem; font-weight: 800; color: #0f172a; }
+.pres-signature span   { font-size: .78rem; color: #64748b; }
+.pres-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .7rem 1.6rem;
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: .88rem;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(5,150,105,.28);
+    transition: transform .2s, box-shadow .2s;
+}
+.pres-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(5,150,105,.4);
+    color: #fff;
+}
+
+@media (max-width: 960px) {
+    .pres-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .pres-photo-img { aspect-ratio: 4/3; max-height: 400px; }
+}
+@media (max-width: 560px) {
+    .pres-section { padding: 4rem 1.25rem; }
+    .pres-footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+{{-- ===== ACTIVITÉS ===== --}}
+<section class="act-section">
+
+    {{-- En-tête section --}}
+    <div class="act-header">
+        <div>
+            <span class="act-eyebrow"><i class="fas fa-bolt"></i> Programme {{ $edition->annee }}</span>
+            <h2 class="act-title">Activités <em>phares</em></h2>
+        </div>
+        <p class="act-subtitle">Hackathons, concours de programmation, expositions de startups et conférences inspirantes — 3 jours d'innovation en immersion.</p>
+    </div>
+
+    @if($activites->isNotEmpty())
+    @php $featured = $activites->first(); $others = $activites->slice(1)->take(4); @endphp
+
+    {{-- ── Activité vedette ── --}}
+    <div class="act-featured">
+        @if($featured->image)
+        <div class="act-featured__img">
+            <img src="{{ asset('images/' . $featured->image) }}" alt="{{ $featured->titre }}" loading="lazy">
+            <div class="act-featured__img-overlay"></div>
         </div>
         @endif
-
-        @else
-        <p style="color:var(--color-text-muted)">Aucune activité disponible pour le moment.</p>
-        @endif
-
-        <div style="text-align:center;">
-            <a href="{{ route('activities') }}" class="btn btn-primary">
-                Voir toutes les activités <i class="fas fa-arrow-right"></i>
+        <div class="act-featured__body">
+            <span class="act-tag act-tag--star">
+                <i class="fas fa-star"></i> Activité phare
+            </span>
+            <h3>{{ $featured->titre }}</h3>
+            <p>{{ $featured->description }}</p>
+            <div class="act-featured__meta">
+                <div class="act-meta-pill"><i class="fas fa-calendar-alt"></i> 3 jours</div>
+                <div class="act-meta-pill"><i class="fas fa-users"></i> Ouvert à tous</div>
+                <div class="act-meta-pill"><i class="fas fa-trophy"></i> Prix à gagner</div>
+            </div>
+            <a href="{{ route('concours.hackathon') }}" class="act-cta-btn">
+                <i class="fas fa-rocket"></i> S'inscrire maintenant
+                <span class="act-cta-btn__arrow"><i class="fas fa-arrow-right"></i></span>
             </a>
         </div>
     </div>
+
+    {{-- ── Autres activités ── --}}
+    @if($others->count())
+    <div class="act-grid">
+        @foreach($others as $idx => $activite)
+        @php
+            $palette = [
+                ['icon'=>'fa-laptop-code',  'color'=>'#6366f1', 'bg'=>'#eef2ff'],
+                ['icon'=>'fa-trophy',        'color'=>'#f59e0b', 'bg'=>'#fffbeb'],
+                ['icon'=>'fa-lightbulb',     'color'=>'#10b981', 'bg'=>'#f0fdf4'],
+                ['icon'=>'fa-microphone-alt','color'=>'#ec4899', 'bg'=>'#fdf2f8'],
+            ];
+            $p = $palette[$idx % count($palette)];
+        @endphp
+        <div class="act-card">
+            @if($activite->image)
+            <div class="act-card__img">
+                <img src="{{ asset('images/' . $activite->image) }}" alt="{{ $activite->titre }}" loading="lazy">
+                <div class="act-card__img-cover"></div>
+                <div class="act-card__icon-float" style="background:{{ $p['bg'] }};color:{{ $p['color'] }}">
+                    <i class="fas {{ $p['icon'] }}"></i>
+                </div>
+            </div>
+            @else
+            <div class="act-card__no-img" style="background:{{ $p['bg'] }}">
+                <i class="fas {{ $p['icon'] }}" style="color:{{ $p['color'] }};font-size:2rem;"></i>
+            </div>
+            @endif
+            <div class="act-card__body">
+                <h4>{{ $activite->titre }}</h4>
+                <p>{{ Str::limit($activite->description, 110) }}</p>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @endif
+
+    @else
+    <div class="act-empty">
+        <div class="act-empty__icon"><i class="fas fa-calendar-plus"></i></div>
+        <h3>Activités bientôt annoncées</h3>
+        <p>Le programme de {{ $edition->nom }} sera publié prochainement. Restez connectés&nbsp;!</p>
+    </div>
+    @endif
+
+    <div class="act-see-all">
+        <a href="{{ route('activities') }}" class="act-see-all__btn">
+            Voir toutes les activités <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
 </section>
+
+<style>
+/* ═══ ACTIVITÉS ═══ */
+.act-section {
+    background: #f8fafc;
+    padding: 6rem 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+.act-header {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+.act-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    color: #6366f1;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    margin-bottom: .8rem;
+}
+.act-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+}
+.act-title em {
+    font-style: normal;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.act-subtitle {
+    flex: 1;
+    min-width: 240px;
+    color: #64748b;
+    font-size: .97rem;
+    line-height: 1.7;
+    margin: 0;
+    padding-bottom: .3rem;
+}
+
+/* ── Activité vedette ── */
+.act-featured {
+    max-width: 1200px;
+    margin: 0 auto 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 16px 50px rgba(0,0,0,.1);
+    min-height: 380px;
+    background: #fff;
+}
+.act-featured__img {
+    position: relative;
+    overflow: hidden;
+}
+.act-featured__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .7s;
+}
+.act-featured:hover .act-featured__img img { transform: scale(1.05); }
+.act-featured__img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(99,102,241,.3) 0%, transparent 70%);
+}
+.act-featured__body {
+    padding: 2.5rem 2.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+.act-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .3rem .9rem;
+    border-radius: 100px;
+}
+.act-tag--star {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    color: #6d28d9;
+}
+.act-featured__body h3 {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.2;
+}
+.act-featured__body p {
+    color: #475569;
+    font-size: .97rem;
+    line-height: 1.75;
+    margin: 0;
+}
+.act-featured__meta {
+    display: flex;
+    gap: .6rem;
+    flex-wrap: wrap;
+}
+.act-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .35rem .9rem;
+    border-radius: 100px;
+}
+.act-meta-pill i { color: #6366f1; }
+.act-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .7rem;
+    padding: .85rem 1.8rem;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: .92rem;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(99,102,241,.35);
+    transition: transform .2s, box-shadow .2s;
+    align-self: flex-start;
+}
+.act-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(99,102,241,.45);
+    color: #fff;
+}
+.act-cta-btn__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    background: rgba(255,255,255,.2);
+    border-radius: 6px;
+    font-size: .75rem;
+    transition: background .2s;
+}
+.act-cta-btn:hover .act-cta-btn__arrow { background: rgba(255,255,255,.35); }
+
+/* ── Grille autres activités ── */
+.act-grid {
+    max-width: 1200px;
+    margin: 0 auto 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.2rem;
+}
+.act-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    transition: box-shadow .25s, transform .25s, border-color .25s;
+}
+.act-card:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,.1);
+    transform: translateY(-4px);
+    border-color: #c7d2fe;
+}
+.act-card__img {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+.act-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s;
+}
+.act-card:hover .act-card__img img { transform: scale(1.07); }
+.act-card__img-cover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.08) 100%);
+}
+.act-card__icon-float {
+    position: absolute;
+    bottom: .8rem; right: .8rem;
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+.act-card__no-img {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.act-card__body {
+    padding: 1.3rem 1.5rem;
+}
+.act-card__body h4 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 .5rem;
+}
+.act-card__body p {
+    font-size: .85rem;
+    color: #64748b;
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* ── Empty ── */
+.act-empty {
+    max-width: 460px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+.act-empty__icon {
+    width: 64px; height: 64px;
+    background: #ede9fe;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; color: #6366f1;
+    margin: 0 auto 1.5rem;
+}
+.act-empty h3 { font-size: 1.2rem; font-weight: 800; color: #0f172a; margin: 0 0 .6rem; }
+.act-empty p  { color: #64748b; font-size: .95rem; }
+
+/* ── See all ── */
+.act-see-all {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 1rem;
+}
+.act-see-all__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .8rem 2rem;
+    border: 2px solid #6366f1;
+    color: #4f46e5;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: .92rem;
+    text-decoration: none;
+    transition: background .2s, color .2s, box-shadow .2s;
+}
+.act-see-all__btn:hover {
+    background: #4f46e5;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(99,102,241,.3);
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+    .act-featured { grid-template-columns: 1fr; }
+    .act-featured__img { height: 260px; }
+    .act-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+}
+@media (max-width: 560px) {
+    .act-section { padding: 4rem 1.25rem; }
+    .act-grid { grid-template-columns: 1fr; }
+    .act-featured__body { padding: 1.75rem; }
+}
+</style>
 
 {{-- ===== À PROPOS ===== --}}
 <section class="about">
