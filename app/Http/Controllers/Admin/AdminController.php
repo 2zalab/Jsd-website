@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\StatutInscriptionUpdated;
 use App\Mail\NotificationMail;
+use App\Mail\InscriptionConfirmation;
+use App\Mail\CredentialsCreated;
 
 
 
@@ -465,6 +467,15 @@ public function generatePDF()
 
         Programmeur::create($data);
 
+        try {
+            Mail::to($data['email'])->send(new InscriptionConfirmation(
+                'Concours Meilleur Programmeur',
+                $data['nom'],
+                'Catégorie : ' . $data['type_concours'] . ' — ' . implode(', ', $data['langages']),
+                $data['email'],
+            ));
+        } catch (\Exception) {}
+
         return response()->json(['success' => true, 'message' => 'Programmeur ajouté avec succès.']);
     }
 
@@ -502,6 +513,15 @@ public function generatePDF()
         ]);
 
         ProjetDigital::create($data);
+
+        try {
+            Mail::to($data['email_chef_equipe'])->send(new InscriptionConfirmation(
+                'Concours Meilleur Projet Digital',
+                $data['chef_equipe'],
+                'Projet : ' . $data['nom_projet'] . ' (' . $data['type_concours'] . ')',
+                $data['email_chef_equipe'],
+            ));
+        } catch (\Exception) {}
 
         return response()->json(['success' => true, 'message' => 'Projet Digital ajouté avec succès.']);
     }
@@ -541,6 +561,15 @@ public function generatePDF()
 
         Hackathon::create($data);
 
+        try {
+            Mail::to($data['email_chef_equipe'])->send(new InscriptionConfirmation(
+                'Hackathon JSD',
+                $data['nom_chef_equipe'],
+                'Équipe : ' . $data['nom_equipe'] . ' — ' . $data['nombre_participants'] . ' participants',
+                $data['email_chef_equipe'],
+            ));
+        } catch (\Exception) {}
+
         return response()->json(['success' => true, 'message' => 'Hackathon ajouté avec succès.']);
     }
 
@@ -575,6 +604,15 @@ public function generatePDF()
         ]);
 
         Stand::create($data);
+
+        try {
+            Mail::to($data['email_contact'])->send(new InscriptionConfirmation(
+                'Réservation de Stand',
+                $data['nom_entreprise'],
+                'Stand ' . ucfirst($data['taille_stand']) . ' — ' . $data['secteur_activite'],
+                $data['email_contact'],
+            ));
+        } catch (\Exception) {}
 
         return response()->json(['success' => true, 'message' => 'Stand ajouté avec succès.']);
     }
@@ -620,6 +658,14 @@ public function generatePDF()
             'phone'             => $data['phone'] ?? null,
             'email_verified_at' => now(),
         ]);
+
+        try {
+            Mail::to($data['email'])->send(new CredentialsCreated(
+                $data['name'],
+                $data['email'],
+                $data['password'],
+            ));
+        } catch (\Exception) {}
 
         return response()->json(['success' => true, 'message' => 'Utilisateur créé avec succès.', 'id' => $user->id]);
     }

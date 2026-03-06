@@ -6,7 +6,9 @@ use App\Models\UserNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
+use App\Mail\NotificationMail;
 
 class UserDashboardController extends Controller
 {
@@ -97,7 +99,17 @@ class UserDashboardController extends Controller
             return back()->withErrors(['current_password' => 'Le mot de passe actuel est incorrect.']);
         }
 
-        Auth::user()->update(['password' => Hash::make($request->password)]);
+        $user = Auth::user();
+        $user->update(['password' => Hash::make($request->password)]);
+
+        try {
+            Mail::to($user->email)->send(new NotificationMail(
+                'Mot de passe modifié — Journées Sahel Digital',
+                'Votre mot de passe a été modifié avec succès. Si vous n\'êtes pas à l\'origine de cette modification, contactez-nous immédiatement.',
+                'warning',
+                $user->name,
+            ));
+        } catch (\Exception) {}
 
         return back()->with('success', 'Mot de passe modifié avec succès.');
     }
