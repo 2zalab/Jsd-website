@@ -253,10 +253,20 @@ class DonationController extends Controller
     }
 
     // ─── Obtenir le token CamPay ──────────────────────────────────────────────
+    // Supporte deux méthodes :
+    // 1. Token permanent (CAMPAY_TOKEN) - disponible dans APP KEYS du dashboard CamPay
+    // 2. Token temporaire via username/password (CAMPAY_USERNAME + CAMPAY_PASSWORD)
     private function getCamPayToken(): ?string
     {
+        // Méthode 1 : token permanent (prioritaire si défini)
+        $permanentToken = config('campay.token');
+        if (!empty($permanentToken)) {
+            return $permanentToken;
+        }
+
+        // Méthode 2 : token temporaire via /token/ endpoint
         try {
-            $response = Http::post(config('campay.base_url') . 'token/', [
+            $response = Http::asJson()->post(config('campay.base_url') . 'token/', [
                 'username' => config('campay.app_username'),
                 'password' => config('campay.app_password'),
             ]);
@@ -265,7 +275,7 @@ class DonationController extends Controller
                 return $response->json('token');
             }
 
-            Log::error('CamPay token error', ['response' => $response->json()]);
+            Log::error('CamPay token error', ['response' => $response->json(), 'status' => $response->status()]);
             return null;
         } catch (\Exception $e) {
             Log::error('CamPay token exception', ['message' => $e->getMessage()]);
