@@ -1,6 +1,141 @@
 @extends('layouts.app')
 
+@section('styles')
+<style>
+.hero {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: none !important;
+}
+.hero::before { display: none !important; }
+
+.hero-slides { position: absolute; inset: 0; z-index: 0; }
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+.hero-slide.active { opacity: 1; }
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(15,23,42,.78) 0%, rgba(30,64,175,.62) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: var(--container-max);
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--space-16) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+    color: #fff;
+}
+
+.hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+    line-height: 1;
+}
+.hero-arrow:hover { background: rgba(255,255,255,.32); }
+.hero-arrow.prev { left: 1rem; }
+.hero-arrow.next { right: 1rem; }
+
+.hero-dots {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: .5rem;
+}
+.hero-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.45);
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: background .2s, transform .2s;
+}
+.hero-dot.active { background: #fff; transform: scale(1.3); }
+</style>
+@endsection
+
 @section('content')
+
+{{-- ===== HERO (slider 4 images) ===== --}}
+<section class="hero" id="hero-section">
+
+    <div class="hero-slides">
+        <div class="hero-slide active" style="background-image:url('{{ asset('images/hero-background.png') }}')"></div>
+        <div class="hero-slide"        style="background-image:url('{{ asset('images/hackathon.jpg') }}')"></div>
+        <div class="hero-slide"        style="background-image:url('{{ asset('images/projet-presentation.jpg') }}')"></div>
+        <div class="hero-slide"        style="background-image:url('{{ asset('images/photo-famille.jpg') }}')"></div>
+    </div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <div class="hero-left">
+            <h1>Journées<br>Sahel Digital {{ $edition->annee }}</h1>
+            @if($edition->theme)
+            <p class="subtitle">{{ $edition->theme }}</p>
+            @endif
+            <hr/>
+        </div>
+        <div class="hero-right">
+            <div class="hero-badge">{{ $edition->numero }}{{ $edition->numero == 1 ? 'ère' : 'ème' }} Édition</div>
+            <div class="cta-buttons">
+                <a href="{{ route('concours.index') }}" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> S'inscrire aux concours
+                </a>
+                <a href="{{ route('donate.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-donate"></i> Faire un don
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <button class="hero-arrow prev" id="hero-prev" aria-label="Image précédente">&#8249;</button>
+    <button class="hero-arrow next" id="hero-next" aria-label="Image suivante">&#8250;</button>
+
+    <div class="hero-dots" role="tablist">
+        <button class="hero-dot active" data-index="0" aria-label="Image 1"></button>
+        <button class="hero-dot"        data-index="1" aria-label="Image 2"></button>
+        <button class="hero-dot"        data-index="2" aria-label="Image 3"></button>
+        <button class="hero-dot"        data-index="3" aria-label="Image 4"></button>
+    </div>
+</section>
 
 {{-- ===== COUNTDOWN ===== --}}
 <section class="countdown-section">
@@ -327,6 +462,40 @@
         if (el.seconds) el.seconds.textContent = pad(Math.floor((distance % 60000)    / 1000));
     }, 1000);
 
+})();
+</script>
+<script>
+// --- Hero Slider ---
+(function () {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots   = document.querySelectorAll('.hero-dot');
+    if (!slides.length) return;
+
+    let current = 0;
+    let timer   = null;
+
+    function goTo(idx) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (idx + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+    }
+
+    function start() { timer = setInterval(() => goTo(current + 1), 5000); }
+    function stop()  { clearInterval(timer); }
+
+    document.getElementById('hero-prev')?.addEventListener('click', () => { stop(); goTo(current - 1); start(); });
+    document.getElementById('hero-next')?.addEventListener('click', () => { stop(); goTo(current + 1); start(); });
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => { stop(); goTo(parseInt(dot.dataset.index)); start(); });
+    });
+
+    document.getElementById('hero-section')?.addEventListener('mouseenter', stop);
+    document.getElementById('hero-section')?.addEventListener('mouseleave', start);
+
+    start();
 })();
 </script>
 @endsection
