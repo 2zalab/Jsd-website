@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sponsor;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InscriptionConfirmation;
 
 class SponsorController extends Controller
 {
@@ -39,6 +41,15 @@ class SponsorController extends Controller
             'email' => $request->email,
             'motivation' => $request->motivation,
         ]);
+
+        try {
+            Mail::to($request->email)->send(new InscriptionConfirmation(
+                'Demande de Parrainage — JSD',
+                $request->nom,
+                'Secteur : ' . $request->adresse . ' — Téléphone : ' . $request->telephone,
+                $request->email,
+            ));
+        } catch (\Exception) {}
 
         return redirect()->back()->with('success', 'Votre demande de parrainage a été soumise avec succès. Vous recevrez bientôt un email de confirmation !');
        //return response()->json(['message' => 'Votre demande de parrainage a été soumise avec succès. Vous recevrez bientôt un email de confirmation.']);
