@@ -14,7 +14,10 @@ use App\Models\Newsletter;
 use App\Models\User;
 use App\Models\UserNotification;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Mail\StatutInscriptionUpdated;
+use App\Mail\NotificationMail;
 
 
 
@@ -418,6 +421,18 @@ public function generatePDF()
                 'type'    => $type,
                 'icon'    => $icon,
             ]);
+
+            // Email à l'utilisateur lié au compte
+            if ($model->user) {
+                $nomParticipant = $model->nom ?? $model->nom_equipe ?? $model->nom_entreprise ?? $model->chef_equipe ?? '';
+                try {
+                    Mail::to($model->user->email)->send(new StatutInscriptionUpdated(
+                        $label,
+                        $nomParticipant,
+                        $request->status,
+                    ));
+                } catch (\Exception) {}
+            }
         }
 
         return response()->json(['success' => true, 'status' => $request->status]);
@@ -679,27 +694,44 @@ public function generatePDF()
         };
 
         if ($request->target === 'all') {
-            $users = User::where('role', 'user')->pluck('id');
-            foreach ($users as $uid) {
+            $users = User::where('role', 'user')->get();
+            foreach ($users as $u) {
                 UserNotification::create([
-                    'user_id' => $uid,
+                    'user_id' => $u->id,
                     'title'   => $request->title,
                     'message' => $request->message,
                     'type'    => $request->type,
                     'icon'    => $icon,
                 ]);
+                try {
+                    Mail::to($u->email)->send(new NotificationMail(
+                        $request->title,
+                        $request->message,
+                        $request->type,
+                        $u->name,
+                    ));
+                } catch (\Exception) {}
             }
             $count = $users->count();
             return response()->json(['success' => true, 'message' => "Notification envoyée à {$count} utilisateur(s)."]);
         }
 
+        $targetUser = User::findOrFail($request->user_id);
         UserNotification::create([
-            'user_id' => $request->user_id,
+            'user_id' => $targetUser->id,
             'title'   => $request->title,
             'message' => $request->message,
             'type'    => $request->type,
             'icon'    => $icon,
         ]);
+        try {
+            Mail::to($targetUser->email)->send(new NotificationMail(
+                $request->title,
+                $request->message,
+                $request->type,
+                $targetUser->name,
+            ));
+        } catch (\Exception) {}
 
         return response()->json(['success' => true, 'message' => 'Notification envoyée avec succès.']);
     }

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Stand;
 use App\Models\Hackathon;
 use App\Models\Programmeur;
 use App\Models\ProjetDigital;
+use App\Mail\InscriptionConfirmation;
 
 class ConcoursController extends Controller
 {
@@ -56,6 +58,15 @@ class ConcoursController extends Controller
             'user_id' => Auth::id(),
             'langages' => json_encode($validated['langages']),
         ]));
+
+        try {
+            Mail::to($validated['email'])->send(new InscriptionConfirmation(
+                'Concours Meilleur Programmeur',
+                $validated['nom'],
+                'Catégorie : ' . $validated['type_concours'] . ' — ' . implode(', ', $validated['langages']),
+                $validated['email'],
+            ));
+        } catch (\Exception) {}
 
         $success = 'Votre inscription au concours de programmeur a été enregistrée avec succès.';
         if ($request->input('_from') === 'dashboard') {
@@ -122,6 +133,15 @@ class ConcoursController extends Controller
 
         $projetDigital->save();
 
+        try {
+            Mail::to($request->email_chef_equipe)->send(new InscriptionConfirmation(
+                'Concours Meilleur Projet Digital',
+                $request->chef_equipe,
+                'Projet : ' . $request->nom_projet . ' (' . $request->type_concours . ')',
+                $request->email_chef_equipe,
+            ));
+        } catch (\Exception) {}
+
         $success = 'Votre projet digital a été soumis avec succès.';
         if ($request->input('_from') === 'dashboard') {
             return redirect()->route('dashboard')->with('success', $success);
@@ -156,6 +176,15 @@ class ConcoursController extends Controller
 
         Hackathon::create(array_merge($validated, ['user_id' => Auth::id()]));
 
+        try {
+            Mail::to($validated['email_chef_equipe'])->send(new InscriptionConfirmation(
+                'Hackathon JSD',
+                $validated['nom_chef_equipe'],
+                'Équipe : ' . $validated['nom_equipe'] . ' — ' . $validated['nombre_participants'] . ' participants',
+                $validated['email_chef_equipe'],
+            ));
+        } catch (\Exception) {}
+
         $success = 'Votre équipe a été inscrite au Hackathon avec succès.';
         if ($request->input('_from') === 'dashboard') {
             return redirect()->route('dashboard')->with('success', $success);
@@ -182,6 +211,15 @@ class ConcoursController extends Controller
         ]);
 
         Stand::create(array_merge($validated, ['user_id' => Auth::id()]));
+
+        try {
+            Mail::to($validated['email_contact'])->send(new InscriptionConfirmation(
+                'Réservation de Stand',
+                $validated['nom_entreprise'],
+                'Stand ' . ucfirst($validated['taille_stand']) . ' — ' . $validated['secteur_activite'],
+                $validated['email_contact'],
+            ));
+        } catch (\Exception) {}
 
         $success = 'Votre réservation de stand a été enregistrée avec succès.';
         if ($request->input('_from') === 'dashboard') {
