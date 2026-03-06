@@ -811,7 +811,7 @@
     max-width: 1200px;
     margin: 0 auto 1.5rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.2rem;
 }
 .act-card {
@@ -924,6 +924,9 @@
     .act-featured { grid-template-columns: 1fr; }
     .act-featured__img { height: 260px; }
     .act-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+}
+@media (max-width: 768px) {
+    .act-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 560px) {
     .act-section { padding: 4rem 1.25rem; }
