@@ -337,8 +337,7 @@
 
         {{-- Image --}}
         <div class="donate-img-panel">
-            <img src="{{ asset('images/donate-desktop.png') }}" alt="Faire un don aux JSD" class="hidden md:block" style="height:100%;min-height:300px;">
-            <img src="{{ asset('images/donate-image-mobile.png') }}" alt="Faire un don" class="block md:hidden" style="width:100%;height:220px;object-fit:cover;">
+            <img src="{{ asset('images/donate-desktop.png') }}" alt="Faire un don aux JSD" style="width:100%;height:100%;min-height:300px;object-fit:cover;display:block;">
             <div class="donate-img-overlay">
                 <h2>Ensemble, façonnons le futur numérique</h2>
                 <p>Votre soutien finance les ateliers, conférences et concours qui forment les talents de demain.</p>
