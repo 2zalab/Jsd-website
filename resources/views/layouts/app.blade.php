@@ -98,10 +98,10 @@
             <div class="footer-links">
                 <h4>Légal</h4>
                 <ul>
-                    <li><a href="#">Conditions d'utilisation</a></li>
-                    <li><a href="#">Confidentialité</a></li>
-                    <li><a href="#">Code de conduite</a></li>
-                    <li><a href="#">FAQ</a></li>
+                    <li><a href="{{ route('legal.cgu') }}">Conditions d'utilisation</a></li>
+                    <li><a href="{{ route('legal.confidentialite') }}">Confidentialité</a></li>
+                    <li><a href="{{ route('legal.code-conduite') }}">Code de conduite</a></li>
+                    <li><a href="{{ route('legal.faq') }}">FAQ</a></li>
                 </ul>
             </div>
 
@@ -131,7 +131,7 @@
 
         <div class="footer-bottom">
             <p>&copy; Journées Sahel Digital {{ $edition->annee }} — Tous droits réservés</p>
-            <p>Conçu par <a href="https://2zalab.com" target="_blank" rel="noopener">2zaLab</a></p>
+            <p>Conçu par <a href="https://mit.cm" target="_blank" rel="noopener">Maroua Innovation Technology</a></p>
             <div class="social-icons">
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 <a href="https://web.facebook.com/profile.php?id=61552171995857" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>

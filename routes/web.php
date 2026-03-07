@@ -203,6 +203,12 @@ Route::post('/concours/hackathon', [ConcoursController::class, 'storeHackathon']
 Route::get('/concours/stand',  [ConcoursController::class, 'createStand'])->name('concours.stand');
 Route::post('/concours/stand', [ConcoursController::class, 'storeStand'])->name('concours.stand.submit');
 
+// ─── Pages légales ────────────────────────────────────────────────────────────
+Route::get('/conditions-utilisation', fn() => view('legal.cgu'))->name('legal.cgu');
+Route::get('/confidentialite',        fn() => view('legal.confidentialite'))->name('legal.confidentialite');
+Route::get('/code-de-conduite',       fn() => view('legal.code-conduite'))->name('legal.code-conduite');
+Route::get('/faq',                    fn() => view('legal.faq'))->name('legal.faq');
+
 // ─── Fallback ─────────────────────────────────────────────────────────────────
 Route::fallback(function () {
     return redirect()->route('home');
