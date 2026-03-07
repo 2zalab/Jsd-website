@@ -957,7 +957,7 @@ footer {
     display: flex;
     gap: var(--space-3);
     margin-top: var(--space-4);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .social-icon {
