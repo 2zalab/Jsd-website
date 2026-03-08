@@ -108,8 +108,11 @@
         <div class="form-grid">
             <div class="form-group">
                 <label class="form-label">Niveau d'études <span>*</span></label>
-                <input type="text" name="niveau_etudes" class="form-input {{ $errors->has('niveau_etudes') ? 'is-invalid' : '' }}"
-                    value="{{ old('niveau_etudes') }}" placeholder="ex: Terminale, L2, BTS…" required>
+                <select name="niveau_etudes" id="niveau_etudes" class="form-input form-select {{ $errors->has('niveau_etudes') ? 'is-invalid' : '' }}" required>
+                    <option value="">Sélectionnez le niveau</option>
+                    <option value="secondaire" {{ old('niveau_etudes') === 'secondaire' ? 'selected' : '' }}>Secondaire (Lycée)</option>
+                    <option value="superieur" {{ old('niveau_etudes') === 'superieur' ? 'selected' : '' }}>Supérieur (Université / BTS…)</option>
+                </select>
                 @error('niveau_etudes')<div class="error-msg">{{ $message }}</div>@enderror
             </div>
             <div class="form-group">
