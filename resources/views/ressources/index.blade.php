@@ -6,7 +6,7 @@
      HERO
 ═══════════════════════════════════════════════════ --}}
 <section class="res-hero">
-    <div class="res-hero__bg" style="background-image:url('{{ asset('images/hero_2.jpg') }}')"></div>
+    <div class="res-hero__bg" style="background-image:url('{{ asset('images/ct_hack.png') }}')"></div>
     <div class="res-hero__overlay"></div>
     <div class="res-hero__content">
         <span class="res-eyebrow"><i class="fas fa-photo-video"></i> Médiathèque</span>

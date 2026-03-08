@@ -6,7 +6,7 @@
      HERO CONTACT
 ═══════════════════════════════════════════════════ --}}
 <section class="ct-hero">
-    <div class="ct-hero__bg" style="background-image:url('{{ asset('images/secretariat.jpg') }}')"></div>
+    <div class="ct-hero__bg" style="background-image:url('{{ asset('images/hack/image5.JPG') }}')"></div>
     <div class="ct-hero__overlay"></div>
     <div class="ct-hero__content">
         <span class="ct-eyebrow"><i class="fas fa-envelope"></i> Contact</span>
@@ -69,7 +69,7 @@
                     </label>
                     <input type="text" id="name" name="name"
                            value="{{ old('name') }}"
-                           placeholder="Touza Isaac"
+                           placeholder="votre nom"
                            required>
                 </div>
 
@@ -108,7 +108,7 @@
 
             {{-- Photo --}}
             <div class="ct-aside__photo">
-                <img src="{{ asset('images/contact-image-desktop.png') }}" alt="Journées Sahel Digital" loading="lazy">
+                <img src="{{ asset('images/contact-image.png') }}" alt="Journées Sahel Digital" loading="lazy">
                 <div class="ct-aside__photo-badge">
                     <i class="fas fa-shield-alt"></i>
                     <span>Réponse garantie sous 48h</span>

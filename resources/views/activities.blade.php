@@ -6,7 +6,7 @@
      HERO
 ═══════════════════════════════════════════════════ --}}
 <section class="act-hero">
-    <div class="act-hero__bg" style="background-image:url('{{ asset('images/hack.jpg') }}')"></div>
+    <div class="act-hero__bg" style="background-image:url('{{ asset('images/jsd_01.png') }}')"></div>
     <div class="act-hero__overlay"></div>
     <div class="act-hero__content">
         <span class="act-eyebrow">
@@ -104,17 +104,17 @@
 ═══════════════════════════════════════════════════ --}}
 <div class="act-gallery-strip">
     <div class="act-gallery-strip__item">
-        <img src="{{ asset('images/eleves-godola.jpg') }}" alt="Élèves en compétition" loading="lazy">
+        <img src="{{ asset('images/prix/image1.png') }}" alt="gagnats de la compétition" loading="lazy">
     </div>
     <div class="act-gallery-strip__item act-gallery-strip__item--wide">
-        <img src="{{ asset('images/projet-presentation.jpg') }}" alt="Présentation projet" loading="lazy">
+        <img src="{{ asset('images/prix/image2.png') }}" alt="Présentation des gagnants" loading="lazy">
         <div class="act-gallery-strip__label">Moments de l'édition précédente</div>
     </div>
     <div class="act-gallery-strip__item">
-        <img src="{{ asset('images/evaluation_projet.jpg') }}" alt="Évaluation projet" loading="lazy">
+        <img src="{{ asset('images/prix/image3.png') }}" alt="Présentation des gagnants" loading="lazy">
     </div>
     <div class="act-gallery-strip__item">
-        <img src="{{ asset('images/candidats-cmpd.jpg') }}" alt="Candidats CMPD" loading="lazy">
+        <img src="{{ asset('images/prix/image4.png') }}" alt="Présentation des gagnants" loading="lazy">
     </div>
 </div>
 
@@ -144,7 +144,7 @@
                 </div>
             </div>
             <div class="act-proj-card">
-                <img src="{{ asset('images/photo1.jpg') }}" alt="Startups digitales" loading="lazy">
+                <img src="{{ asset('images/projet_senior.png') }}" alt="Startups digitales" loading="lazy">
                 <div class="act-proj-card__content">
                     <span class="act-proj-badge">CMPDS — Senior·e·s</span>
                     <h3>Projets ambitieux pour seniors</h3>
