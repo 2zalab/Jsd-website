@@ -12,7 +12,7 @@
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:580px;">
 
       {{-- Header --}}
-      <tr><td style="background:linear-gradient(135deg,#064e3b,#059669);border-radius:16px 16px 0 0;padding:36px 40px;text-align:center;">
+      <tr><td style="background:#064e3b;border-radius:16px 16px 0 0;padding:36px 40px;text-align:center;">
         <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);">Journées Sahel Digital</p>
         <h1 style="margin:0;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.02em;">Merci pour votre don !</h1>
         <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,.75);">Votre générosité soutient l'innovation numérique</p>
