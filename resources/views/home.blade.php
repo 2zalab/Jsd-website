@@ -360,6 +360,230 @@
     </div>
 </section>
 
+{{-- ===== SECTION VIDÉO ===== --}}
+<section class="video-section">
+
+    {{-- Fond décoratif --}}
+    <div class="video-section__deco-left" aria-hidden="true"></div>
+    <div class="video-section__deco-right" aria-hidden="true"></div>
+
+    <div class="video-section__inner">
+
+        {{-- En-tête --}}
+        <div class="video-section__header">
+            <span class="video-section__eyebrow">
+                <i class="fas fa-play-circle"></i>&nbsp; Découvrez en images
+            </span>
+            <h2 class="video-section__title">
+                Revivez les <em>Journées Sahel Digital</em>
+            </h2>
+            <p class="video-section__subtitle">
+                Plongez dans l'ambiance unique des JSD — innovation, énergie et talents réunis pour façonner le numérique de demain.
+            </p>
+        </div>
+
+        {{-- Player --}}
+        <div class="video-section__player-wrap">
+            <div class="video-section__player-glow"></div>
+            <div class="video-section__player-frame">
+                {{-- Bouton play décoratif (masqué une fois chargé) --}}
+                <div class="video-section__player-inner">
+                    <iframe
+                        src="https://www.youtube.com/embed/n0TZLjHAIJQ?rel=0&modestbranding=1&color=white"
+                        title="Journées Sahel Digital — Replay"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        loading="lazy"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+
+        {{-- Badges d'infos --}}
+        <div class="video-section__badges">
+            <div class="video-section__badge">
+                <i class="fas fa-fire-alt"></i>
+                <span>Innovation &amp; Tech</span>
+            </div>
+            <div class="video-section__badge">
+                <i class="fas fa-users"></i>
+                <span>Communauté JSD</span>
+            </div>
+            <div class="video-section__badge">
+                <i class="fas fa-trophy"></i>
+                <span>Concours &amp; Prix</span>
+            </div>
+            <div class="video-section__badge">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Maroua, Cameroun</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<style>
+/* ═══ SECTION VIDÉO ═══ */
+.video-section {
+    position: relative;
+    background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #0f2a1a 100%);
+    padding: 6rem 2rem;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,.07);
+}
+
+.video-section__deco-left,
+.video-section__deco-right {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.video-section__deco-left {
+    top: -180px; left: -180px;
+    background: radial-gradient(circle, rgba(99,102,241,.18) 0%, transparent 70%);
+}
+.video-section__deco-right {
+    bottom: -180px; right: -180px;
+    background: radial-gradient(circle, rgba(16,185,129,.15) 0%, transparent 70%);
+}
+
+.video-section__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.8rem;
+}
+
+/* ── Header ── */
+.video-section__header {
+    text-align: center;
+    max-width: 640px;
+}
+.video-section__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    background: rgba(99,102,241,.18);
+    color: #a5b4fc;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    padding: .4rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(99,102,241,.3);
+    margin-bottom: 1.2rem;
+    display: inline-flex;
+}
+.video-section__title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900;
+    color: #f8fafc;
+    margin: 0 0 1rem;
+    line-height: 1.15;
+    letter-spacing: -.03em;
+}
+.video-section__title em {
+    font-style: normal;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.video-section__subtitle {
+    color: #94a3b8;
+    font-size: 1rem;
+    line-height: 1.75;
+    margin: 0;
+}
+
+/* ── Player ── */
+.video-section__player-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+}
+.video-section__player-glow {
+    position: absolute;
+    inset: -24px;
+    border-radius: 36px;
+    background: linear-gradient(135deg, rgba(99,102,241,.25), rgba(16,185,129,.2));
+    filter: blur(32px);
+    z-index: 0;
+}
+.video-section__player-frame {
+    position: relative;
+    z-index: 1;
+    border-radius: 24px;
+    padding: 6px;
+    background: linear-gradient(135deg, rgba(99,102,241,.5), rgba(16,185,129,.4));
+    box-shadow:
+        0 32px 80px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(255,255,255,.1);
+}
+.video-section__player-inner {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 16/9;
+    position: relative;
+}
+.video-section__player-inner iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+}
+
+/* ── Badges ── */
+.video-section__badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.video-section__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    color: #cbd5e1;
+    font-size: .82rem;
+    font-weight: 600;
+    padding: .55rem 1.2rem;
+    border-radius: 100px;
+    backdrop-filter: blur(8px);
+    transition: background .2s, border-color .2s, color .2s;
+}
+.video-section__badge:hover {
+    background: rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.22);
+    color: #fff;
+}
+.video-section__badge i {
+    color: #34d399;
+    font-size: .85rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .video-section { padding: 4rem 1.25rem; }
+    .video-section__player-frame { border-radius: 16px; padding: 4px; }
+    .video-section__player-inner { border-radius: 13px; }
+    .video-section__badges { gap: .6rem; }
+    .video-section__badge { font-size: .76rem; padding: .45rem 1rem; }
+}
+</style>
+
 <style>
 /* ═══ MOT DU PRÉSIDENT ═══ */
 .pres-section {
