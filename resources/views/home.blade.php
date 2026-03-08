@@ -97,10 +97,10 @@
 <section class="hero" id="hero-section">
 
     <div class="hero-slides">
-        <div class="hero-slide active" style="background-image:url('{{ asset('images/hero-background.png') }}')"></div>
-        <div class="hero-slide"        style="background-image:url('{{ asset('images/hackathon.jpg') }}')"></div>
-        <div class="hero-slide"        style="background-image:url('{{ asset('images/projet-presentation.jpg') }}')"></div>
-        <div class="hero-slide"        style="background-image:url('{{ asset('images/photo-famille.jpg') }}')"></div>
+        <div class="hero-slide active" style="background-image:url('{{ asset('images/hero_1.jpg') }}')"></div>
+        <div class="hero-slide"        style="background-image:url('{{ asset('images/hero_2.jpg') }}')"></div>
+        <div class="hero-slide"        style="background-image:url('{{ asset('images/hero_3.jpg') }}')"></div>
+        <div class="hero-slide"        style="background-image:url('{{ asset('images/hero_4.jpg') }}')"></div>
     </div>
 
     <div class="hero-overlay"></div>
@@ -141,7 +141,7 @@
 <section class="countdown-section">
     <div class="countdown-content">
         <div class="countdown-image">
-            <img src="{{ asset('images/developer.png') }}" alt="Développeur avec un ordinateur portable" loading="lazy">
+            <img src="{{ asset('images/participant_dev.png') }}" alt="Développeur avec un ordinateur portable" loading="lazy">
         </div>
         <div class="countdown-text">
             <h2>Le compte à rebours a commencé !</h2>
@@ -348,12 +348,12 @@
                     <div class="pres-signature__line"></div>
                     <div>
                         <strong>Pr. Kaladzavi Guidedi</strong>
-                        <span>Chef de département INFOTEL · ENSPM — UMa</span>
+                        <span>CT auprès du Recteur de L'Université de Maroua et Chef de département INFOTEL · ENSPM — UMa</span>
                     </div>
                 </div>
-                <a href="{{ route('contact.index') }}" class="pres-cta">
+                <!--a href="{{ route('contact.index') }}" class="pres-cta">
                     <i class="fas fa-envelope"></i> Nous contacter
-                </a>
+                </a-->
             </div>
         </div>
 

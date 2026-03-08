@@ -39,7 +39,7 @@
     <header id="site-header">
         <nav>
             <a href="{{ route('home') }}" class="logo" aria-label="Accueil {{ $edition->nom }}">
-                <img src="{{ asset('images/logo_jsd.png') }}" alt="Logo {{ $edition->nom }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo {{ $edition->nom }}">
             </a>
 
             <ul class="nav-links" id="nav-links" role="list">
