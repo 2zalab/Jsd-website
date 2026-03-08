@@ -21,6 +21,7 @@ use App\Mail\StatutInscriptionUpdated;
 use App\Mail\NotificationMail;
 use App\Mail\InscriptionConfirmation;
 use App\Mail\CredentialsCreated;
+use App\Mail\AdminNewUserNotification;
 
 
 
@@ -646,11 +647,25 @@ public function generatePDF()
             'email_verified_at' => now(),
         ]);
 
+        $admin = auth()->user();
+
+        // 1. Email au nouvel utilisateur avec ses identifiants
         try {
             Mail::to($data['email'])->send(new CredentialsCreated(
                 $data['name'],
                 $data['email'],
                 $data['password'],
+            ));
+        } catch (\Exception) {}
+
+        // 2. Email à l'admin qui a créé le compte
+        try {
+            Mail::to($admin->email)->send(new AdminNewUserNotification(
+                adminName:       $admin->name,
+                newUserName:     $data['name'],
+                newUserEmail:    $data['email'],
+                newUserPassword: $data['password'],
+                newUserRole:     $data['role'],
             ));
         } catch (\Exception) {}
 
