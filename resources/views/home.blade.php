@@ -141,7 +141,7 @@
 <section class="countdown-section">
     <div class="countdown-content">
         <div class="countdown-image">
-            <img src="{{ asset('images/participant_dev.png') }}" alt="Développeur avec un ordinateur portable" loading="lazy">
+            <img src="{{ asset('images/devs-girls.png') }}" alt="Développeur avec un ordinateur portable" loading="lazy">
         </div>
         <div class="countdown-text">
             <h2>Le compte à rebours a commencé !</h2>
@@ -940,7 +940,7 @@
     <div class="about-inner">
         <div class="about-content">
             <h2 class="section-title">À Propos</h2>
-            <p>Le Département d'Informatique de l'École Nationale Supérieure Polytechnique de Maroua et ses partenaires initient les « Journées Sahel Digital » afin de faire éclore et promouvoir le génie des jeunes camerounais et d'encourager les porteurs de projets digitaux.</p>
+            <p>Le Département d'Informatique et Télécommunications (INFOTEL) de l'École Nationale Supérieure Polytechnique de Maroua et ses partenaires initient les « Journées Sahel Digital » afin de faire éclore et promouvoir le génie des jeunes camerounais et d'encourager les porteurs de projets digitaux.</p>
 
             <div class="stats-grid">
                 <div class="stat-item">
