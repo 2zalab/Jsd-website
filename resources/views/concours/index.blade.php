@@ -209,7 +209,7 @@
 <div id="messageCardContainer"></div>
 
 <div class="ci-hero">
-    <h1>Concours &amp; Activités <span style="color:#a5b4fc">{{ $edition->nom }}</span></h1>
+    <h1 style="color:#a5b4fc" >Concours &amp; Activités {{ $edition->nom }} </h1>
     <p>Inscrivez-vous et prenez part aux compétitions des Journées Sahel Digital {{ $edition->annee }}.</p>
 </div>
 
@@ -247,7 +247,7 @@
                 </a>
             </div>
             <div class="ci-card-img">
-                <img src="{{ asset('images/developer.png') }}" alt="Concours Programmeur" loading="lazy">
+                <img src="{{ asset('images/developer_girl.png') }}" alt="Concours Programmeur" loading="lazy">
                 <div class="ci-img-overlay"></div>
             </div>
         </div>

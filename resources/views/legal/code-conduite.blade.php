@@ -10,7 +10,7 @@
 <section class="lp-hero">
     <div class="lp-hero-inner">
         <div class="lp-hero-icon"><i class="fas fa-handshake-angle"></i></div>
-        <h1>Code de conduite</h1>
+        <h1 style="color: aliceblue;">Code de conduite</h1>
         <div class="lp-meta">
             <span class="lp-badge"><i class="fas fa-rotate"></i> En vigueur pour toutes les éditions</span>
             <span class="lp-badge"><i class="fas fa-users"></i> Inclusif &amp; Respectueux</span>

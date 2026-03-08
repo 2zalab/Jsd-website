@@ -10,7 +10,7 @@
 <section class="lp-hero">
     <div class="lp-hero-inner">
         <div class="lp-hero-icon"><i class="fas fa-file-contract"></i></div>
-        <h1>Conditions d'utilisation</h1>
+        <h1 style="color: aliceblue;">Conditions d'utilisation</h1>
         <div class="lp-meta">
             <span class="lp-badge"><i class="fas fa-calendar-alt"></i> Dernière mise à jour : mars 2026</span>
             <span class="lp-badge"><i class="fas fa-shield-alt"></i> Version 1.0</span>

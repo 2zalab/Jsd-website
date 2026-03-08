@@ -10,7 +10,7 @@
 <section class="lp-hero">
     <div class="lp-hero-inner">
         <div class="lp-hero-icon"><i class="fas fa-lock"></i></div>
-        <h1>Politique de confidentialité</h1>
+        <h1 style="color: aliceblue;">Politique de confidentialité</h1>
         <div class="lp-meta">
             <span class="lp-badge"><i class="fas fa-calendar-alt"></i> Dernière mise à jour : mars 2026</span>
             <span class="lp-badge"><i class="fas fa-user-shield"></i> Protection des données</span>

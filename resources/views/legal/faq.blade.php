@@ -10,7 +10,7 @@
 <section class="lp-hero">
     <div class="lp-hero-inner">
         <div class="lp-hero-icon"><i class="fas fa-circle-question"></i></div>
-        <h1>Foire aux questions</h1>
+        <h1 style="color: aliceblue;">Foire aux questions</h1>
         <div class="lp-meta">
             <p class="faq-hero-desc">Trouvez rapidement les réponses à vos questions sur les Journées Sahel Digital.</p>
         </div>

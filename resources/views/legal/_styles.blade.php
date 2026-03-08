@@ -81,7 +81,7 @@
     background: var(--color-bg-card);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-xl);
-    padding: var(--space-5);
+    padding: 10px;
 }
 .lp-toc-title {
     font-size: var(--font-size-xs); font-weight: 700;
@@ -168,7 +168,7 @@
     background: rgba(30,64,175,.06);
     border-left: 3px solid var(--color-primary);
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    padding: var(--space-4) var(--space-5);
+    padding: 10px;
     margin: var(--space-4) 0;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
@@ -186,7 +186,7 @@
     background: var(--color-bg-section);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: var(--space-4) var(--space-5);
+    padding: 10px;
     transition: box-shadow var(--transition), transform var(--transition);
 }
 .lp-value-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
@@ -255,6 +255,7 @@
     overflow: hidden;
     background: var(--color-bg-card);
     transition: box-shadow var(--transition);
+    padding: 20px;
 }
 .faq-item:hover { box-shadow: var(--shadow-md); }
 .faq-question {
@@ -289,7 +290,7 @@
 }
 .faq-item.open .faq-answer {
     max-height: 600px;
-    padding: var(--space-4) var(--space-5) var(--space-5);
+    padding: 10px;
     border-top-width: 1px;
 }
 .faq-answer p, .faq-answer li {
