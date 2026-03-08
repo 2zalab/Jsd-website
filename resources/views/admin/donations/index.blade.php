@@ -83,11 +83,12 @@
                 <h3 class="text-sm font-semibold text-gray-700">Evolution des dons reçus</h3>
                 <div class="flex gap-2">
                     @foreach([7 => '7j', 30 => '30j', 90 => '90j', 365 => '1an'] as $p => $label)
-                    <a href="{{ request()->fullUrlWithQuery(['period' => $p]) }}"
-                       class="px-2 py-1 text-xs rounded-md font-medium transition
-                              {{ (int)$period === $p ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-indigo-50' }}">
+                    <button type="button"
+                            onclick="loadContent('{{ route('admin.donations.index') }}?search={{ urlencode($search) }}&status={{ $status }}&method={{ $method }}&period={{ $p }}', 'Dons')"
+                            class="px-2 py-1 text-xs rounded-md font-medium transition cursor-pointer
+                                   {{ (int)$period === $p ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-indigo-50' }}">
                         {{ $label }}
-                    </a>
+                    </button>
                     @endforeach
                 </div>
             </div>
