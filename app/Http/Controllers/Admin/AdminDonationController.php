@@ -68,6 +68,25 @@ class AdminDonationController extends Controller
             '50 000 FCFA et plus'    => Donation::where('status', 'successful')->where('amount', '>=', 50000)->count(),
         ];
 
+        // ── Données JS pré-calculées (évite les closures dans @json Blade) ──
+        $moisLabels = $donsByMonth->map(function ($row) {
+            try {
+                return \Carbon\Carbon::createFromFormat('Y-m', $row->mois)->locale('fr')->isoFormat('MMM YY');
+            } catch (\Exception $e) {
+                return $row->mois;
+            }
+        })->values()->toArray();
+
+        $operateursData = $donsByOperator->map(function ($o) {
+            $pm = $o->payment_method;
+            return [
+                'label'   => $pm === 'mtn_momo' ? 'MTN MoMo' : ($pm === 'orange_money' ? 'Orange Money' : ucfirst($pm ?? 'Autre')),
+                'total'   => $o->total,
+                'montant' => $o->montant,
+                'color'   => $pm === 'mtn_momo' ? '#f59e0b' : ($pm === 'orange_money' ? '#f97316' : '#6366f1'),
+            ];
+        })->values()->toArray();
+
         // ── Liste des dons (avec filtres) ─────────────────────────────────
         $query = Donation::query()->orderByDesc('created_at');
 
@@ -100,6 +119,7 @@ class AdminDonationController extends Controller
             'totalDons', 'donsReussis', 'donsPendants', 'donsEchoues',
             'montantTotal', 'montantMoyen',
             'donsByOperator', 'evolutionDons', 'donsByMonth', 'donsByTranche',
+            'moisLabels', 'operateursData',
             'donations', 'topDonateurs',
             'status', 'search', 'method', 'period', 'days'
         ));
