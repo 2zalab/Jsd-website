@@ -353,17 +353,11 @@
     const evolutionNb      = @json($evolutionDons->pluck('nb_dons'));
     const evolutionMontant = @json($evolutionDons->pluck('montant'));
 
-    const moisLabels  = @json($donsByMonth->pluck('mois')->map(fn($m) => \Carbon\Carbon::createFromFormat('Y-m', $m)->locale('fr')->isoFormat('MMM YY')));
+    const moisLabels  = @json($moisLabels);
     const moisNb      = @json($donsByMonth->pluck('nb_dons'));
     const moisMontant = @json($donsByMonth->pluck('montant'));
 
-    const operateurs = @json($donsByOperator->map(fn($o) => [
-        'label'   => $o->payment_method === 'mtn_momo' ? 'MTN MoMo' : ($o->payment_method === 'orange_money' ? 'Orange Money' : ucfirst($o->payment_method ?? 'Autre')),
-        'total'   => $o->total,
-        'montant' => $o->montant,
-        'color'   => $o->payment_method === 'mtn_momo' ? '#f59e0b' : ($o->payment_method === 'orange_money' ? '#f97316' : '#6366f1'),
-    ]));
-
+    const operateurs    = @json($operateursData);
     const trancheLabels = @json(array_keys($donsByTranche));
     const trancheValues = @json(array_values($donsByTranche));
 
