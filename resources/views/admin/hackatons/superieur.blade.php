@@ -36,7 +36,7 @@
                         <td class="px-5 py-4 text-sm text-gray-700">{{ $hackathon->etablissement }}</td>
                         <td class="px-5 py-4 text-sm text-gray-700">
                             <ol class="list-decimal list-inside space-y-0.5">
-                                @foreach($hackathon->membres as $membre)
+                                @foreach($hackathon->membres ?? [] as $membre)
                                     <li>{{ $membre }}</li>
                                 @endforeach
                             </ol>

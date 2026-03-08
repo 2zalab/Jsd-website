@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ressource;
+use App\Models\Edition;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 
@@ -27,7 +29,8 @@ class RessourceController extends Controller
 
     public function create()
     {
-        return view('admin.ressources.form', ['ressource' => null]);
+        $editions = Edition::orderByDesc('numero')->get();
+        return view('admin.ressources.form', ['ressource' => null, 'editions' => $editions]);
     }
 
     public function store(Request $request)
@@ -38,7 +41,7 @@ class RessourceController extends Controller
             'type'        => 'required|in:photo,document',
             'fichier'     => 'nullable|file|max:10240',
             'lien'        => 'nullable|url|max:500',
-            'edition'     => 'required|in:JSD23,JSD26',
+            'edition'     => ['required', Rule::in(Edition::pluck('nom'))],
             'categorie'   => 'nullable|string|max:50',
             'ordre'       => 'nullable|integer|min:0',
         ]);
@@ -68,7 +71,8 @@ class RessourceController extends Controller
     public function edit($id)
     {
         $ressource = Ressource::findOrFail($id);
-        return view('admin.ressources.form', compact('ressource'));
+        $editions = Edition::orderByDesc('numero')->get();
+        return view('admin.ressources.form', compact('ressource', 'editions'));
     }
 
     public function update(Request $request, $id)
@@ -81,7 +85,7 @@ class RessourceController extends Controller
             'type'        => 'required|in:photo,document',
             'fichier'     => 'nullable|file|max:10240',
             'lien'        => 'nullable|url|max:500',
-            'edition'     => 'required|in:JSD23,JSD26',
+            'edition'     => ['required', Rule::in(Edition::pluck('nom'))],
             'categorie'   => 'nullable|string|max:50',
             'ordre'       => 'nullable|integer|min:0',
         ]);
