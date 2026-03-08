@@ -63,12 +63,15 @@
 
     {{-- Filters --}}
     <form action="{{ route('admin.ressources.index') }}" method="GET" id="search-form" class="filter-bar">
-        <select name="edition" class="filter-select">
-            <option value="all"   {{ $edition === 'all'   ? 'selected' : '' }}>Toutes les éditions</option>
-            <option value="JSD23" {{ $edition === 'JSD23' ? 'selected' : '' }}>JSD'23 — 1ère Édition</option>
-            <option value="JSD26" {{ $edition === 'JSD26' ? 'selected' : '' }}>JSD'26 — 3ème Édition</option>
+        <select name="edition" id="filter-edition" class="filter-select">
+            <option value="all" {{ $edition === 'all' ? 'selected' : '' }}>Toutes les éditions</option>
+            @foreach($editions as $ed)
+            <option value="{{ $ed->nom }}" {{ $edition === $ed->nom ? 'selected' : '' }}>
+                {{ $ed->nom }} — {{ $ed->numero }}{{ $ed->numero == 1 ? 'ère' : 'ème' }} Édition
+            </option>
+            @endforeach
         </select>
-        <select name="type" class="filter-select">
+        <select name="type" id="filter-type" class="filter-select">
             <option value="all"      {{ $type === 'all'      ? 'selected' : '' }}>Tous les types</option>
             <option value="photo"    {{ $type === 'photo'    ? 'selected' : '' }}>📷 Photos</option>
             <option value="document" {{ $type === 'document' ? 'selected' : '' }}>📄 Documents</option>
@@ -76,11 +79,9 @@
         <button type="submit" class="btn-primary" style="padding:7px 16px;font-size:12.5px">
             <i class="fas fa-filter"></i> Filtrer
         </button>
-        @if($edition !== 'all' || $type !== 'all')
-        <a href="{{ route('admin.ressources.index') }}" class="btn-outline" style="padding:7px 12px;font-size:12.5px">
+        <button type="button" onclick="resetFilters()" class="btn-outline" style="padding:7px 12px;font-size:12.5px">
             <i class="fas fa-times"></i> Réinitialiser
-        </a>
-        @endif
+        </button>
         <span style="margin-left:auto;font-size:12.5px;color:#94a3b8">{{ $ressources->count() }} résultat(s)</span>
     </form>
 
@@ -129,8 +130,8 @@
                             @endif
                         </td>
                         <td>
-                            <span class="{{ $r->edition === 'JSD23' ? 'badge-23' : 'badge-26' }}">
-                                {{ $r->edition === 'JSD23' ? "JSD'23" : "JSD'26" }}
+                            <span style="background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">
+                                {{ $r->edition }}
                             </span>
                         </td>
                         <td style="color:#64748b;font-size:12.5px">{{ $r->categorie ?? '—' }}</td>
@@ -166,6 +167,17 @@
 
 <script>
 const csrfR = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+function resetFilters() {
+    document.getElementById('filter-edition').value = 'all';
+    document.getElementById('filter-type').value    = 'all';
+    const url = '{{ route('admin.ressources.index') }}';
+    if (typeof loadContent === 'function') {
+        loadContent(url, 'Ressources');
+    } else {
+        document.getElementById('search-form').submit();
+    }
+}
 
 function showToast(msg, ok = true) {
     const wrap = document.getElementById('toast-wrap');
