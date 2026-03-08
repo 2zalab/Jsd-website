@@ -110,27 +110,21 @@
 
         @else
         {{-- Empty state photo --}}
-        <div class="res-empty">
-            <div class="res-empty__visual">
-                <img src="{{ asset('images/hero_1.jpg') }}" alt="Bientôt disponible" loading="lazy">
-                <div class="res-empty__overlay"></div>
-            </div>
-            <div class="res-empty__content">
-                <div class="res-empty__icon"><i class="fas fa-camera-retro"></i></div>
-                <h3>Photos bientôt disponibles</h3>
-                <p>Les photos de <strong>{{ $ed->nom }}</strong> seront publiées ici
-                    @if($ed->date_fin && $ed->date_fin->isPast())
-                        prochainement.
-                    @else
-                        après l'événement. Restez connectés&nbsp;!
-                    @endif
-                </p>
-                @if($ed->est_courante)
-                <a href="{{ route('dashboard') }}" class="res-btn">
-                    <i class="fas fa-user-plus"></i> S'inscrire à {{ $ed->nom }}
-                </a>
+        <div class="res-empty-simple">
+            <span class="res-empty-simple__icon"><i class="fas fa-camera-retro"></i></span>
+            <h3>Photos bientôt disponibles</h3>
+            <p>Les photos de <strong>{{ $ed->nom }}</strong> seront publiées ici
+                @if($ed->date_fin && $ed->date_fin->isPast())
+                    prochainement.
+                @else
+                    après l'événement. Restez connectés&nbsp;!
                 @endif
-            </div>
+            </p>
+            @if($ed->est_courante)
+            <a href="{{ route('dashboard') }}" class="res-btn">
+                <i class="fas fa-user-plus"></i> S'inscrire à {{ $ed->nom }}
+            </a>
+            @endif
         </div>
         @endif
     </div>
@@ -183,16 +177,10 @@
             @endforeach
         </div>
         @else
-        <div class="res-empty">
-            <div class="res-empty__visual">
-                <img src="{{ asset('images/hero_3.jpg') }}" alt="Bientôt disponible" loading="lazy">
-                <div class="res-empty__overlay"></div>
-            </div>
-            <div class="res-empty__content">
-                <div class="res-empty__icon"><i class="fas fa-folder-open"></i></div>
-                <h3>Documents bientôt disponibles</h3>
-                <p>Les documents officiels de <strong>{{ $ed->nom }}</strong> seront publiés ici prochainement.</p>
-            </div>
+        <div class="res-empty-simple">
+            <span class="res-empty-simple__icon"><i class="fas fa-folder-open"></i></span>
+            <h3>Documents bientôt disponibles</h3>
+            <p>Les documents officiels de <strong>{{ $ed->nom }}</strong> seront publiés ici prochainement.</p>
         </div>
         @endif
     </div>
@@ -534,54 +522,43 @@
 }
 .res-doc-card:hover .res-doc-card__arrow { color: #059669; transform: translateY(2px); }
 
-/* ── Empty state ── */
-.res-empty {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border-radius: 20px;
-    overflow: hidden;
-    min-height: 360px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.08);
-}
-.res-empty__visual { position: relative; }
-.res-empty__visual img { width:100%; height:100%; object-fit:cover; display:block; }
-.res-empty__overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(3,40,30,.5);
-}
-.res-empty__content {
-    background: #f8fafc;
-    padding: 3rem;
+/* ── Empty state simple ── */
+.res-empty-simple {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
+    text-align: center;
+    padding: 5rem 2rem;
+    background: #f8fafc;
+    border-radius: 20px;
+    border: 2px dashed #e2e8f0;
+    min-height: 280px;
 }
-.res-empty__icon {
-    width: 56px;
-    height: 56px;
+.res-empty-simple__icon {
+    width: 72px;
+    height: 72px;
     background: #e2e8f0;
-    border-radius: 16px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     color: #94a3b8;
     margin-bottom: 1.5rem;
 }
-.res-empty__content h3 {
-    font-size: 1.3rem;
+.res-empty-simple h3 {
+    font-size: 1.2rem;
     font-weight: 800;
     color: #0f172a;
-    margin: 0 0 .8rem;
+    margin: 0 0 .7rem;
 }
-.res-empty__content p {
+.res-empty-simple p {
     color: #64748b;
     font-size: .95rem;
     line-height: 1.7;
     margin: 0 0 1.8rem;
+    max-width: 400px;
 }
 .res-btn {
     display: inline-flex;
@@ -607,8 +584,7 @@
 @media (max-width: 860px) {
     .res-photo-hero { height: 280px; }
     .res-mosaic { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-    .res-empty { grid-template-columns: 1fr; }
-    .res-empty__visual { height: 200px; }
+    .res-empty-simple { padding: 3rem 1.5rem; }
 }
 @media (max-width: 560px) {
     .res-mosaic { grid-template-columns: 1fr 1fr; }
