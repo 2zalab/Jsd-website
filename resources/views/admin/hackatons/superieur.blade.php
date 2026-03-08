@@ -43,7 +43,7 @@
                         </td>
                     </tr>
                     @empty
-                    <tr>
+                    <tr data-empty="1">
                         <td colspan="5" class="px-5 py-10 text-center text-gray-400">Aucune équipe inscrite.</td>
                     </tr>
                     @endforelse
@@ -115,7 +115,7 @@
     }
 
     function updatePagination() {
-        const visible = Array.from(table.querySelectorAll('tbody tr:not(.hidden)'));
+        const visible = Array.from(table.querySelectorAll('tbody tr:not(.hidden):not([data-empty])'));
         const total = visible.length;
         const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
         currentPage = Math.min(Math.max(1, currentPage), totalPages);

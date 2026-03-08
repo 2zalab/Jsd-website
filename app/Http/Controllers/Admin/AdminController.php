@@ -110,35 +110,12 @@ class AdminController extends Controller
 
     public function generatePdfHackatonLycee()
     {
-        // Créer une nouvelle instance de TCPDF
-        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-        // Configurer le document
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Votre Nom');
-        $pdf->SetTitle('Participants Hackathon Lycée');
-        $pdf->SetSubject('Liste des participants au Hackathon Lycée');
-        $pdf->SetKeywords('Hackathon, Lycée, Participants');
-
-        // Définir les marges
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-        // Ajouter une page
-        $pdf->AddPage();
-
-        // Définir la police
-        $pdf->SetFont('helvetica', '', 10);
-
-        // Générer le contenu HTML
-        $html = $this->generateHtmlContent();
-
-        // Ajouter le contenu HTML au PDF
-        $pdf->writeHTML($html, true, false, true, false, '');
-
-        // Sortie du PDF
-        return $pdf->Output('participants_hackathon_lycee.pdf', 'D');
+        $hackathons = Hackathon::where('niveau_etudes', 'secondaire')->get();
+        $pdf = Pdf::loadView('admin.exports.hackaton-pdf', [
+            'hackathons' => $hackathons,
+            'titre'      => 'Participants Hackathon — Lycée',
+        ])->setPaper('a4', 'landscape');
+        return $pdf->download('hackathon_lycee.pdf');
     }
 
     private function generateHtmlContent()
