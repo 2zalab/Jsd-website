@@ -193,18 +193,27 @@
 
     /* ── Loading spinner ── */
     #page-loader {
-        position: fixed; inset: 0; background: rgba(248,250,252,.7);
+        position: fixed; inset: 0; background: rgba(15,23,42,.35);
         display: flex; align-items: center; justify-content: center;
         z-index: 999; opacity: 0; pointer-events: none;
-        transition: opacity .2s;
+        transition: opacity .1s;
     }
     #page-loader.visible { opacity: 1; pointer-events: all; }
     .loader-ring {
-        width: 44px; height: 44px; border-radius: 50%;
-        border: 3px solid #e2e8f0;
-        border-top-color: var(--accent);
-        animation: spin .7s linear infinite;
+        width: 48px; height: 48px; border-radius: 50%;
+        border: 4px solid rgba(255,255,255,.25);
+        border-top-color: #fff;
+        animation: spin .65s linear infinite;
+        box-shadow: 0 0 0 1px rgba(99,102,241,.5);
     }
+    /* Barre de progression en haut */
+    #page-progress {
+        position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+        background: linear-gradient(90deg, #6366f1, #a855f7);
+        z-index: 1000; transition: width .4s ease, opacity .3s;
+        opacity: 0;
+    }
+    #page-progress.running { opacity: 1; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── Responsive ── */
@@ -452,6 +461,7 @@
         <div id="main-content"></div>
     </main>
 </div>
+<div id="page-progress"></div>
 
 <script>
 function openSidebar() {
@@ -465,13 +475,32 @@ function closeSidebar() {
 
 (function () {
     const loader    = document.getElementById('page-loader');
+    const progress  = document.getElementById('page-progress');
     const mainEl    = document.getElementById('main-content');
     const pageTitle = document.getElementById('page-title');
     const csrf      = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    /* ── Progress bar helpers ── */
+    let _progTimer = null;
+    function startProgress() {
+        progress.style.width = '0%';
+        progress.classList.add('running');
+        let w = 0;
+        _progTimer = setInterval(() => {
+            w = Math.min(w + Math.random() * 18, 88);
+            progress.style.width = w + '%';
+        }, 120);
+    }
+    function finishProgress() {
+        clearInterval(_progTimer);
+        progress.style.width = '100%';
+        setTimeout(() => { progress.classList.remove('running'); progress.style.width = '0%'; }, 350);
+    }
+
     /* ── load page via AJAX ── */
     function loadContent(url, title) {
         loader.classList.add('visible');
+        startProgress();
         fetch(url, {
             headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' }
         })
@@ -490,7 +519,7 @@ function closeSidebar() {
             updateActiveLink(url);
         })
         .catch(() => { mainEl.innerHTML = '<p style="padding:2rem;color:#ef4444">Erreur de chargement.</p>'; })
-        .finally(() => loader.classList.remove('visible'));
+        .finally(() => { loader.classList.remove('visible'); finishProgress(); });
     }
 
     /* expose globally so partials can call loadContent() */
