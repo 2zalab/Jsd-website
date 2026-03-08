@@ -233,7 +233,11 @@
                         <td style="color:#64748b">{{ $user->phone ?? '—' }}</td>
                         <td>
                             <span id="role-badge-{{ $user->id }}" class="badge {{ $user->role === 'admin' ? 'badge-admin' : 'badge-user' }}">
-                                @if($user->role === 'admin')<i class="fas fa-shield-alt"></i> Admin@else<i class="fas fa-user"></i> Utilisateur@endif
+                                @if($user->role === 'admin')
+                                    <i class="fas fa-shield-alt"></i> Admin
+                                @else
+                                    <i class="fas fa-user"></i> Utilisateur
+                                @endif
                             </span>
                         </td>
                         <td style="color:#94a3b8;font-size:12.5px">{{ $user->created_at->format('d/m/Y') }}</td>

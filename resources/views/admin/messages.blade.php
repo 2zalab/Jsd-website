@@ -58,7 +58,7 @@
 function deleteMessage(id) {
     if (!confirm('Supprimer ce message ?')) return;
     const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    fetch(`/admin/messages/${id}`, {
+    fetch(`/messages/${id}`, {
         method: 'DELETE',
         headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' }
     }).then(r => r.json()).then(data => {

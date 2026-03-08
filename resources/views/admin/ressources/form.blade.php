@@ -89,8 +89,11 @@
                 <div class="field-group">
                     <label class="field-label">Édition *</label>
                     <select name="edition" class="field-select" required>
-                        <option value="JSD23" {{ ($ressource?->edition ?? 'JSD23') === 'JSD23' ? 'selected' : '' }}>JSD'23 — 1ère Édition</option>
-                        <option value="JSD26" {{ ($ressource?->edition ?? '') === 'JSD26' ? 'selected' : '' }}>JSD'26 — 3ème Édition</option>
+                        @foreach($editions as $ed)
+                        <option value="{{ $ed->nom }}" {{ ($ressource?->edition ?? ($editions->first()?->nom ?? '')) === $ed->nom ? 'selected' : '' }}>
+                            {{ $ed->nom }} — {{ $ed->numero }}{{ $ed->numero == 1 ? 'ère' : 'ème' }} Édition ({{ $ed->annee }})
+                        </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="field-group" id="doc-categorie" style="{{ ($ressource?->type ?? 'photo') !== 'document' ? 'opacity:.4;pointer-events:none' : '' }}">
