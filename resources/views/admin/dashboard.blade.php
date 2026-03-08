@@ -12,7 +12,8 @@
     <!-- KPI Cards -->
     <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2">
+        <button type="button" onclick="loadContent('{{ route('admin.inscriptions') }}', 'Inscriptions')"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2 text-left hover:border-indigo-300 hover:shadow-md transition cursor-pointer w-full">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Hackaton Lycée</span>
                 <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
@@ -21,9 +22,10 @@
             </div>
             <p class="text-3xl font-bold text-indigo-600">{{ $participantsLycee }}</p>
             <p class="text-xs text-gray-400">participants</p>
-        </div>
+        </button>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2">
+        <button type="button" onclick="loadContent('{{ route('admin.inscriptions') }}', 'Inscriptions')"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2 text-left hover:border-blue-300 hover:shadow-md transition cursor-pointer w-full">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Hackaton Sup.</span>
                 <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -32,9 +34,10 @@
             </div>
             <p class="text-3xl font-bold text-blue-600">{{ $participantsSuperieur }}</p>
             <p class="text-xs text-gray-400">participants</p>
-        </div>
+        </button>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2">
+        <button type="button" onclick="loadContent('{{ route('admin.stands') }}', 'Stands')"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2 text-left hover:border-green-300 hover:shadow-md transition cursor-pointer w-full">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Stands</span>
                 <span class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
@@ -43,9 +46,10 @@
             </div>
             <p class="text-3xl font-bold text-green-600">{{ $nombreReservationsStand }}</p>
             <p class="text-xs text-gray-400">réservations</p>
-        </div>
+        </button>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2">
+        <button type="button" onclick="loadContent('{{ route('admin.sponsors') }}', 'Sponsors')"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2 text-left hover:border-yellow-300 hover:shadow-md transition cursor-pointer w-full">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sponsors</span>
                 <span class="w-8 h-8 rounded-lg bg-yellow-100 flex items-center justify-center">
@@ -54,9 +58,10 @@
             </div>
             <p class="text-3xl font-bold text-yellow-600">{{ $nombreDemandesSponsor }}</p>
             <p class="text-xs text-gray-400">demandes</p>
-        </div>
+        </button>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2">
+        <button type="button" onclick="loadContent('{{ route('admin.inscriptions') }}', 'Concours')"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2 text-left hover:border-red-300 hover:shadow-md transition cursor-pointer w-full">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Programmeurs</span>
                 <span class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
@@ -65,9 +70,10 @@
             </div>
             <p class="text-3xl font-bold text-red-500">{{ $participantsConcoursLycee + $participantsConcoursSenior }}</p>
             <p class="text-xs text-gray-400">inscrits concours</p>
-        </div>
+        </button>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2">
+        <button type="button" onclick="loadContent('{{ route('admin.newsletter') }}', 'Newsletter')"
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col gap-2 text-left hover:border-pink-300 hover:shadow-md transition cursor-pointer w-full">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Newsletter</span>
                 <span class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
@@ -76,7 +82,7 @@
             </div>
             <p class="text-3xl font-bold text-pink-500">{{ $nombreNewsletters }}</p>
             <p class="text-xs text-gray-400">abonnés</p>
-        </div>
+        </button>
 
     </div>
 
