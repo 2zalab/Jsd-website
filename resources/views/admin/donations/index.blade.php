@@ -184,7 +184,7 @@
         <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
             <h3 class="text-sm font-semibold text-gray-700">Liste des transactions</h3>
 
-            <form id="donation-filter-form" method="GET" action="{{ route('admin.donations.index') }}"
+            <form id="search-form" method="GET" action="{{ route('admin.donations.index') }}"
                   class="flex flex-wrap gap-3 items-center">
                 {{-- Recherche --}}
                 <div class="relative">

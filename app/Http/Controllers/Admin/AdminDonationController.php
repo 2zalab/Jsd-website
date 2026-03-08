@@ -11,6 +11,11 @@ class AdminDonationController extends Controller
 {
     public function index(Request $request)
     {
+        // Navigation directe (non-AJAX) → redirige vers le shell admin
+        if (! $request->ajax()) {
+            return redirect()->route('admin.index');
+        }
+
         // ── Filtres ──────────────────────────────────────────────────────────
         $status  = $request->get('status', 'all');
         $search  = $request->get('search', '');
