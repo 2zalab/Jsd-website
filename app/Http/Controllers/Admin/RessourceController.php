@@ -23,8 +23,9 @@ class RessourceController extends Controller
         if ($type !== 'all')    $query->where('type', $type);
 
         $ressources = $query->get();
+        $editions   = Edition::orderByDesc('numero')->get();
 
-        return view('admin.ressources.index', compact('ressources', 'edition', 'type'));
+        return view('admin.ressources.index', compact('ressources', 'editions', 'edition', 'type'));
     }
 
     public function create()
