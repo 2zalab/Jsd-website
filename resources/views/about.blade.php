@@ -6,7 +6,7 @@
      HERO CINÉMATIQUE
 ═══════════════════════════════════════════════════ --}}
 <section class="about-hero">
-    <div class="about-hero__bg" style="background-image:url('{{ asset('images/photo-famille.jpg') }}')"></div>
+    <div class="about-hero__bg" style="background-image:url('{{ asset('images/hero-background.png') }}')"></div>
     <div class="about-hero__overlay"></div>
     <div class="about-hero__content">
         <span class="about-hero__eyebrow">Journées Sahel Digital</span>
@@ -76,18 +76,35 @@
 <section class="about-mosaic">
     <div class="about-mosaic__inner">
         <div class="about-mosaic__cell about-mosaic__cell--tall">
-            <img src="{{ asset('images/conference.png') }}" alt="Conférence JSD" loading="lazy">
+            <img src="{{ asset('images/hack/image4.JPG') }}" alt="Conférence JSD" loading="lazy">
         </div>
         <div class="about-mosaic__col">
             <div class="about-mosaic__cell">
-                <img src="{{ asset('images/eleves-godola.jpg') }}" alt="Élèves Godola" loading="lazy">
+                <img src="{{ asset('images/hack/image6.JPG') }}" alt="Vice-recteur avec sa délégation" loading="lazy">
             </div>
             <div class="about-mosaic__cell">
-                <img src="{{ asset('images/meet.jpg') }}" alt="Réunion JSD" loading="lazy">
+                <img src="{{ asset('images/hack/image1.JPG') }}" alt="Participants Hackathon" loading="lazy">
             </div>
         </div>
+
+        <div class="about-mosaic__col">
+            <div class="about-mosaic__cell">
+                <img src="{{ asset('images/hack/image2.JPG') }}" alt="Participants CMPD" loading="lazy">
+            </div>
+            <div class="about-mosaic__cell">
+                <img src="{{ asset('images/hack/image3.JPG') }}" alt="Participants Hackathon" loading="lazy">
+            </div>
+        </div>
+
         <div class="about-mosaic__cell about-mosaic__cell--tall">
-            <img src="{{ asset('images/hackathon.jpg') }}" alt="Hackathon" loading="lazy">
+            <img src="{{ asset('images/hack/image5.JPG') }}" alt="Organizers" loading="lazy">
+            <div class="about-mosaic__cell-overlay">
+                <span>Moments forts</span>
+            </div>
+        </div>
+
+        <div class="about-mosaic__cell about-mosaic__cell--tall">
+            <img src="{{ asset('images/students.jpg') }}" alt="Hackathon" loading="lazy">
             <div class="about-mosaic__cell-overlay">
                 <span>Moments forts</span>
             </div>
@@ -144,6 +161,7 @@
         <span class="about-label">Au programme</span>
         <h2>Activités phares<br>de chaque édition</h2>
         <ul class="about-activities-list">
+            <li><i class="fas fa-code"></i> <span>Hackathon </span></li>
             <li><i class="fas fa-code"></i> <span>Concours du Meilleur Programmeur <strong>(CMP)</strong></span></li>
             <li><i class="fas fa-laptop-code"></i> <span>Concours de Meilleur Projet Digital <strong>(CMPD)</strong></span></li>
             <li><i class="fas fa-chalkboard-teacher"></i> <span>Leçon inaugurale sur l'entrepreneuriat numérique</span></li>
@@ -152,7 +170,7 @@
         </ul>
     </div>
     <div class="about-split__img-wrap">
-        <img src="{{ asset('images/evaluation_projet.jpg') }}" alt="Activités JSD" loading="lazy">
+        <img src="{{ asset('images/students_participants.png') }}" alt="Activités JSD" loading="lazy">
         <div class="about-split__img-badge about-split__img-badge--right">
             <i class="fas fa-trophy"></i>
             <span>Excellence</span>
@@ -192,12 +210,12 @@
 <section class="about-organizer">
     <div class="about-organizer__card">
         <div class="about-organizer__img">
-            <img src="{{ asset('images/roll-up.jpg') }}" alt="ENSPM" loading="lazy">
+            <img src="{{ asset('images/president_organisation.png') }}" alt="ENSPM" loading="lazy">
         </div>
         <div class="about-organizer__info">
             <span class="about-label">L'organisateur</span>
             <h2>Département d'Informatique<br>de l'ENSPM</h2>
-            <p>Les Journées Sahel Digital sont organisées par le <strong>Département d'Informatique de l'École Nationale Supérieure Polytechnique de Maroua</strong>, Université de Maroua. L'événement vise à être une vitrine de l'innovation et de l'entrepreneuriat numérique dans la région du Sahel.</p>
+            <p>Les Journées Sahel Digital sont organisées par le <strong>Département d'Informatique et Télécommunications (INFOTEL) de l'École Nationale Supérieure Polytechnique de Maroua</strong>, Université de Maroua. L'événement vise à être une vitrine de l'innovation et de l'entrepreneuriat numérique dans la région du Sahel.</p>
             <a href="{{ route('contact.index') }}" class="about-btn">
                 <i class="fas fa-envelope"></i> Nous contacter
             </a>
