@@ -1,48 +1,144 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
+<title>Journées Sahel Digital - Utilisateurs</title>
+
 <style>
-body { font-family: DejaVu Sans, sans-serif; font-size: 11px; color: #1e293b; margin: 0; }
-h1 { font-size: 18px; font-weight: 800; color: #4f46e5; margin-bottom: 4px; }
-.sub { font-size: 11px; color: #94a3b8; margin-bottom: 20px; }
-table { width: 100%; border-collapse: collapse; }
-thead th { background: #4f46e5; color: #fff; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; }
-tbody tr:nth-child(even) { background: #f8fafc; }
-tbody tr:nth-child(odd)  { background: #fff; }
-td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; }
-.badge-admin { background: #ede9fe; color: #5b21b6; padding: 2px 8px; border-radius: 999px; font-size: 9px; font-weight: 700; }
-.badge-user  { background: #eff6ff; color: #1d4ed8; padding: 2px 8px; border-radius: 999px; font-size: 9px; font-weight: 700; }
-.footer { margin-top: 20px; font-size: 10px; color: #94a3b8; text-align: right; }
+
+body{
+    font-family: DejaVu Sans, sans-serif;
+    font-size:12px;
+    color:#333;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.logo{
+    width:120px;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:20px;
+    margin:0;
+}
+
+h2{
+    font-size:14px;
+    margin:5px 0 15px 0;
+    color:#666;
+}
+
+.notice{
+    background:#fff3cd;
+    border:1px solid #ffeeba;
+    padding:8px;
+    font-size:11px;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+th, td{
+    border:1px solid #ddd;
+    padding:8px;
+}
+
+th{
+    background:#000B9A;
+    color:white;
+    text-align:left;
+}
+
+tr:nth-child(even){
+    background:#f7f7f7;
+}
+
+.footer{
+    margin-top:20px;
+    font-size:10px;
+    text-align:center;
+    color:#777;
+}
+
 </style>
 </head>
+
 <body>
-<h1>Gestion des Utilisateurs — JSD'26</h1>
-<p class="sub">Exporté le {{ now()->format('d/m/Y à H:i') }} · {{ $users->count() }} utilisateur(s)</p>
+
+<div class="header">
+
+<img src="{{ public_path('images/logo_jsd.png') }}" class="logo">
+
+<h1>Journées Sahel Digital</h1>
+<h2>Liste officielle des utilisateurs</h2>
+
+</div>
+
+<div class="notice">
+⚠ Document confidentiel – Réservé à l'administration
+</div>
+
+<p>
+<strong>Date de génération :</strong> {{ date('d/m/Y H:i') }} <br>
+<strong>Nombre total d'utilisateurs :</strong> {{ $users->count() }}
+</p>
+
 <table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Téléphone</th>
-            <th>Rôle</th>
-            <th>Inscrit le</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($users as $u)
-        <tr>
-            <td>{{ $u->id }}</td>
-            <td><strong>{{ $u->name }}</strong></td>
-            <td>{{ $u->email }}</td>
-            <td>{{ $u->phone ?? '—' }}</td>
-            <td><span class="{{ $u->role === 'admin' ? 'badge-admin' : 'badge-user' }}">{{ $u->role === 'admin' ? 'Admin' : 'Utilisateur' }}</span></td>
-            <td>{{ $u->created_at->format('d/m/Y') }}</td>
-        </tr>
-        @endforeach
-    </tbody>
+
+<thead>
+<tr>
+    <th>#</th>
+    <th>Nom</th>
+    <th>Email</th>
+    <th>Téléphone</th>
+    <th>Rôle</th>
+    <th>Inscrit le</th>
+</tr>
+</thead>
+
+<tbody>
+
+@foreach($users as $u)
+
+<tr>
+
+<td>{{ $u->id }}</td>
+
+<td>{{ $u->name }}</td>
+
+<td>{{ $u->email }}</td>
+
+<td>{{ $u->phone ?? '—' }}</td>
+
+<td>
+{{ $u->role === 'admin' ? 'Admin' : 'Utilisateur' }}
+</td>
+
+<td>
+{{ $u->created_at->format('d/m/Y') }}
+</td>
+
+</tr>
+
+@endforeach
+
+</tbody>
+
 </table>
-<p class="footer">Journées Sahel Digital 2026 — Export confidentiel</p>
+
+<div class="footer">
+Document généré automatiquement par la plateforme d'organisation des Journées Sahel Digital
+</div>
+
 </body>
 </html>

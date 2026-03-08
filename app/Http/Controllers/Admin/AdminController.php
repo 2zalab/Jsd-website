@@ -114,7 +114,7 @@ class AdminController extends Controller
         $pdf = Pdf::loadView('admin.exports.hackaton-pdf', [
             'hackathons' => $hackathons,
             'titre'      => 'Participants Hackathon — Lycée',
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4', 'portrait');
         return $pdf->download('hackathon_lycee.pdf');
     }
 
@@ -669,7 +669,7 @@ public function generatePDF()
     {
         $users = User::latest()->get();
         $pdf = Pdf::loadView('admin.exports.users-pdf', compact('users'))
-                  ->setPaper('a4', 'landscape');
+                  ->setPaper('a4', 'portrait');
         return $pdf->download('utilisateurs-jsd.pdf');
     }
 
@@ -772,13 +772,10 @@ public function generatePDF()
 
     public function generatePdfCmpl()
     {
+        $programmeurs = Programmeur::all();
         $cmpl = Programmeur::where('type_concours', 'CMPL')->get();
-        $pdf = Pdf::loadView('admin.exports.concours-programmeurs-pdf', [
-            'participants' => $cmpl,
-            'titre'        => 'Concours Meilleurs Programmeurs — Lycée (CMPL)',
-            'colonnes'     => ['Nom', 'Établissement', 'Classe', 'Langages'],
-            'champs'       => ['nom', 'etablissement', 'classe', 'langages'],
-        ])->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('admin.exports.concours-programmeurs-pdf', compact('programmeurs'))
+          ->setPaper('a4', 'landscape');
         return $pdf->download('cmpl_participants.pdf');
     }
 
@@ -796,12 +793,12 @@ public function generatePDF()
 
     public function generatePdfCmpdl()
     {
-        $cmpdl = ProjetDigital::where('type_concours', 'CMPDL')->get();
-        $pdf = Pdf::loadView('admin.exports.concours-projets-pdf', [
-            'projets' => $cmpdl,
-            'titre'   => 'Concours Meilleurs Projets Digitaux — Lycée (CMPDL)',
-        ])->setPaper('a4', 'landscape');
-        return $pdf->download('cmpdl_projets.pdf');
+        $projets = ProjetDigital::all();
+
+        $pdf = Pdf::loadView('admin.exports.concours-projets-pdf', compact('projets'))
+                ->setPaper('a4', 'landscape');
+
+        return $pdf->download('concours_meilleur_projet_jsd.pdf');
     }
 
     public function generatePdfCmpds()
@@ -816,12 +813,14 @@ public function generatePDF()
 
     public function generatePdfHackatonSuperieur()
     {
-        $hackathons = Hackathon::where('niveau_etudes', 'superieur')->get();
-        $pdf = Pdf::loadView('admin.exports.hackaton-pdf', [
-            'hackathons' => $hackathons,
-            'titre'      => 'Participants Hackathon — Supérieur',
-        ])->setPaper('a4', 'landscape');
-        return $pdf->download('hackathon_superieur.pdf');
+         $hackathons = Hackathon::where('niveau_etudes', 'superieur')->get();
+
+        $pdf = Pdf::loadView('admin.exports.hackaton-pdf', compact('hackathons'))
+                ->setPaper('a4', 'portait');
+
+        return $pdf->download('hackathon_jsd.pdf');
+
+        //$hackathons = Hackathon::where('niveau_etudes', 'superieur')->get();
     }
 
     // ══════════════════════════════════════════════════════════════
