@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PartenaireController;
 use App\Http\Controllers\Admin\ActiviteController;
 use App\Http\Controllers\Admin\RessourceController;
 use App\Http\Controllers\Admin\EditionController;
+use App\Http\Controllers\Admin\AdminDonationController;
 
 // ─── Auth (invités uniquement) ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
@@ -151,6 +152,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/editions/{id}',         [EditionController::class, 'update'])->name('admin.editions.update');
     Route::delete('/admin/editions/{id}',      [EditionController::class, 'destroy'])->name('admin.editions.destroy');
     Route::post('/admin/editions/{id}/courante',[EditionController::class, 'setCourante'])->name('admin.editions.courante');
+
+    // ── Dons ──────────────────────────────────────────────────────────────────
+    Route::get('/admin/donations',            [AdminDonationController::class, 'index'])->name('admin.donations.index');
+    Route::get('/admin/donations/{donation}/json', [AdminDonationController::class, 'show'])->name('admin.donations.show');
+    Route::patch('/admin/donations/{donation}/status', [AdminDonationController::class, 'updateStatus'])->name('admin.donations.status');
+    Route::delete('/admin/donations/{donation}',   [AdminDonationController::class, 'destroy'])->name('admin.donations.destroy');
+    Route::get('/admin/donations/export-csv',      [AdminDonationController::class, 'exportCsv'])->name('admin.donations.export-csv');
 
     // ── Ressources ────────────────────────────────────────────────────────────
     Route::get('/admin/ressources',                  [RessourceController::class, 'index'])->name('admin.ressources.index');

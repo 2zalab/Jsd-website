@@ -13,6 +13,7 @@ use App\Models\Sponsor;
 use App\Models\Newsletter;
 use App\Models\User;
 use App\Models\UserNotification;
+use App\Models\Donation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -55,6 +56,11 @@ class AdminController extends Controller
         // 6. Nombre de newsletters
         $nombreNewsletters = Newsletter::count();
 
+        // 7. Statistiques des dons
+        $totalDons     = Donation::count();
+        $donsReussis   = Donation::where('status', 'successful')->count();
+        $montantTotal  = Donation::where('status', 'successful')->sum('amount');
+
         // Passer les données à la vue
         return view('admin.dashboard', compact(
             'participantsLycee',
@@ -65,7 +71,10 @@ class AdminController extends Controller
             'projetsSenior',
             'participantsConcoursLycee',
             'participantsConcoursSenior',
-            'nombreNewsletters'
+            'nombreNewsletters',
+            'totalDons',
+            'donsReussis',
+            'montantTotal'
         ));
     }
 

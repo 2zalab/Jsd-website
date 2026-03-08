@@ -80,6 +80,48 @@
 
     </div>
 
+    {{-- ── Donation Summary Card ───────────────────────────────────────────── --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <a href="javascript:void(0)" onclick="loadContent('{{ route('admin.donations.index') }}', 'Dons')"
+           class="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-sm p-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition text-white no-underline">
+            <span class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <i class="fas fa-hand-holding-heart text-white text-xl"></i>
+            </span>
+            <div>
+                <p class="text-xs font-semibold text-white/70 uppercase tracking-wide">Dons reçus</p>
+                <p class="text-3xl font-bold text-white">{{ $donsReussis }}</p>
+                <p class="text-xs text-white/70 mt-0.5">{{ number_format($montantTotal, 0, ',', ' ') }} FCFA collectés</p>
+            </div>
+        </a>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center gap-4 md:col-span-2">
+            <div class="w-full">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-semibold text-gray-700">Progression des dons</span>
+                    <a href="javascript:void(0)" onclick="loadContent('{{ route('admin.donations.index') }}', 'Dons')"
+                       class="text-xs text-indigo-600 hover:underline font-medium">Voir tout &rarr;</a>
+                </div>
+                @php
+                    $txReussite = $totalDons > 0 ? round($donsReussis / $totalDons * 100) : 0;
+                @endphp
+                <div class="flex items-center gap-3">
+                    <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full transition-all"
+                             style="width: {{ $txReussite }}%"></div>
+                    </div>
+                    <span class="text-sm font-bold text-indigo-700">{{ $txReussite }}%</span>
+                </div>
+                <div class="flex gap-4 mt-3 text-xs text-gray-500">
+                    <span><span class="font-semibold text-green-600">{{ $donsReussis }}</span> réussis</span>
+                    <span><span class="font-semibold text-gray-800">{{ $totalDons }}</span> total</span>
+                    <span><span class="font-semibold text-purple-600">{{ number_format($montantTotal, 0, ',', ' ') }}</span> FCFA</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 

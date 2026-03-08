@@ -371,6 +371,13 @@
         <div class="nav-section-label">Administration</div>
 
         <div class="nav-item">
+            <a href="{{ route('admin.donations.index') }}" class="nav-link menu-link">
+                <i class="nav-icon fas fa-hand-holding-heart"></i>
+                <span>Dons</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
             <a href="{{ route('admin.sponsors') }}" class="nav-link menu-link">
                 <i class="nav-icon fas fa-money-bill-wave"></i>
                 <span>Sponsoring</span>
