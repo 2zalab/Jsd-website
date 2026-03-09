@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $pageTitle ?? 'Mon Espace' }} — JSD'24</title>
+    <title>{{ $pageTitle ?? 'Mon Espace' }} — {{ $edition->nom }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -204,7 +204,7 @@
     {{-- ── Sidebar ── --}}
     <aside class="ds-sidebar" id="ds-sidebar">
         <div class="ds-logo">
-            <a href="{{ route('home') }}"><img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'24"></a>
+            <a href="{{ route('home') }}"><img src="{{ asset('images/logo_jsd.png') }}" alt="{{ $edition->nom }}"></a>
         </div>
         <div class="ds-user-block">
             <div class="ds-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
@@ -262,7 +262,7 @@
     <div style="flex:1;display:flex;flex-direction:column;min-width:0">
         {{-- Mobile topbar --}}
         <div class="ds-topbar">
-            <img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'24">
+            <img src="{{ asset('images/logo_jsd.png') }}" alt="{{ $edition->nom }}">
             <div style="display:flex;align-items:center;gap:.75rem">
                 @if(($unread ?? 0) > 0)
                 <a href="{{ route('dashboard.notifications') }}" style="position:relative;color:#64748b">
@@ -363,6 +363,18 @@ function fpStSelectTaille(val, el) {
 }
 
 /* ── Hackathon panel ── */
+const fpHkClasses = {
+    secondaire: ['Terminale A','Terminale C','Terminale D','Terminale TI','Première A','Première C','Première D','Seconde C','Seconde A'],
+    superieur:  ['L1','L2','L3','M1','M2','BTS 1','BTS 2','DUT 1','DUT 2','Licence Pro','Master Pro'],
+};
+function fpHkUpdateClasse() {
+    const niveau = document.getElementById('fp-hk-niveau').value;
+    const sel    = document.getElementById('fp-hk-classe');
+    const opts   = fpHkClasses[niveau] || [];
+    sel.innerHTML = opts.length
+        ? opts.map(c => `<option value="${c}">${c}</option>`).join('')
+        : '<option value="">— Choisir un niveau d\'abord —</option>';
+}
 function fpHkUpdateMembres() {
     const nb = parseInt(document.getElementById('fp-hk-nb').value) - 1;
     const cont = document.getElementById('fp-hk-membres');
@@ -689,11 +701,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="fp-grid">
                     <div class="fp-grp">
                         <label class="fp-lbl">Niveau d'&eacute;tudes <span>*</span></label>
-                        <input type="text" name="niveau_etudes" class="fp-inp" placeholder="ex: Terminale, L2, BTS&hellip;" required>
+                        <select name="niveau_etudes" id="fp-hk-niveau" class="fp-inp fp-sel" required onchange="fpHkUpdateClasse()">
+                            <option value="">Choisir&hellip;</option>
+                            <option value="secondaire">Secondaire (Lyc&eacute;e)</option>
+                            <option value="superieur">Sup&eacute;rieur</option>
+                        </select>
                     </div>
                     <div class="fp-grp">
                         <label class="fp-lbl">Classe <span>*</span></label>
-                        <input type="text" name="classe" class="fp-inp" placeholder="ex: Terminale C, L2 Info&hellip;" required>
+                        <select name="classe" id="fp-hk-classe" class="fp-inp fp-sel" required>
+                            <option value="">— Choisir un niveau d'abord —</option>
+                        </select>
                     </div>
                 </div>
                 <div class="fp-grp" style="margin-top:1.25rem">
