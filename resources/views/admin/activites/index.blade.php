@@ -10,7 +10,7 @@
         @forelse($activites as $a)
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             @if($a->image)
-            <img src="{{ asset('images/' . $a->image) }}" alt="{{ $a->titre }}"
+            <img src="{{ asset('storage/images/' . $a->image) }}" alt="{{ $a->titre }}"
                 class="w-full h-40 object-cover"
                 onerror="this.style.display='none'">
             @else

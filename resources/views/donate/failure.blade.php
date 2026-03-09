@@ -151,10 +151,16 @@
 
         <h1 class="result-title">Paiement échoué</h1>
         <p class="result-sub">
-            Votre don de <strong>{{ $donation->formatted_amount }}</strong> n'a pas pu être traité. Aucun montant n'a été débité.
+            @if($donation)
+                Votre don de <strong>{{ $donation->formatted_amount }}</strong> n'a pas pu être traité.
+            @else
+                Votre don n'a pas pu être traité.
+            @endif
+            Aucun montant n'a été débité.
         </p>
 
         {{-- Détail transaction --}}
+        @if($donation)
         <div class="failure-info">
             <div class="failure-info-row">
                 <span style="color:#9f1239;font-weight:600;">Référence</span>
@@ -169,6 +175,7 @@
                 <span>+{{ $donation->phone }}</span>
             </div>
         </div>
+        @endif
 
         {{-- Causes possibles --}}
         <div class="causes-list">

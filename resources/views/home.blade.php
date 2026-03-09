@@ -794,7 +794,7 @@
     <div class="act-featured">
         @if($featured->image)
         <div class="act-featured__img">
-            <img src="{{ asset('images/' . $featured->image) }}" alt="{{ $featured->titre }}" loading="lazy">
+            <img src="{{ asset('storage/images/' . $featured->image) }}" alt="{{ $featured->titre }}" loading="lazy">
             <div class="act-featured__img-overlay"></div>
         </div>
         @endif
@@ -832,7 +832,7 @@
         <div class="act-card">
             @if($activite->image)
             <div class="act-card__img">
-                <img src="{{ asset('images/' . $activite->image) }}" alt="{{ $activite->titre }}" loading="lazy">
+                <img src="{{ asset('storage/images/' . $activite->image) }}" alt="{{ $activite->titre }}" loading="lazy">
                 <div class="act-card__img-cover"></div>
                 <div class="act-card__icon-float" style="background:{{ $p['bg'] }};color:{{ $p['color'] }}">
                     <i class="fas {{ $p['icon'] }}"></i>
@@ -1201,10 +1201,10 @@
             @forelse($partenaires as $partenaire)
                 @if($partenaire->lien)
                     <a href="{{ $partenaire->lien }}" target="_blank" rel="noopener noreferrer">
-                        <img src="{{ asset('images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom ?? 'Partenaire' }}" loading="lazy">
+                        <img src="{{ asset('storage/images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom ?? 'Partenaire' }}" loading="lazy">
                     </a>
                 @else
-                    <img src="{{ asset('images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom ?? 'Partenaire' }}" loading="lazy">
+                    <img src="{{ asset('storage/images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom ?? 'Partenaire' }}" loading="lazy">
                 @endif
             @empty
                 <p style="color:var(--color-text-muted)">Aucun partenaire pour le moment.</p>

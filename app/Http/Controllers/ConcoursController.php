@@ -152,7 +152,7 @@ class ConcoursController extends Controller
     // ─── Hackathon ───────────────────────────────────────────────────────
     public function createHackathon()
     {
-        return view('concours.hackathon');
+        return redirect(route('dashboard') . '?panel=hackathon');
     }
 
     public function storeHackathon(Request $request)

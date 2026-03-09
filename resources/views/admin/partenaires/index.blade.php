@@ -26,7 +26,7 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-3 text-sm text-gray-600">{{ $p->ordre }}</td>
                         <td class="px-4 py-3">
-                            <img src="{{ asset('images/' . $p->logo) }}" alt="{{ $p->nom }}"
+                            <img src="{{ asset('storage/images/' . $p->logo) }}" alt="{{ $p->nom }}"
                                 class="h-10 w-auto object-contain rounded" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 fill=%22%23e5e7eb%22/><text x=%2250%25%22 y=%2255%25%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%228%22>IMG</text></svg>'">
                         </td>
                         <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $p->nom ?? '—' }}</td>

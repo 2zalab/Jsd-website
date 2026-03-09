@@ -156,6 +156,9 @@ class DonationController extends Controller
 
         // Déjà terminé
         if (in_array($donation->status, ['successful', 'failed', 'cancelled'])) {
+            if ($donation->status !== 'successful') {
+                session(['last_failed_donation_id' => $donation->id]);
+            }
             return response()->json([
                 'status'   => $donation->status,
                 'redirect' => $donation->status === 'successful'
@@ -199,6 +202,7 @@ class DonationController extends Controller
 
                         if ($campayStatus === 'FAILED') {
                             $donation->update(['status' => 'failed']);
+                            session(['last_failed_donation_id' => $donation->id]);
                             session()->forget(['donation_id', 'donation_phone']);
 
                             return response()->json([
@@ -281,7 +285,9 @@ class DonationController extends Controller
     // ─── Page d'échec ─────────────────────────────────────────────────────────
     public function failure()
     {
-        return view('donate.failure');
+        $donationId = session('last_failed_donation_id');
+        $donation   = $donationId ? Donation::find($donationId) : null;
+        return view('donate.failure', compact('donation'));
     }
 
     // ─── Token CamPay ─────────────────────────────────────────────────────────

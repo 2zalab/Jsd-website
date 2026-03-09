@@ -88,7 +88,7 @@ input:checked + .toggle-slider::before { transform:translateX(20px); }
 
             @if($activite?->image)
             <div style="margin-bottom:16px">
-                <img src="{{ asset('images/' . $activite->image) }}" alt="{{ $activite->titre }}"
+                <img src="{{ asset('storage/images/' . $activite->image) }}" alt="{{ $activite->titre }}"
                     style="width:100%;max-height:120px;object-fit:cover;border-radius:10px;border:1px solid #e2e8f0">
             </div>
             @endif

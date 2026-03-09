@@ -7,6 +7,7 @@ use App\Models\Ressource;
 use App\Models\Edition;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 
@@ -52,7 +53,7 @@ class RessourceController extends Controller
             $file = $request->file('fichier');
             $filename = time() . '_' . $file->getClientOriginalName();
             $dest = $data['type'] === 'photo' ? 'images' : 'documents';
-            $file->move(public_path($dest), $filename);
+            Storage::disk('public')->putFileAs($dest, $file, $filename);
         }
 
         Ressource::create([
@@ -105,7 +106,7 @@ class RessourceController extends Controller
             $file = $request->file('fichier');
             $filename = time() . '_' . $file->getClientOriginalName();
             $dest = $data['type'] === 'photo' ? 'images' : 'documents';
-            $file->move(public_path($dest), $filename);
+            Storage::disk('public')->putFileAs($dest, $file, $filename);
             $updateData['fichier'] = $filename;
         }
 

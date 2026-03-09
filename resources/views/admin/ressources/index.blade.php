@@ -110,7 +110,7 @@
                         </td>
                         <td>
                             @if($r->type === 'photo' && $r->fichier)
-                                <img src="{{ asset('images/' . $r->fichier) }}" alt="{{ $r->titre }}" class="thumb" onerror="this.style.display='none'">
+                                <img src="{{ asset('storage/images/' . $r->fichier) }}" alt="{{ $r->titre }}" class="thumb" onerror="this.style.display='none'">
                             @elseif($r->type === 'document')
                                 <div class="doc-thumb">
                                     @if(strtolower($r->categorie ?? '') === 'pdf') <span style="color:#ef4444">📕</span>
