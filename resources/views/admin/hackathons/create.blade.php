@@ -97,18 +97,8 @@
 
 /* ── Classe dynamique selon niveau ── */
 const classesByNiveau = {
-    secondaire: [
-        'Terminale A', 'Terminale C', 'Terminale D', 'Terminale TI',
-        'Première A', 'Première C', 'Première D',
-        'Seconde C', 'Seconde A',
-    ],
-    superieur: [
-        'L1', 'L2', 'L3',
-        'M1', 'M2',
-        'BTS 1', 'BTS 2',
-        'DUT 1', 'DUT 2',
-        'Licence Pro', 'Master Pro',
-    ],
+    secondaire: ['3ème','Seconde A','Seconde C','Première A','Première C','Première D','Première TI','Terminale A','Terminale C','Terminale D','Terminale TI'],
+    superieur:  ['L1','L2','L3','M1','M2','BTS 1','BTS 2','DUT 1','DUT 2','Licence Pro','Master Pro','Doctorat'],
 };
 
 document.getElementById('hack-niveau').addEventListener('change', function () {
