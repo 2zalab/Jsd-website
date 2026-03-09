@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Donation;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -184,5 +185,12 @@ class AdminDonationController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportPdf()
+    {
+        $donations = Donation::orderByDesc('created_at')->get();
+        $pdf = Pdf::loadView('admin.exports.donations_pdf', compact('donations'))->setPaper('a4', 'portrait');
+        return $pdf->download('donateurs_jsd_' . now()->format('Ymd_Hi') . '.pdf');
     }
 }
