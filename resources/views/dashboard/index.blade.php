@@ -178,7 +178,7 @@
     </button>
     <button onclick="openFormPanel('hackathon')" class="qa-btn" style="font-family:inherit;cursor:pointer;font-size:.875rem">
         <div class="qa-icon" style="background:#fdf4ff;color:#a855f7"><i class="fas fa-rocket"></i></div>
-        <div><div>Hackathon JSD'24</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">Lycée / Supérieur</div></div>
+        <div><div>Hackathon JSD</div><div style="font-size:.73rem;color:#94a3b8;font-weight:400;margin-top:2px">Lycée / Supérieur</div></div>
     </button>
 </div>
 
