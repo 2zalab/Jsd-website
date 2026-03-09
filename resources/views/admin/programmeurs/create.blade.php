@@ -29,17 +29,17 @@
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Niveau d'étude *</label>
-                <select name="niveau_etude" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <select name="niveau_etude" id="prog-niveau" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="progUpdateClasse()">
                     <option value="">Choisir...</option>
-                    <option value="Lycée">Lycée</option>
-                    <option value="Licence">Licence</option>
-                    <option value="Master">Master</option>
-                    <option value="Doctorat">Doctorat</option>
+                    <option value="secondaire">Secondaire (Lycée)</option>
+                    <option value="superieur">Supérieur</option>
                 </select>
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Classe *</label>
-                <input type="text" name="classe" required placeholder="Ex: Terminale C, L3 Info" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <select name="classe" id="prog-classe" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="">— Choisir un niveau d'abord —</option>
+                </select>
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Type de concours *</label>
@@ -93,6 +93,19 @@
 </div>
 
 <script>
+const CLASSES_PROG = {
+    secondaire: ['3ème','Seconde A','Seconde C','Première A','Première C','Première D','Première TI','Terminale A','Terminale C','Terminale D','Terminale TI'],
+    superieur:  ['L1','L2','L3','M1','M2','BTS 1','BTS 2','DUT 1','DUT 2','Licence Pro','Master Pro','Doctorat'],
+};
+function progUpdateClasse() {
+    const n = document.getElementById('prog-niveau').value;
+    const sel = document.getElementById('prog-classe');
+    const opts = CLASSES_PROG[n] || [];
+    sel.innerHTML = opts.length
+        ? opts.map(c => `<option value="${c}">${c}</option>`).join('')
+        : '<option value="">— Choisir un niveau d\'abord —</option>';
+}
+
 document.getElementById('prog-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const alert = document.getElementById('prog-alert');
