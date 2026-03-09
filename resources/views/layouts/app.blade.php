@@ -29,6 +29,25 @@
         border-bottom: 2px solid #16a34a;
         padding-bottom: 2px;
     }
+    /* ── Donate CTA button in nav ── */
+    .nav-donate-btn {
+        background: linear-gradient(135deg, #059669, #047857) !important;
+        color: #fff !important;
+        padding: .35rem .9rem !important;
+        border-radius: 20px !important;
+        font-weight: 700 !important;
+        transition: box-shadow .18s, transform .18s !important;
+        border-bottom: none !important;
+    }
+    .nav-donate-btn:hover {
+        box-shadow: 0 4px 14px rgba(5,150,105,.4) !important;
+        transform: translateY(-1px) !important;
+        color: #fff !important;
+    }
+    .nav-donate-btn.active {
+        background: linear-gradient(135deg, #047857, #065f46) !important;
+        border-bottom: none !important;
+    }
     </style>
 
     @yield('styles')
@@ -48,6 +67,9 @@
                 <li><a href="{{ route('activities') }}"       class="nav-link {{ request()->routeIs('activities') ? 'active' : '' }}">Activités</a></li>
                 <li><a href="{{ route('ressources.index') }}" class="nav-link {{ request()->routeIs('ressources.*') ? 'active' : '' }}">Ressources</a></li>
                 <li><a href="{{ route('contact.index') }}"    class="nav-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact</a></li>
+                <li><a href="{{ route('donate.index') }}"     class="nav-link nav-donate-btn {{ request()->routeIs('donate.*') ? 'active' : '' }}">
+                    <i class="fas fa-heart"></i> Faire un don
+                </a></li>
                 @auth
                 <li><a href="{{ route('dashboard') }}"        class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
                     <i class="fas fa-user-circle"></i> Mon Espace
