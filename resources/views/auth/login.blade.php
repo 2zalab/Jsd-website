@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion — JSD'24</title>
+    <title>Connexion — {{ $edition->nom }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -46,9 +46,9 @@
 <div class="auth-page">
     <div class="auth-left">
         <div class="auth-left-content">
-            <img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'24">
-            <h2>Journées Sahel Digital 2024</h2>
-            <p>Innovation à l'ère de l'Intelligence Artificielle — Maroua, 26-28 novembre 2024</p>
+            <img src="{{ asset('images/logo_jsd.png') }}" alt="{{ $edition->nom }}">
+            <h2>{{ $edition->nom }}</h2>
+            <p>{{ $edition->theme ? $edition->theme . ' — ' : '' }}{{ $edition->lieu }}{{ $edition->date_debut ? ', ' . $edition->date_debut->translatedFormat('Y') : '' }}</p>
             <div class="auth-features">
                 <div class="auth-feature"><i class="fas fa-trophy"></i><span>Participez aux concours et hackathons</span></div>
                 <div class="auth-feature"><i class="fas fa-chart-line"></i><span>Suivez vos inscriptions en temps réel</span></div>
@@ -61,7 +61,7 @@
         <div class="auth-card">
             <a href="{{ route('home') }}" style="color:var(--color-text-muted);font-size:.85rem;display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
             <h1>Connexion</h1>
-            <p class="subtitle">Accédez à votre espace personnel JSD'24</p>
+            <p class="subtitle">Accédez à votre espace personnel {{ $edition->nom }}</p>
             @if ($errors->any())
                 <ul class="error-list">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
             @endif
