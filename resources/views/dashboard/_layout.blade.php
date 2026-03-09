@@ -321,12 +321,16 @@ function fpPgSelectType(val, el) {
     document.getElementById('fp-pg-niveau').value = n;
     fpPgUpdateClasses(false);
 }
+/* ── Listes de classes partagées ── */
+const CLASSES = {
+    secondaire: ['3ème','Seconde A','Seconde C','Première A','Première C','Première D','Première TI','Terminale A','Terminale C','Terminale D','Terminale TI'],
+    superieur:  ['L1','L2','L3','M1','M2','BTS 1','BTS 2','DUT 1','DUT 2','Licence Pro','Master Pro','Doctorat'],
+};
+
 function fpPgUpdateClasses(autoType) {
     const n = document.getElementById('fp-pg-niveau').value;
     const sel = document.getElementById('fp-pg-classe');
-    const lycee = ['3\u00e8me','2nde','1\u00e8re','Terminale'];
-    const sup = ['L1','L2','L3','M1','M2','DUT1','DUT2','BTS1','BTS2','Doctorat','Autre'];
-    const opts = n === 'secondaire' ? lycee : (n === 'superieur' ? sup : []);
+    const opts = CLASSES[n] || [];
     sel.innerHTML = '<option value="">Choisir\u2026</option>';
     opts.forEach(c => sel.appendChild(new Option(c, c)));
     if (autoType !== false) {
@@ -348,9 +352,7 @@ function fpPdSelectType(val, el) {
 function fpPdUpdateClasses() {
     const n = document.getElementById('fp-pd-niveau').value;
     const sel = document.getElementById('fp-pd-classe');
-    const lycee = ['3\u00e8me','2nde','1\u00e8re','Terminale'];
-    const sup = ['L1','L2','L3','M1','M2','DUT1','DUT2','BTS1','BTS2','Doctorat','Autre'];
-    const opts = n === 'secondaire' ? lycee : (n === 'superieur' ? sup : []);
+    const opts = CLASSES[n] || [];
     sel.innerHTML = '<option value="">Choisir\u2026</option>';
     opts.forEach(c => sel.appendChild(new Option(c, c)));
 }
@@ -363,14 +365,10 @@ function fpStSelectTaille(val, el) {
 }
 
 /* ── Hackathon panel ── */
-const fpHkClasses = {
-    secondaire: ['Terminale A','Terminale C','Terminale D','Terminale TI','Première A','Première C','Première D','Seconde C','Seconde A'],
-    superieur:  ['L1','L2','L3','M1','M2','BTS 1','BTS 2','DUT 1','DUT 2','Licence Pro','Master Pro'],
-};
 function fpHkUpdateClasse() {
     const niveau = document.getElementById('fp-hk-niveau').value;
     const sel    = document.getElementById('fp-hk-classe');
-    const opts   = fpHkClasses[niveau] || [];
+    const opts   = CLASSES[niveau] || [];
     sel.innerHTML = opts.length
         ? opts.map(c => `<option value="${c}">${c}</option>`).join('')
         : '<option value="">— Choisir un niveau d\'abord —</option>';
