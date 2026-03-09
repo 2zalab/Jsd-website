@@ -1,0 +1,79 @@
+[33m93a4161[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull: Fast-forward
+[33ma35152c[m HEAD@{1}: reset: moving to HEAD
+[33ma35152c[m HEAD@{2}: pull: Fast-forward
+[33md17e5bb[m HEAD@{3}: pull: Fast-forward
+[33ma6caa79[m HEAD@{4}: pull: Fast-forward
+[33m37aa6f0[m HEAD@{5}: pull: Fast-forward
+[33m1bc3ffa[m HEAD@{6}: commit: fix: color oh head mail
+[33mf089ba1[m HEAD@{7}: pull: Fast-forward
+[33m1d2dbd8[m HEAD@{8}: pull: Fast-forward
+[33md901a17[m HEAD@{9}: pull: Fast-forward
+[33m21de252[m HEAD@{10}: pull: Fast-forward
+[33m5a0b974[m HEAD@{11}: commit: fix:admin pages
+[33m8fc117e[m HEAD@{12}: pull: Fast-forward
+[33m4f2ef75[m HEAD@{13}: pull: Fast-forward
+[33md0299a6[m HEAD@{14}: pull: Fast-forward
+[33m941553e[m HEAD@{15}: pull: Fast-forward
+[33mc9c8126[m HEAD@{16}: commit: fix:update home page
+[33m769838b[m HEAD@{17}: commit: fix:improve concours page
+[33mea5e578[m HEAD@{18}: commit: fix: all pages improve
+[33m529896e[m HEAD@{19}: commit: update about page
+[33m426bf83[m HEAD@{20}: commit: update home_page
+[33m684639b[m HEAD@{21}: pull: Fast-forward
+[33med972d8[m HEAD@{22}: pull: Fast-forward
+[33mabb1297[m HEAD@{23}: pull: Fast-forward
+[33m33772c9[m HEAD@{24}: pull: Fast-forward
+[33m7d863be[m HEAD@{25}: pull: Fast-forward
+[33m8d1f59e[m HEAD@{26}: pull: Fast-forward
+[33m63bd5f1[m HEAD@{27}: pull: Fast-forward
+[33mb102e13[m HEAD@{28}: pull: Fast-forward
+[33m94f5bc6[m HEAD@{29}: pull: Fast-forward
+[33m7b28d52[m HEAD@{30}: pull: Fast-forward
+[33m85cda68[m HEAD@{31}: pull: Fast-forward
+[33m789e8f5[m HEAD@{32}: pull: Fast-forward
+[33m9cfce9f[m HEAD@{33}: pull: Fast-forward
+[33m085bd26[m HEAD@{34}: commit: fix:ajout de blade stand pdf
+[33ma488a03[m HEAD@{35}: commit: fix:telechargement de stand en pdf
+[33m9e2014f[m HEAD@{36}: pull: Fast-forward
+[33med5e3ca[m HEAD@{37}: pull: Fast-forward
+[33mae1f447[m HEAD@{38}: pull: Fast-forward
+[33m426ecb6[m HEAD@{39}: pull: Fast-forward
+[33mf9fb541[m HEAD@{40}: reset: moving to HEAD
+[33mf9fb541[m HEAD@{41}: pull: Fast-forward
+[33mb9bba4c[m HEAD@{42}: pull: Fast-forward
+[33m9985f79[m HEAD@{43}: pull: Fast-forward
+[33mb7bc2ad[m HEAD@{44}: pull: Fast-forward
+[33ma20e9cb[m HEAD@{45}: pull: Fast-forward
+[33me61db6d[m HEAD@{46}: reset: moving to HEAD
+[33me61db6d[m HEAD@{47}: pull: Fast-forward
+[33m066631e[m HEAD@{48}: pull: Fast-forward
+[33m72aa142[m HEAD@{49}: pull: Fast-forward
+[33m3083863[m HEAD@{50}: pull: Fast-forward
+[33ma0b1a48[m HEAD@{51}: reset: moving to HEAD
+[33ma0b1a48[m HEAD@{52}: pull: Fast-forward
+[33m26aa5b5[m HEAD@{53}: pull: Fast-forward
+[33mf9562cc[m HEAD@{54}: pull: Fast-forward
+[33m781ef07[m HEAD@{55}: pull: Fast-forward
+[33m3389f7b[m HEAD@{56}: pull: Fast-forward
+[33m5c1690b[m HEAD@{57}: pull: Fast-forward
+[33m3ceacb6[m HEAD@{58}: pull: Fast-forward
+[33m44caed4[m HEAD@{59}: pull: Fast-forward
+[33mbaa56ba[m HEAD@{60}: pull: Fast-forward
+[33m5227d23[m HEAD@{61}: pull: Fast-forward
+[33m961d36a[m HEAD@{62}: pull: Fast-forward
+[33m04733b5[m HEAD@{63}: pull: Fast-forward
+[33m2e82cd9[m HEAD@{64}: pull: Fast-forward
+[33me3ce8f2[m HEAD@{65}: pull: Fast-forward
+[33m92b703b[m HEAD@{66}: reset: moving to HEAD
+[33m92b703b[m HEAD@{67}: pull: Fast-forward
+[33mcadbb4b[m HEAD@{68}: reset: moving to HEAD
+[33mcadbb4b[m HEAD@{69}: commit: update image activities
+[33mc822296[m HEAD@{70}: pull: Fast-forward
+[33m339a8ef[m HEAD@{71}: pull: Fast-forward
+[33me535fa7[m HEAD@{72}: pull: Fast-forward
+[33m2995716[m HEAD@{73}: commit: update
+[33mbfcb49f[m HEAD@{74}: commit: concours pages implementation
+[33m02b837a[m HEAD@{75}: commit: concours pages implementation
+[33m52f472c[m HEAD@{76}: commit: implementation de news letters
+[33m0284f96[m HEAD@{77}: commit: Ajout des landing page, inscription page and sponsor page
+[33meebb2b0[m HEAD@{78}: clone: from https://github.com/2zalab/Jsd-website.git
