@@ -42,8 +42,12 @@
                     <p><span class="font-medium text-gray-700">Attentes :</span> {{ Str::limit($sponsor->motivation, 100) }}</p>
                 </div>
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                    <button onclick="showSponsor({{ $sponsor->id }}, {{ json_encode(['nom'=>$sponsor->nom,'logo'=>$sponsor->logo_url,'adresse'=>$sponsor->adresse,'telephone'=>$sponsor->telephone,'email'=>$sponsor->email,'motivation'=>$sponsor->motivation,'date'=>$sponsor->created_at?->format('d/m/Y H:i')]) }})"
+                            class="text-indigo-600 hover:text-indigo-800 text-sm flex items-center gap-1">
+                        <i class="fas fa-eye"></i> Détails
+                    </button>
                     <a href="mailto:{{ $sponsor->email }}"
-                       class="text-indigo-600 hover:text-indigo-800 text-sm flex items-center gap-1">
+                       class="text-green-600 hover:text-green-800 text-sm flex items-center gap-1">
                         <i class="fas fa-envelope"></i> Contacter
                     </a>
                     <button onclick="deleteSponsor({{ $sponsor->id }}, this)"
@@ -59,6 +63,32 @@
             Aucune demande de sponsoring.
         </div>
         @endforelse
+    </div>
+</div>
+
+{{-- Modal détails sponsor --}}
+<div id="sp-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <h3 class="text-lg font-bold text-gray-800">Détails du sponsor</h3>
+            <button onclick="closeSponsorModal()" class="text-gray-400 hover:text-gray-700 transition text-xl leading-none">&times;</button>
+        </div>
+        <div class="p-6 space-y-4">
+            <div class="flex justify-center mb-2">
+                <img id="sp-m-logo" src="" alt="" class="max-h-24 max-w-full object-contain rounded" onerror="this.style.display='none'">
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div><span class="font-semibold text-gray-600">Nom :</span><p id="sp-m-nom" class="text-gray-800 mt-0.5"></p></div>
+                <div><span class="font-semibold text-gray-600">Date :</span><p id="sp-m-date" class="text-gray-800 mt-0.5"></p></div>
+                <div><span class="font-semibold text-gray-600">Adresse :</span><p id="sp-m-adresse" class="text-gray-800 mt-0.5"></p></div>
+                <div><span class="font-semibold text-gray-600">Téléphone :</span><p id="sp-m-telephone" class="text-gray-800 mt-0.5"></p></div>
+                <div class="col-span-2"><span class="font-semibold text-gray-600">Email :</span><p id="sp-m-email" class="text-gray-800 mt-0.5 break-all"></p></div>
+                <div class="col-span-2"><span class="font-semibold text-gray-600">Attentes / Motivation :</span><p id="sp-m-motivation" class="text-gray-800 mt-0.5 whitespace-pre-line"></p></div>
+            </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-50 flex justify-end">
+            <button onclick="closeSponsorModal()" class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition">Fermer</button>
+        </div>
     </div>
 </div>
 
@@ -78,16 +108,33 @@ function showSpToast(msg, ok = true) {
     setTimeout(() => t.classList.add('hidden'), 3000);
 }
 
+function showSponsor(id, data) {
+    document.getElementById('sp-m-logo').src        = data.logo || '';
+    document.getElementById('sp-m-nom').textContent         = data.nom || '—';
+    document.getElementById('sp-m-date').textContent        = data.date || '—';
+    document.getElementById('sp-m-adresse').textContent     = data.adresse || '—';
+    document.getElementById('sp-m-telephone').textContent   = data.telephone || '—';
+    document.getElementById('sp-m-email').textContent       = data.email || '—';
+    document.getElementById('sp-m-motivation').textContent  = data.motivation || '—';
+    document.getElementById('sp-modal').classList.remove('hidden');
+}
+function closeSponsorModal() {
+    document.getElementById('sp-modal').classList.add('hidden');
+}
+
 function deleteSponsor(id, btn) {
     if (!confirm('Supprimer cette demande de sponsoring ?')) return;
     const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    fetch(`/admin/sponsors/${id}`, {
+    fetch(`/sponsors/${id}`, {
         method: 'DELETE',
         headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' }
     }).then(r => r.json()).then(data => {
         if (data.success) {
-            btn.closest('.bg-white.rounded-xl') ? btn.closest('.bg-white.rounded-xl').remove() : btn.closest('[class*="rounded-xl"]').remove();
+            const card = btn.closest('.bg-white.rounded-xl') || btn.closest('[class*="rounded-xl"]');
+            if (card) card.remove();
             showSpToast('Demande supprimée');
+        } else {
+            showSpToast('Erreur lors de la suppression', false);
         }
     }).catch(() => showSpToast('Erreur lors de la suppression', false));
 }
