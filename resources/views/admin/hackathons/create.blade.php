@@ -37,7 +37,7 @@
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Niveau *</label>
-                <select name="niveau_etudes" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                <select name="niveau_etudes" id="hack-niveau" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
                     <option value="">Choisir...</option>
                     <option value="secondaire">Secondaire (Lycée)</option>
                     <option value="superieur">Supérieur</option>
@@ -45,7 +45,9 @@
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Classe *</label>
-                <input type="text" name="classe" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                <select name="classe" id="hack-classe" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                    <option value="">— Choisir un niveau d'abord —</option>
+                </select>
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Statut *</label>
@@ -92,6 +94,32 @@
 
 <script>
 (function() {
+
+/* ── Classe dynamique selon niveau ── */
+const classesByNiveau = {
+    secondaire: [
+        'Terminale A', 'Terminale C', 'Terminale D', 'Terminale TI',
+        'Première A', 'Première C', 'Première D',
+        'Seconde C', 'Seconde A',
+    ],
+    superieur: [
+        'L1', 'L2', 'L3',
+        'M1', 'M2',
+        'BTS 1', 'BTS 2',
+        'DUT 1', 'DUT 2',
+        'Licence Pro', 'Master Pro',
+    ],
+};
+
+document.getElementById('hack-niveau').addEventListener('change', function () {
+    const classeSelect = document.getElementById('hack-classe');
+    const options = classesByNiveau[this.value] || [];
+    classeSelect.innerHTML = options.length
+        ? options.map(c => `<option value="${c}">${c}</option>`).join('')
+        : '<option value="">— Choisir un niveau d\'abord —</option>';
+    classeSelect.required = options.length > 0;
+});
+
 let membreCount = 1;
 document.getElementById('add-membre').addEventListener('click', function() {
     membreCount++;

@@ -79,7 +79,7 @@
         @php $heroPhoto = $photos->first(); $restPhotos = $photos->skip(1); @endphp
         <div class="res-photo-hero">
             @if($heroPhoto->fichier)
-                <img src="{{ asset('images/' . $heroPhoto->fichier) }}" alt="{{ $heroPhoto->titre }}" loading="lazy">
+                <img src="{{ asset('storage/images/' . $heroPhoto->fichier) }}" alt="{{ $heroPhoto->titre }}" loading="lazy">
             @elseif($heroPhoto->lien)
                 <img src="{{ $heroPhoto->lien }}" alt="{{ $heroPhoto->titre }}" loading="lazy">
             @endif
@@ -95,7 +95,7 @@
             @foreach($restPhotos as $photo)
             <div class="res-mosaic__item">
                 @if($photo->fichier)
-                    <img src="{{ asset('images/' . $photo->fichier) }}" alt="{{ $photo->titre }}" loading="lazy">
+                    <img src="{{ asset('storage/images/' . $photo->fichier) }}" alt="{{ $photo->titre }}" loading="lazy">
                 @elseif($photo->lien)
                     <img src="{{ $photo->lien }}" alt="{{ $photo->titre }}" loading="lazy">
                 @endif
@@ -158,7 +158,7 @@
                     'xlsx' => '#f0fdf4',
                     default => '#fef2f2',
                 };
-                $href = $doc->lien ?? ($doc->fichier ? asset('documents/' . $doc->fichier) : '#');
+                $href = $doc->lien ?? ($doc->fichier ? asset('storage/documents/' . $doc->fichier) : '#');
             @endphp
             <a href="{{ $href }}" class="res-doc-card"
                @if($doc->lien) target="_blank" rel="noopener" @endif>

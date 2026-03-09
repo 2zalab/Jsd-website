@@ -57,7 +57,7 @@ input:checked + .toggle-slider::before { transform:translateX(20px); }
             @if($partenaire?->logo)
             <div style="margin-bottom:16px;padding:12px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;text-align:center">
                 <span style="font-size:11.5px;color:#64748b;font-weight:600;display:block;margin-bottom:8px">Logo actuel</span>
-                <img src="{{ asset('images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom }}"
+                <img src="{{ asset('storage/images/' . $partenaire->logo) }}" alt="{{ $partenaire->nom }}"
                     style="max-height:60px;max-width:140px;object-fit:contain;border-radius:6px" id="current-logo">
             </div>
             @endif

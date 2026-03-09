@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Activite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ActiviteController extends Controller
 {
@@ -32,7 +33,7 @@ class ActiviteController extends Controller
         $imageFilename = null;
         if ($request->hasFile('image')) {
             $imageFilename = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path('images'), $imageFilename);
+            Storage::disk('public')->putFileAs('images', $request->file('image'), $imageFilename);
         }
 
         Activite::create([
@@ -73,7 +74,7 @@ class ActiviteController extends Controller
 
         if ($request->hasFile('image')) {
             $filename = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path('images'), $filename);
+            Storage::disk('public')->putFileAs('images', $request->file('image'), $filename);
             $updateData['image'] = $filename;
         }
 

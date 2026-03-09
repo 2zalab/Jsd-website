@@ -31,7 +31,7 @@ class PartenaireController extends Controller
         ]);
 
         $filename = time() . '_' . $request->file('logo')->getClientOriginalName();
-        $request->file('logo')->move(public_path('images'), $filename);
+        Storage::disk('public')->putFileAs('images', $request->file('logo'), $filename);
 
         Partenaire::create([
             'nom'   => $data['nom'] ?? null,
@@ -70,13 +70,12 @@ class PartenaireController extends Controller
         ];
 
         if ($request->hasFile('logo')) {
-            // Supprimer l'ancien logo s'il n'est pas un logo original de seeders
-            $oldLogo = public_path('images/' . $partenaire->logo);
-            if (file_exists($oldLogo) && str_starts_with($partenaire->logo, time() . '_')) {
-                unlink($oldLogo);
+            // Supprimer l'ancien logo s'il a été uploadé (timestamp en préfixe)
+            if ($partenaire->logo && Storage::disk('public')->exists('images/' . $partenaire->logo)) {
+                Storage::disk('public')->delete('images/' . $partenaire->logo);
             }
             $filename = time() . '_' . $request->file('logo')->getClientOriginalName();
-            $request->file('logo')->move(public_path('images'), $filename);
+            Storage::disk('public')->putFileAs('images', $request->file('logo'), $filename);
             $updateData['logo'] = $filename;
         }
 

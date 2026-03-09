@@ -150,7 +150,7 @@
             <div style="margin-bottom:16px;padding:12px 16px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:14px">
                 <span style="font-size:11.5px;color:#64748b;font-weight:600">Fichier actuel :</span>
                 @if($ressource->type === 'photo')
-                    <img src="{{ asset('images/' . $ressource->fichier) }}" alt="Aperçu" style="height:50px;border-radius:7px;border:1px solid #e2e8f0;object-fit:cover">
+                    <img src="{{ asset('storage/images/' . $ressource->fichier) }}" alt="Aperçu" style="height:50px;border-radius:7px;border:1px solid #e2e8f0;object-fit:cover">
                 @else
                     <span style="font-size:20px">📄</span>
                 @endif
