@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un compte — JSD'24</title>
+    <title>Créer un compte — {{ $edition->nom }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -46,8 +46,8 @@
 <div class="auth-page">
     <div class="auth-left">
         <div class="auth-left-content">
-            <img src="{{ asset('images/logo_jsd.png') }}" alt="JSD'24">
-            <h2>Rejoignez JSD'24 !</h2>
+            <img src="{{ asset('images/logo_jsd.png') }}" alt="{{ $edition->nom }}">
+            <h2>Rejoignez {{ $edition->nom }} !</h2>
             <p>Créez votre compte pour participer aux concours et suivre vos inscriptions.</p>
             <div class="step-list">
                 <div class="step-item"><div class="step-num">1</div><span>Créez votre compte en quelques secondes</span></div>
@@ -61,7 +61,7 @@
         <div class="auth-card">
             <a href="{{ route('home') }}" style="color:var(--color-text-muted);font-size:.85rem;display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
             <h1>Créer un compte</h1>
-            <p class="subtitle">Rejoignez la communauté JSD'24 gratuitement</p>
+            <p class="subtitle">Rejoignez la communauté {{ $edition->nom }} gratuitement</p>
             @if ($errors->any())
                 <ul class="error-list">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
             @endif

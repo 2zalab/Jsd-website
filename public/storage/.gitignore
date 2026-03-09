@@ -1,0 +1,5 @@
+# Ignorer les fichiers uploadés par les utilisateurs, pas la structure
+images/*
+!images/.gitkeep
+documents/*
+!documents/.gitkeep
