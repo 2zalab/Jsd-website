@@ -11,6 +11,10 @@
                class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition">
                 <i class="fas fa-file-csv"></i> Exporter CSV
             </a>
+            <a href="{{ route('admin.donations.export-pdf') }}"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition">
+                <i class="fas fa-file-pdf"></i> Exporter PDF
+            </a>
         </div>
     </div>
 

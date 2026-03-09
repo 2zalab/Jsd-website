@@ -159,6 +159,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('/admin/donations/{donation}/status', [AdminDonationController::class, 'updateStatus'])->name('admin.donations.status');
     Route::delete('/admin/donations/{donation}',   [AdminDonationController::class, 'destroy'])->name('admin.donations.destroy');
     Route::get('/admin/donations/export-csv',      [AdminDonationController::class, 'exportCsv'])->name('admin.donations.export-csv');
+    Route::get('/admin/donations/export-pdf',      [AdminDonationController::class, 'exportPdf'])->name('admin.donations.export-pdf');
 
     // ── Ressources ────────────────────────────────────────────────────────────
     Route::get('/admin/ressources',                  [RessourceController::class, 'index'])->name('admin.ressources.index');
