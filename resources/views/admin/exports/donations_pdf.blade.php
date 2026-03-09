@@ -67,7 +67,7 @@
 <div class="header">
     <img src="{{ public_path('images/logo_jsd.png') }}" class="logo">
     <h1>Journées Sahel Digital</h1>
-    <h2>Liste officielle des donateurs</h2>
+    <h2>Liste officielle des donateurs (dons confirmés)</h2>
 </div>
 
 <p>

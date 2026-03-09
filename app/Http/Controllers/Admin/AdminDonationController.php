@@ -189,7 +189,7 @@ class AdminDonationController extends Controller
 
     public function exportPdf()
     {
-        $donations = Donation::orderByDesc('created_at')->get();
+        $donations = Donation::where('status', 'successful')->orderByDesc('created_at')->get();
         $pdf = Pdf::loadView('admin.exports.donations_pdf', compact('donations'))->setPaper('a4', 'portrait');
         return $pdf->download('donateurs_jsd_' . now()->format('Ymd_Hi') . '.pdf');
     }
